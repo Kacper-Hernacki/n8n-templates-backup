@@ -1,0 +1,585 @@
+{
+  "active": false,
+  "connections": {
+    "Telegram": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Correct errors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dall-E 3 Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send back an image": {
+      "main": [
+        [
+          {
+            "node": "add response field",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Generate image in Dall-E 3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate image in Dall-E 3": {
+      "main": [
+        [
+          {
+            "node": "Send back an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Listen for incoming events": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres PGVector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Todoist1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-11T14:29:41.714Z",
+  "id": "WtcmKVqPvNCbboRR",
+  "meta": {
+    "templateId": "2035",
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Telegram AI bot with LangChain nodes",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "gpt-4-1106-preview",
+        "options": {
+          "frequencyPenalty": 0.2,
+          "temperature": 0.7
+        }
+      },
+      "id": "e275f31f-6a5f-4444-8bf7-6c003a8e53df",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        680,
+        200
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "96faef5d-0349-47fe-a7cf-150953490e90",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        1160,
+        0
+      ],
+      "typeVersion": 1.1,
+      "webhookId": "57b5a6d3-5b99-498e-a902-a172ea309a45",
+      "credentials": {
+        "telegramApi": {
+          "id": "Yw4fGDWV094gvJzF",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+        "text": "={{ $('AI Agent').item.json.output.replace(/&/g, \"&amp;\").replace(/>/g, \"&gt;\").replace(/</g, \"&lt;\").replace(/\"/g, \"&quot;\") }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "5ad43039-aaa6-43cd-9b0f-1d02f4d9c4ff",
+      "name": "Correct errors",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        1400,
+        20
+      ],
+      "typeVersion": 1.1,
+      "webhookId": "4b76dc66-f3fb-412a-864a-23bc2e399ee4",
+      "credentials": {
+        "telegramApi": {
+          "id": "Yw4fGDWV094gvJzF",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "0349a250-966a-4064-970a-8bcfba1647ad",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        440,
+        1280
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "69a45c1f-838f-49ce-9b89-75db6a8b876f",
+      "name": "Listen for incoming events",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "position": [
+        320,
+        0
+      ],
+      "webhookId": "322dce18-f93e-4f86-b9b1-3305519b7834",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "Yw4fGDWV094gvJzF",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $('Execute Workflow Trigger').first().json.chat_id }}",
+        "file": "={{ $json.data[0].url }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "2f5d5f25-9870-40d6-ad42-52750e62de63",
+      "name": "Send back an image",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        800,
+        1280
+      ],
+      "typeVersion": 1.1,
+      "webhookId": "9b4588d8-3a83-4931-a6f6-3ffb45546961",
+      "credentials": {
+        "telegramApi": {
+          "id": "Yw4fGDWV094gvJzF",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "response",
+              "stringValue": "Success"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "50b43dbf-39e3-4d00-8e47-01e8c193cd1a",
+      "name": "add response field",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        980,
+        1280
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "content": "## Generate an image with Dall-E 3 and send it via Telegram",
+        "height": 247.42081447963798,
+        "width": 752.0361990950231
+      },
+      "id": "171bee83-c8e1-4af3-9d1c-12cb6ede4943",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        400,
+        1220
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "name": "Draw_Dalle_image",
+        "description": "Call this tool to request a Dall-E 3 model, when the user asks to draw something. Please send the user request for an image as an inline query string.",
+        "workflowId": "={{ $workflow.id }}",
+        "fields": {
+          "values": [
+            {
+              "name": "chat_id",
+              "stringValue": "={{ $('Listen for incoming events').first().json.message.chat.id }}"
+            }
+          ]
+        }
+      },
+      "id": "4d81d201-70bf-4c80-9689-4b65851ad770",
+      "name": "Dall-E 3 Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "position": [
+        1300,
+        860
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/images/generations",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "dall-e-3"
+            },
+            {
+              "name": "prompt",
+              "value": "={{ $json.query }}"
+            },
+            {
+              "name": "n",
+              "value": 1
+            },
+            {
+              "name": "size",
+              "value": "1024x1024"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "39d532d3-8c96-4722-9cb0-cad92ff39e94",
+      "name": "Generate image in Dall-E 3",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        620,
+        1280
+      ],
+      "typeVersion": 4.1,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.chat.id }}",
+        "tableName": "n8n_chat_histories_telegram"
+      },
+      "id": "e9f407c5-1268-4674-95d6-f4ac5f23457b",
+      "name": "Postgres Chat Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "position": [
+        800,
+        200
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "knowledgebase",
+        "description": "Call this tool to get data from Kacper's knowledgebase. Kacper stores here valuable knowledge from different kinds of research, like newsletters, social media, articles, and personal stuff."
+      },
+      "id": "886f72f1-e123-43e7-88d5-9844ba79a84b",
+      "name": "Answer questions with a vector store",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "position": [
+        1640,
+        380
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "0bd87930-0240-4c38-9940-1e45cffe46c1",
+      "name": "Postgres PGVector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "position": [
+        1560,
+        560
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "88826291-e0d7-48c1-a135-ee0560384104",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        1940,
+        620
+      ],
+      "typeVersion": 1.1,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "024f47fd-e1b8-430b-8d9b-6ba190ad6587",
+      "name": "Embeddings OpenAI1",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        1540,
+        740
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        680,
+        0
+      ],
+      "id": "32a11354-70b0-4db0-bab8-4bf6b162a349",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to create a record in research database in my Notion. Return only a title for a page.",
+        "pageId": {
+          "__rl": true,
+          "value": "https://www.notion.so/19f218e7b69380cea4bac4db38638576?v=19f218e7b693803389c5000c40c80189&pvs=4",
+          "mode": "url"
+        },
+        "title": "={{ $('AI Agent1').item.json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        1020,
+        860
+      ],
+      "id": "fc5f0343-84db-40e3-82a0-23d8710a8a9d",
+      "name": "Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "DFu4pheXYNBPA1mA",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this todoist API to set a new task in Kacper's inbox. Remember to return only task content, nothing more.",
+        "project": {
+          "__rl": true,
+          "value": "2315532613",
+          "mode": "list",
+          "cachedResultName": "Inbox"
+        },
+        "content": "={{ $('AI Agent1').item.json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.todoistTool",
+      "typeVersion": 2.1,
+      "position": [
+        1160,
+        860
+      ],
+      "id": "5a420018-1016-4f06-9e96-663f6ddbd9d8",
+      "name": "Todoist1",
+      "credentials": {
+        "todoistApi": {
+          "id": "gdM8RJuWJfjb54yM",
+          "name": "Todoist account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {},
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-03-12T16:15:11.000Z",
+  "versionId": "a7da12df-f67a-43a8-983a-78d616bb0e5c"
+}
