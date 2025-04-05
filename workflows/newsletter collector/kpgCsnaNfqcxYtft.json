@@ -1,0 +1,412 @@
+{
+  "active": true,
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Newsletters Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Newsletters Filter": {
+      "main": [
+        [
+          {
+            "node": "Get Mail Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Mail Details": {
+      "main": [
+        [
+          {
+            "node": "HTML to Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML to Markdown": {
+      "main": [
+        [
+          {
+            "node": "Classify Newsletter Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Newsletter Type": {
+      "main": [
+        [
+          {
+            "node": "Prepare Data for Save",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Data for Save": {
+      "main": [
+        [
+          {
+            "node": "Insert Newsletter to Vector Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert Newsletter to Vector Database",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Newsletters Filter",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert Newsletter to Vector Database",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-10T11:19:18.158Z",
+  "id": "kpgCsnaNfqcxYtft",
+  "meta": null,
+  "name": "RAG knowledgebase (Newsletters)",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -940,
+        -100
+      ],
+      "id": "2c37457a-0ff0-454d-b627-cb22d897cc2f",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "sJlSnsyuKUMk1NjS",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "=Subject: {{ $json.Subject }}\nEmail body: {{ $json.snippet }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Newsletter",
+              "description": "This is any email from subscribed Newsletter, it does not include offers from shops, e-commercdes, etc. Just pure knowledge."
+            },
+            {
+              "category": "Others",
+              "description": "Emails which are everything else"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        -760,
+        -100
+      ],
+      "id": "29e23581-46ce-4e89-b251-24cc8fe9cea0",
+      "name": "Newsletters Filter",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -320,
+        -120
+      ],
+      "id": "3415f07b-eb11-4555-9987-dcf87c579ddd",
+      "name": "Get Mail Details",
+      "webhookId": "d50d16c6-ab62-4283-9fef-9658ec031ed9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "sJlSnsyuKUMk1NjS",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        -140,
+        -120
+      ],
+      "id": "3dd959dd-9f33-4d34-b391-af0fd592ec5b",
+      "name": "HTML to Markdown",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo-16k",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO-16K"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are responsible for attaching a label to my email. This label describes a type of an email. Look at a sender and the piece of content to decide which label to attach.\n\nYou can only choose a label title from the list below:\n\n<list>\n- solopreneurship,\n- health,\n- others.\n</list>\n\nThere is the most important rule:\nyou should only return a word which is a label title, like:\nSolopreneurship",
+              "role": "system"
+            },
+            {
+              "content": "=Decide what label attach to this mail with a sender:\n{{ $('Gmail Trigger').item.json.From }}\ntitle:\n{{ $json.subject }}\ncontent:\n{{ $('Gmail Trigger').item.json.snippet }}\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        20,
+        -120
+      ],
+      "id": "5bb7563e-70b9-4f3a-8141-1a9907bdf9e2",
+      "name": "Classify Newsletter Type",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "88877c99-6140-434a-9f03-b66c8d1b6d5f",
+              "name": "Email Context",
+              "value": "=Sender Email Address:\n{{ $('HTML to Markdown').item.json.from.value[0].address }}\nEmail Subject:\n{{ $('Gmail Trigger').item.json.Subject }}\nEmail Date:\n{{ $('Get Mail Details').item.json.date }}\n\nEmail Body:\n{{ $('HTML to Markdown').item.json.data.replace(/-{3,}/g, '') }}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        180,
+        -120
+      ],
+      "id": "a468f962-1bab-4f0f-b472-c64d7af1debd",
+      "name": "Prepare Data for Save",
+      "alwaysOutputData": true,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "options": {}
+      },
+      "id": "845347c6-e1fe-43f4-acae-e5a4a2959116",
+      "name": "Insert Newsletter to Vector Database",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "position": [
+        340,
+        -120
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chunkSize": 2000,
+        "options": {}
+      },
+      "id": "85e73700-1e53-4f63-92af-a9aebf706d2c",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "position": [
+        440,
+        260
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "1e971f6f-02d7-4dff-b25f-a219ae265cb2",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        280,
+        80
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -760,
+        80
+      ],
+      "id": "982a07ad-9d2a-4ce5-b9ef-d9c854bc2473",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json['Email Context'] }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "title",
+                "value": "={{ $('HTML to Markdown').item.json.subject }}"
+              },
+              {
+                "name": "Author",
+                "value": "={{ $('HTML to Markdown').item.json.from.value[0].name }}"
+              },
+              {
+                "name": "Type",
+                "value": "Newsletter"
+              },
+              {
+                "name": "label",
+                "value": "={{ $('Classify Newsletter Type').item.json.message.content }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "e191aad3-4298-4879-b261-576f86fb0b80",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "position": [
+        440,
+        80
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Gmail Trigger": {
+      "Gmail Trigger": {
+        "lastTimeChecked": 1742200594,
+        "possibleDuplicates": [
+          "195a33fc310b3083",
+          "195a30cf772a8214"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "createdAt": "2025-03-10T11:19:37.747Z",
+      "updatedAt": "2025-03-10T11:19:37.747Z",
+      "id": "zHRY61vVfMKdDK1R",
+      "name": "newsletter collector"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-03-10T11:24:52.000Z",
+  "versionId": "1a9b09bd-aba6-4285-8527-7e629a9461ef"
+}
