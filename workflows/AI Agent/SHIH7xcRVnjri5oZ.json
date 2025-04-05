@@ -1,0 +1,330 @@
+{
+  "active": false,
+  "connections": {
+    "Get Tweets": {
+      "main": [
+        [
+          {
+            "node": "Insert Tweets to Vector Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Get Tweets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert Tweets to Vector Database",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert Tweets to Vector Database",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Tweets to Vector Database": {
+      "main": [
+        [
+          {
+            "node": "Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-16T16:42:42.926Z",
+  "id": "SHIH7xcRVnjri5oZ",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Tweets Scraper",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://api.twitterapi.io/twitter/tweets?tweet_ids={{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "OpenAI"
+            },
+            {
+              "name": "queryType",
+              "value": "Top"
+            },
+            {
+              "name": "cursor",
+              "value": "={{ $json.cursor }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        100,
+        240
+      ],
+      "id": "a0181631-80f0-4314-abe4-9e6b1f70085f",
+      "name": "Get Tweets",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "EgvHV4zlfjoycrHi",
+          "name": "Twitter API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "url"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -300,
+        240
+      ],
+      "id": "4acf1ec6-f975-47a3-88b9-3e003f7c2273",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "jsCode": "function extractXStatusId(url) {\n  if(!url){\n    return \"1905250222042652893\";\n  }\n    // Regular expression to match X/Twitter status URLs and capture the ID\n    const regex = /https?:\\/\\/(?:www\\.)?x\\.com\\/[^\\/]+\\/status\\/(\\d+)/i;\n    \n    // Try to match the URL and get the ID\n    const match = url.match(regex);\n    \n    // Return the captured ID if found, null otherwise\n    return match ? match[1] : null;\n}\n\nreturn [{id:extractXStatusId($input.first().json.url)}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -100,
+        240
+      ],
+      "id": "6d4cb4d9-d687-46a5-837b-315822fc5a5f",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "chunkSize": 2000,
+        "options": {}
+      },
+      "id": "f1a885fb-fb1a-433c-a7e1-24d509762cf0",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "position": [
+        680,
+        600
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "7d325741-5eb2-4c83-80ca-c2c4930b867d",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        480,
+        420
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.tweets[0].text }} url: {{ $json.tweets[0].twitterUrl }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "label",
+                "value": "=Tweet"
+              },
+              {
+                "name": "id",
+                "value": "={{ $json.tweets[0].id }}"
+              },
+              {
+                "name": "author",
+                "value": "={{ $json.tweets[0].author.userName }}"
+              },
+              {
+                "name": "date",
+                "value": "={{ $json.tweets[0].author.createdAt }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "2d2834a0-fb95-4634-93af-5439b0c6bf76",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "position": [
+        660,
+        460
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "n8n_vectors_tweets",
+        "options": {}
+      },
+      "id": "db1bdd98-3639-4ea4-a871-c975a27ce733",
+      "name": "Insert Tweets to Vector Database",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "position": [
+        480,
+        240
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "19f218e7-b693-80ce-a4ba-c4db38638576",
+          "mode": "list",
+          "cachedResultName": "AI Agency Research Database",
+          "cachedResultUrl": "https://www.notion.so/19f218e7b69380cea4bac4db38638576"
+        },
+        "title": "={{ $json.metadata.author }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "URL|url",
+              "urlValue": "= {{ $json.tweets[0].twitterUrl }}"
+            },
+            {
+              "key": "Creator|rich_text",
+              "textContent": "={{ $json.tweets[0].author.userName }}"
+            },
+            {
+              "key": "Title|title",
+              "title": "=Tweet from {{ $json.tweets[0].author.userName }}"
+            },
+            {
+              "key": "Source|select",
+              "selectValue": "="
+            }
+          ]
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "richText": true,
+              "text": {
+                "text": [
+                  {
+                    "text": "={{ $json.tweets[0].text }} url: {{ $json.tweets[0].twitterUrl }}",
+                    "annotationUi": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        900,
+        240
+      ],
+      "id": "fc15eb11-60e3-4ec4-9a02-7918e3746058",
+      "name": "Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "DFu4pheXYNBPA1mA",
+          "name": "Notion account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-03-12T19:51:41.802Z",
+      "updatedAt": "2025-03-12T19:51:41.802Z",
+      "id": "8HhVdtJZP2xbm3Es",
+      "name": "AI Agent"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-04-01T14:56:09.000Z",
+  "versionId": "4f0f9232-d5f2-4c86-8bfe-0aba9530faff"
+}
