@@ -1,0 +1,343 @@
+{
+  "active": false,
+  "connections": {
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Analyze Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Text": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Image": {
+      "main": [
+        [
+          {
+            "node": "Parse Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Image Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Image Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Image Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Download File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Agent": {
+      "main": [
+        [
+          {
+            "node": "Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-13T21:40:32.465Z",
+  "id": "57nEyJdSuN3gRQNh",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Image Analyze Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.fileId }}"
+      },
+      "id": "9ec51618-a6ac-48c8-8d22-d408959f0821",
+      "name": "Download File",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        220,
+        0
+      ],
+      "webhookId": "b4fa4698-8642-4c1e-9408-26252b3747c2",
+      "credentials": {
+        "telegramApi": {
+          "id": "Yw4fGDWV094gvJzF",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $json['ParsedResults'][0]['ParsedText']; // Get the parsed text from OCR\n\nconst parsedData = {\n    invoiceNumber: text.match(/Invoice Number:\\s*(\\S+)/)?.[1],\n    invoiceDate: text.match(/Date:\\s*(\\S+)/)?.[1],\n    totalAmount: text.match(/Total Amount:\\s*([\\d,.]+)/)?.[1],\n    billingAddress: text.match(/Billing Address:\\s*(.+)/)?.[1],\n    dueDate: text.match(/Due Date:\\s*(\\S+)/)?.[1],\n    notes: text.match(/Notes:\\s*([\\s\\S]*)/)?.[1]?.trim(), \n};\n\nreturn [{ json: parsedData }];\n"
+      },
+      "id": "65d4a666-17d2-42b2-933e-fb771f127119",
+      "name": "Parse Text",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        600,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ocr.space/parse/image",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "K86173799488957"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1a96122f-c0e0-4b87-97d8-e9fd43706552",
+      "name": "Analyze Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        420,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a88c44a6-0d32-4678-947a-de5e0d217534",
+              "name": "Image",
+              "value": "={{ $('Analyze Image').item.json.ParsedResults[0].ParsedText }}",
+              "type": "string"
+            },
+            {
+              "id": "845587cf-94fc-4d59-9f77-5ad77c4901c0",
+              "name": "File",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fa0c12c3-b224-4d97-a513-c9515fec6877",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "="
+      },
+      "id": "5794ceeb-34cf-4b55-8d33-590615429c3e",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        20,
+        240
+      ],
+      "webhookId": "e54d2ed3-88f8-4444-804f-acbc3baa4343",
+      "credentials": {
+        "telegramApi": {
+          "id": "Yw4fGDWV094gvJzF",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "974f0407-0014-42d1-aeef-44a9c0d8a91a",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        360,
+        480
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "id": "3f27111e-ba9e-4930-b3c0-6c5f7b047fa0",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        480,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "27d52af8-f2cb-454d-866d-93a1fa2d3d71",
+      "name": "Reply",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        820,
+        240
+      ],
+      "webhookId": "72f26251-c2ea-4300-adee-65d8c34e2873",
+      "credentials": {
+        "telegramApi": {
+          "id": "Yw4fGDWV094gvJzF",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "fileId"
+            },
+            {
+              "name": "chatId"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e4d77723-469d-405d-8224-fe4d92165cba",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[Invoice Information]\n{{ $json['Invoice Information'] }}\n\n[File Name]\n{{ $json.File }}\n\n[Link to the Invoice Database]\nhttps://docs.google.com/spreadsheets/d/15FOh4i1wwy7zv-k4foZc8ubMkMLz_-BibPJKTZ-IziM/edit?usp=sharing",
+        "options": {
+          "systemMessage": "=# System Role\nYou are an efficient invoice assistant that extracts key information from invoices and generates concise user responses.\n\n# Task Specification\nThank the user for submitting an invoice. Extract the total amount, due date, and a summary of the notes from the invoice. Inform the user that the original invoice has been added to the Google Drive, include the file name, and provide the link to the invoice database.\n\n# Specifics and Context\nStart off by thanking the user for submitting an invoice. Respond clearly and concisely to help users quickly understand their invoice details and access the database if needed.\n\n# Example\n## Input\n[Invoice Information]  \nInvoice Number: INV-12345  \nDate: 2024-12-01  \nTotal Amount: 950.00  \nBilling Address: 123 Business Lane  \nDue Date: 2024-12-15  \nNotes:  \n- Please make payment within the due date to avoid late fees.  \n- For questions about this invoice, contact billing@business.com or call (123) 456-7890.  \n- Payment methods accepted: Bank transfer, credit card, or PayPal.  \n- Late payments are subject to a 5% penalty fee  \n\n[File Name]  \nInvoice [December-05-2024]  \n\n[Link to the Invoice Database]  \nhttps://docs.google.com/spreadsheets/d/15FOh41iwvy7zv-k4foZc8ubMkMLz_BiBPXJTZ-IziM/edit?usp=sharing  \n\n## Output\nThanks for submitting!\n\nThe total amount of the invoice is **$950.00**, and the due date is **2024-12-15**.  \n\n**Notes:**  \n- Please make payment on time to avoid late fees.  \n- Contact billing@business.com or call (123) 456-7890 for any questions.  \n- Accepted payment methods: Bank transfer, credit card, and PayPal.  \n\nThe original invoice has been added to Google Drive with the file name **\"Invoice [December-05-2024]\"**.  \n\nYou can access the invoice database [here](https://docs.google.com/spreadsheets/d/15FOh41iwvy7zv-k4foZc8ubMkMLz_BiBPXJTZ-IziM/edit?usp=sharing).\n"
+        }
+      },
+      "id": "d9b47eb1-9693-4108-9267-717aa7f5a90d",
+      "name": "Image Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        500,
+        240
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-03-12T19:51:41.802Z",
+      "updatedAt": "2025-03-12T19:51:41.802Z",
+      "id": "8HhVdtJZP2xbm3Es",
+      "name": "AI Agent"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-13T21:47:51.000Z",
+  "versionId": "b4936379-ccfd-4e59-b503-cc058b5dda79"
+}
