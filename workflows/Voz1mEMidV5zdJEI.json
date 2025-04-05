@@ -1,0 +1,249 @@
+{
+  "active": false,
+  "connections": {
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Calendar Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Calendar Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Event": {
+      "ai_tool": [
+        [
+          {
+            "node": "Calendar Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Event with Attendee": {
+      "ai_tool": [
+        [
+          {
+            "node": "Calendar Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "Calendar Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calendar Agent": {
+      "main": [
+        [
+          {
+            "node": "Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-12T16:55:46.852Z",
+  "id": "Voz1mEMidV5zdJEI",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Calendar Agent",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "079aa5c7-0854-4b64-9392-fb16c995c84c",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "2391b469-a491-42dd-bd28-c362a37aab11",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        120,
+        220
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "nateherk88@gmail.com",
+          "mode": "list",
+          "cachedResultName": "nateherk88@gmail.com"
+        },
+        "start": "={{ $fromAI(\"startTime\") }}",
+        "end": "={{ $fromAI(\"endTime\") }}",
+        "additionalFields": {
+          "summary": "={{ $fromAI(\"eventTitle\") }}"
+        }
+      },
+      "id": "bcf5cc01-6a7f-4800-b134-9fbad1192ef8",
+      "name": "Create Event",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        220
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "yu7V19tq80gq1xRZ",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "nateherk88@gmail.com",
+          "mode": "list",
+          "cachedResultName": "nateherk88@gmail.com"
+        },
+        "start": "={{ $fromAI(\"startTime\") }}",
+        "end": "={{ $fromAI(\"endTime\") }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ $fromAI(\"attendee\") }}"
+          ],
+          "summary": "={{ $fromAI(\"eventTitle\") }}"
+        }
+      },
+      "id": "35b82bf2-5dee-4a3d-bd1f-91b45730248f",
+      "name": "Create Event with Attendee",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        360,
+        220
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "yu7V19tq80gq1xRZ",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "nateherk88@gmail.com",
+          "mode": "list",
+          "cachedResultName": "nateherk88@gmail.com"
+        },
+        "returnAll": true,
+        "options": {
+          "timeMin": "={{ $fromAI(\"ondDayBefore\",\"one day before the date the user requested\") }}",
+          "timeMax": "={{ $fromAI(\"ondDayAfter\",\"one day after the date the user requested\") }}"
+        }
+      },
+      "id": "108dc121-cf4d-4e26-ad3b-b9d845d02218",
+      "name": "Get Events",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        480,
+        220
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "yu7V19tq80gq1xRZ",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "db40c217-79fb-4e81-a798-d8899176af18",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2314068e-b51c-454b-bf86-9a5e78d84182",
+      "name": "Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        600,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "options": {
+          "systemMessage": "=You are a calendar assistant. You have access to multiple tools to take any action within calendar. Here is the current date/time: {{ $now }}\n\nCreate Event:\nIf an end date isn't specified for the event, assume it will be 60 minutes long. Use this tool if there is no attendee specified.\n\nCreate Event with Attendee:\nIf an end date isn't specified for the event, assume it will be 60 minutes long. Use this tool WHEN AN ATTENDEE IS SPECIFIED.\n\nGet Events:\nUse this tool to get events from a certain day and summarize them. "
+        }
+      },
+      "id": "c12bcadc-84d0-4860-bed9-b0074fa20736",
+      "name": "Calendar Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        220,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-12T16:56:30.000Z",
+  "versionId": "24af3d87-2929-463a-bb27-0212b7df8b36"
+}
