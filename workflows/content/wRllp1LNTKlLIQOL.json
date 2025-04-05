@@ -1,0 +1,139 @@
+{
+  "active": false,
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-22T16:26:57.376Z",
+  "id": "wRllp1LNTKlLIQOL",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Get Brand Beef",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "029b585e-f004-4a06-b367-90e5091f878d",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "resource": "block",
+        "operation": "getAll",
+        "blockId": {
+          "__rl": true,
+          "mode": "url",
+          "value": ""
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "ebcaebd1-296b-4896-9af8-ee56f75bf1ce",
+      "name": "Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "DFu4pheXYNBPA1mA",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        360,
+        0
+      ],
+      "id": "b13a81a5-d720-4b65-b8ba-af3ad43888d4",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f5c6c7de-5210-40c3-9c77-bf8c53fb548e",
+              "name": "content",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        600,
+        0
+      ],
+      "id": "866497bb-7f23-4fe2-b4b3-3e408af94033",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-03-23T14:20:30.791Z",
+      "updatedAt": "2025-03-23T14:20:30.791Z",
+      "id": "GBwqR2xWZ3rov6im",
+      "name": "content"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-23T14:20:32.000Z",
+  "versionId": "6965322f-d179-40ee-9533-28786775e60f"
+}
