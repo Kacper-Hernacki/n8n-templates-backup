@@ -1,0 +1,142 @@
+{
+  "active": false,
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-23T14:22:21.208Z",
+  "id": "ZyNKCIiWvxz7IMPi",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Get Content Ideas",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a88e5ed8-ddcb-4941-84a9-937cf0bf791f",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "wRllp1LNTKlLIQOL",
+          "mode": "list",
+          "cachedResultName": "Get Brand Beef"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "895ce605-1da8-4292-857b-9f0dec4d0086",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "messages": {
+          "values": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        440,
+        0
+      ],
+      "id": "c2fd2405-b6bf-45c3-b96e-a75061b2ec39",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        800,
+        0
+      ],
+      "id": "69c1443e-54c3-4dc3-8482-2f8820ecc2af",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-03-23T14:20:30.791Z",
+      "updatedAt": "2025-03-23T14:20:30.791Z",
+      "id": "GBwqR2xWZ3rov6im",
+      "name": "content"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-23T14:22:26.000Z",
+  "versionId": "f5ab9d4e-eb48-4d84-9c8a-64558a907c8c"
+}
