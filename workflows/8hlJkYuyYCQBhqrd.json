@@ -1,0 +1,525 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Set Count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Counter": {
+      "main": [
+        [
+          {
+            "node": "Get Tweets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Count": {
+      "main": [
+        [
+          {
+            "node": "Counter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Increase": {
+      "main": [
+        [
+          {
+            "node": "Increase Count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Increase Count": {
+      "main": [
+        [
+          {
+            "node": "Set Count and Cursor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Count and Cursor": {
+      "main": [
+        [
+          {
+            "node": "Counter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Info": {
+      "main": [
+        [
+          {
+            "node": "Add to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Set Increase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Tweets": {
+      "main": [
+        [
+          {
+            "node": "Extract Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-16T16:28:04.431Z",
+  "id": "8hlJkYuyYCQBhqrd",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "X scraper",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        240
+      ],
+      "id": "0196527c-a880-4eb4-9f9b-58533d451a0a",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bc47f40e-0850-4762-9efb-999608a2c096",
+              "name": "counter",
+              "value": "={{ $json.count }}",
+              "type": "number"
+            },
+            {
+              "id": "92034c06-3976-4099-a7a5-28a252204472",
+              "name": "cursor",
+              "value": "={{ $json.cursor }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -20,
+        240
+      ],
+      "id": "16b3f7ae-d1f4-49c4-a77d-6802dd6b9554",
+      "name": "Counter"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b2f9c3c3-32f4-48b4-b72f-76f03c35b750",
+              "name": "count",
+              "value": 1,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -220,
+        240
+      ],
+      "id": "f0f870a2-2c98-4d25-920e-379a8548d3f4",
+      "name": "Set Count"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "928894d0-2876-4996-9b1e-3d365b903771",
+              "leftValue": "={{ $('Counter').item.json.counter }}",
+              "rightValue": 3,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        240
+      ],
+      "id": "2e1efc5b-45d2-4ce5-8612-b48d82c5f1cd",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a252eb06-03cd-4e3f-84b0-2a46082606ca",
+              "name": "counter",
+              "value": "={{ $('Counter').item.json.counter }}",
+              "type": "number"
+            },
+            {
+              "id": "43222ff8-c354-4afa-b050-7d55fe30c865",
+              "name": "cursor",
+              "value": "={{ $('Get Tweets').item.json.next_cursor }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        560
+      ],
+      "id": "375cccd7-ea91-4436-a73c-442c4bfdd222",
+      "name": "Set Increase"
+    },
+    {
+      "parameters": {
+        "jsCode": "// This code should be placed in an n8n Function node\n\n// Get the input items\nconst items = $input.all();\n\n// Process each item in the array\nreturn items.map(item => {\n  // Create a new value for the count field\n  let newCount = 1;\n  \n  // If there's an existing counter value, use it as a base\n  if (item.json && item.json.counter !== undefined) {\n    newCount = item.json.counter + 1;\n  }\n  \n  // Ensure json property exists\n  if (!item.json) {\n    item.json = {};\n  }\n  \n  // Set the value to the new field name \"count\"\n  item.json.count = newCount;\n  \n  // Return the modified item\n  return item;\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        380,
+        560
+      ],
+      "id": "8ce3182f-f8a2-4a44-9213-3c24bc8cbf83",
+      "name": "Increase Count"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5be1f203-28ea-4635-b42d-01f2a5bb367f",
+              "name": "count",
+              "value": "={{ $json.count }}",
+              "type": "string"
+            },
+            {
+              "id": "b68f8c17-c045-4b5b-8f8b-367ec72b72a3",
+              "name": "cursor",
+              "value": "={{ $('Set Increase').item.json.cursor }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        560
+      ],
+      "id": "2fedc279-a7ca-4137-a544-5e214ea941bd",
+      "name": "Set Count and Cursor"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "13sIEwOZFDYl8PpRuJ4YfBf8ktAd0vyNzf0Z5w3YShtA",
+          "mode": "list",
+          "cachedResultName": "Tweets n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13sIEwOZFDYl8PpRuJ4YfBf8ktAd0vyNzf0Z5w3YShtA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "tweets",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13sIEwOZFDYl8PpRuJ4YfBf8ktAd0vyNzf0Z5w3YShtA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Tweet": "={{ $json.content }}",
+            "url": "={{ $json.url }}",
+            "username": "={{ $('Get Tweets').item.json.tweets[0].author.userName }}",
+            "createdAt": "={{ $json.createdAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Tweet",
+              "displayName": "Tweet",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        520,
+        240
+      ],
+      "id": "421c0a9a-fab2-4f71-808f-decb2772c30f",
+      "name": "Add to Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FZe7tnhQQEYDwGx2",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// This approach handles both single tweets and collections\n// It focuses on properly formatting the output for n8n\n// First, let's log what we're working with for debugging\nconsole.log(\"Input item structure:\", JSON.stringify($input.item, null, 2));\n\n// Function to format the date in a more human-readable way\nfunction formatDate(dateString) {\n  if (!dateString) return '';\n  \n  try {\n    const date = new Date(dateString);\n    // Format: \"March 13, 2025 at 19:25\"\n    return date.toLocaleString('en-US', {\n      year: 'numeric',\n      month: 'long',\n      day: 'numeric',\n      hour: '2-digit',\n      minute: '2-digit'\n    });\n  } catch (error) {\n    console.log(\"Error formatting date:\", error);\n    return dateString; // Return original if parsing fails\n  }\n}\n\n// Check if this is a Twitter Search result with multiple tweets\nif ($input.item.json.tweets && Array.isArray($input.item.json.tweets) && $input.item.json.tweets.length > 0) {\n  // This is a collection of tweets\n  // In n8n, to output multiple items, we need to use an array of objects with a json property\n  const items = $input.item.json.tweets.map(tweet => {\n    return {\n      json: {\n        tweetId: tweet.id || '',\n        url: tweet.url || '',\n        content: tweet.text || '',\n        likeCount: tweet.likeCount || 0,\n        retweetCount: tweet.retweetCount || 0,\n        replyCount: tweet.replyCount || 0,\n        quoteCount: tweet.quoteCount || 0,\n        viewCount: tweet.viewCount || 0,\n        createdAt: formatDate(tweet.createdAt)\n      }\n    };\n  });\n  \n  console.log(`Processing ${items.length} tweets`);\n  \n  // Return all items\n  return items;\n} else {\n  // This is a single tweet, just extract and return its data\n  const tweetData = {\n    tweetId: $input.item.json.id || '',\n    url: $input.item.json.url || '',\n    content: $input.item.json.text || '',\n    likeCount: $input.item.json.likeCount || 0,\n    retweetCount: $input.item.json.retweetCount || 0,\n    replyCount: $input.item.json.replyCount || 0,\n    quoteCount: $input.item.json.quoteCount || 0,\n    viewCount: $input.item.json.viewCount || 0,\n    createdAt: formatDate($input.item.json.createdAt)\n  };\n  \n  console.log(\"Processing single tweet\");\n  \n  // Return as a single item\n  return {\n    json: tweetData\n  };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        340,
+        240
+      ],
+      "id": "4c5f2682-6786-422b-bd0e-447a20a786ec",
+      "name": "Extract Info"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        240
+      ],
+      "id": "66578746-d79a-4a22-a8ab-99fce92bcd06",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        40,
+        560
+      ],
+      "id": "85d63841-59a5-4cbb-8837-c14fe4e25bc6",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "url": "https://api.twitterapi.io/twitter/tweet/advanced_search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "OpenAI"
+            },
+            {
+              "name": "queryType",
+              "value": "Top"
+            },
+            {
+              "name": "cursor",
+              "value": "={{ $json.cursor }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        160,
+        240
+      ],
+      "id": "01c62b96-995b-40a2-bf2b-ff67883956cd",
+      "name": "Get Tweets",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "EgvHV4zlfjoycrHi",
+          "name": "Twitter API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Increasing Count & Cursor\n",
+        "height": 260,
+        "width": 1360,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -620,
+        500
+      ],
+      "id": "c9ef027b-f193-41cc-900e-1d9cd9d64ad6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# Checking Count\n",
+        "height": 260,
+        "width": 500
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        800,
+        160
+      ],
+      "id": "40163949-1186-4e8b-874a-b3e9815203a9",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Scraping X",
+        "height": 260,
+        "width": 1360,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -620,
+        160
+      ],
+      "id": "c7517a8a-af82-4a9c-89a9-455dfa3db7fc",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-16T16:42:31.000Z",
+  "versionId": "9a96836a-adef-4c63-984f-44810183b988"
+}
