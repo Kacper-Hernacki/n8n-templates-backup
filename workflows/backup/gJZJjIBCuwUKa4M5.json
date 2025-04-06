@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "/": {
       "main": [
@@ -261,7 +261,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "github backup",
+  "name": "All workflows - github backup",
   "nodes": [
     {
       "parameters": {},
@@ -713,10 +713,10 @@
           "value": "={{ $workflow.id }}"
         },
         "workflowInputs": {
-          "value": {},
-          "schema": [],
           "mappingMode": "defineBelow",
+          "value": {},
           "matchingColumns": [],
+          "schema": [],
           "attemptToConvertTypes": false,
           "convertFieldsToString": true
         },
@@ -826,7 +826,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "tags": [
     {
       "createdAt": "2025-04-05T14:47:37.902Z",
@@ -835,7 +839,7 @@
       "name": "backup"
     }
   ],
-  "triggerCount": 0,
-  "updatedAt": "2025-04-05T14:55:37.000Z",
-  "versionId": "30362e78-7c17-4c10-950b-5259a1c8be5c"
+  "triggerCount": 1,
+  "updatedAt": "2025-04-05T15:53:10.000Z",
+  "versionId": "bed8e457-445c-4212-a87c-b6147c559702"
 }
