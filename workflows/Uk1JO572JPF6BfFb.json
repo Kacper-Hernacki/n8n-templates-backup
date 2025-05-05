@@ -1,0 +1,55 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Asana",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-04T16:50:03.338Z",
+  "id": "Uk1JO572JPF6BfFb",
+  "meta": null,
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "dde0b7be-667f-4314-ae67-26334f2a7e03",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "otherProperties": {}
+      },
+      "type": "n8n-nodes-base.asana",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "09f2c8e8-8d06-4570-9fa2-5d5f61377c07",
+      "name": "Asana"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-04T16:50:03.338Z",
+  "versionId": "6b807237-861f-4bbc-92b0-92018441ecbb"
+}
