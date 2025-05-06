@@ -16,7 +16,7 @@
   "createdAt": "2025-05-04T16:50:03.338Z",
   "id": "Uk1JO572JPF6BfFb",
   "meta": null,
-  "name": "My workflow",
+  "name": "asana workflow",
   "nodes": [
     {
       "parameters": {},
@@ -50,6 +50,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-05-04T16:50:03.338Z",
-  "versionId": "6b807237-861f-4bbc-92b0-92018441ecbb"
+  "updatedAt": "2025-05-05T15:47:14.000Z",
+  "versionId": "f1aee14c-68bc-43a5-9d3b-6f6b95b9c753"
 }
