@@ -1,0 +1,304 @@
+{
+  "active": false,
+  "connections": {
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres PGVector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-05T15:49:00.228Z",
+  "id": "8C7VXqm5VkMDN6vS",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "POST question - personal trainer",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -140,
+        -220
+      ],
+      "id": "a58bedfd-5191-4948-9b25-f18489bfe7e5",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "humanMessage": "TOOLS\n------\nAssistant can ask the user to use tools to look up information that may be helpful in answering the users original question. The tools the human can use are:\n\n{tools}\n\n{format_instructions}\n\nUSER'S INPUT\n--------------------\nHere is the user's input (remember to respond with a markdown code snippet of a json blob with a single action, and NOTHING else):\n\n{{input}}",
+          "systemMessage": "Assistant is a large language model trained by OpenAI.\n\nAssistant is designed to be able to assist with a wide range of tasks, from answering simple questions to providing in-depth explanations and discussions on a wide range of topics. As a language model, Assistant is able to generate human-like text based on the input it receives, allowing it to engage in natural-sounding conversations and provide responses that are coherent and relevant to the topic at hand.\n\nAssistant is constantly learning and improving, and its capabilities are constantly evolving. It is able to process and understand large amounts of text, and can use this knowledge to provide accurate and informative responses to a wide range of questions. Additionally, Assistant is able to generate its own text based on the input it receives, allowing it to engage in discussions and provide explanations and descriptions on a wide range of topics.\n\nOverall, Assistant is a powerful system that can help with a wide range of tasks and provide valuable insights and information on a wide range of topics. Whether you need help with a specific question or just want to have a conversation about a particular topic, Assistant is here to assist.",
+          "maxIterations": 10
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        40,
+        -220
+      ],
+      "id": "674bac61-f35b-40a4-9324-b89f0608c378",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.chat.id }}",
+        "tableName": "n8n_personal_training_chat_histories"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        100,
+        -40
+      ],
+      "id": "914e569e-4bc5-4bd3-964b-6d708a09444e",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "knowledgebase",
+        "description": "resources, history and knowledge for planning and reviewing trainings"
+      },
+      "id": "d834dbd6-65e2-439e-92ce-561570479662",
+      "name": "Answer questions with a vector store",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "position": [
+        380,
+        -20
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "tableName": "n8n_vectors_personal_trainer",
+        "options": {}
+      },
+      "id": "f3823564-b805-4be3-bafc-e3ce84500c01",
+      "name": "Postgres PGVector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "position": [
+        300,
+        120
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "67a5f9f9-1fcc-4cc7-b308-169abefa326c",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        580,
+        120
+      ],
+      "typeVersion": 1.1,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "525ca6d7-46f9-44f3-9b65-8d864a7ce441",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        300,
+        240
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -20,
+        -40
+      ],
+      "id": "11cd607c-3e13-473a-b098-e421ba105423",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Training history\n\n### Personal Bests:\n- Bench Press one rep max 105 kg (maybe was capable to do 110kg) on may 2024,\n- Deadlift one rep max 170kg, very poor technique on may 2024,\n- Back Squat one rep max 160kg (It would not be passed on official competitions) on may 2024,\n- first ever marathon on april 2019 - 3h 54min,\n- 3km run - 11min 30s on june 2018\n\n### Personal data\n- I am a male born in 27th may 1995,\n- my height is around 193-195 cm,\n- I am a very active person, I trained basketball since 2010 (practicaly every day with some strnegth condition practices),\n- Two summers in a row I play tennis like two times a week or more,\n- I am a soldier since 2014 in Polish army so I had to pass multiple physical exams throughout 5 years of an academy and nowadays as a commander,\n- I love skiing, I was skiing on Alps two times like 300km in 6 days,\n- I am good at swimming, I swim since I was 8 years old, maybe not super pro but I am capable of swimming at the pool 550m in 12 minutes everyday. Once I swum entire iron man distance - 3,8 km at once in a swimming pool,\n- I was never overwieght, my weight is changing like from 78kg in 2023 to 96kg in 2024 when I was training only strength. ",
+        "height": 700
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        160
+      ],
+      "id": "bfe3893b-093e-42a2-a029-61ed4e969f43",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Input\n\n- normal messages,\n- screens from garmin or images of handwritten trainings,\n- resources to be saved,\n- audio\n\n### Kind of messages\n\n- proceeeded trainings,\n- mood,\n- training impact on regeneration,\n- sleep score and sleep feeling,\n\n",
+        "height": 480,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        160,
+        420
+      ],
+      "id": "a2d88d94-eac8-4c36-b1e5-054669de242b",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Output\n\n- response for message if information is saved,\n- response with a feedback for training and adjustments,\n- plan for next blocks or adjustments,\n- email reports, further questions, etc.\n",
+        "height": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        420,
+        440
+      ],
+      "id": "c3ca357b-bfcd-4f42-87f3-ce740f18e7ff",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-05-04T16:47:35.320Z",
+      "updatedAt": "2025-05-04T16:47:35.320Z",
+      "id": "YQIUcSyZE62Z4yRL",
+      "name": "personal trainer"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-05T19:01:53.000Z",
+  "versionId": "87cce3ec-bc0e-4528-96ce-1f9ccfacc570"
+}
