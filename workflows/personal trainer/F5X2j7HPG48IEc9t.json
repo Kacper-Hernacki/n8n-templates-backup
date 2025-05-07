@@ -12,50 +12,6 @@
         ]
       ]
     },
-    "Recursive Character Text Splitter": {
-      "ai_textSplitter": [
-        [
-          {
-            "node": "Default Data Loader",
-            "type": "ai_textSplitter",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Default Data Loader": {
-      "ai_document": [
-        [
-          {
-            "node": "Insert Newsletter to Vector Database",
-            "type": "ai_document",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Embeddings OpenAI2": {
-      "ai_embedding": [
-        [
-          {
-            "node": "Insert Newsletter to Vector Database",
-            "type": "ai_embedding",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "When chat message received": {
-      "main": [
-        [
-          {
-            "node": "Insert Newsletter to Vector Database",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Ask a question": {
       "ai_tool": [
         [
@@ -99,6 +55,28 @@
           }
         ]
       ]
+    },
+    "Add training data": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add resources": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-05-04T16:47:02.410Z",
@@ -133,110 +111,8 @@
     },
     {
       "parameters": {
-        "mode": "insert",
-        "tableName": "n8n_vectors_personal_trainer",
-        "options": {}
-      },
-      "id": "4d535d9f-9945-4385-855a-15902e615f8e",
-      "name": "Insert Newsletter to Vector Database",
-      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
-      "position": [
-        320,
-        660
-      ],
-      "typeVersion": 1,
-      "credentials": {
-        "postgres": {
-          "id": "HN8MS4EGX4BmUQrw",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "chunkSize": 2000,
-        "options": {}
-      },
-      "id": "05ee74ae-47ff-45c3-bd98-65f346e3772c",
-      "name": "Recursive Character Text Splitter",
-      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
-      "position": [
-        420,
-        1040
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "jsonMode": "expressionData",
-        "jsonData": "={{ $json['Email Context'] }}",
-        "options": {
-          "metadata": {
-            "metadataValues": [
-              {
-                "name": "title",
-                "value": "={{ $('HTML to Markdown').item.json.subject }}"
-              },
-              {
-                "name": "Author",
-                "value": "={{ $('HTML to Markdown').item.json.from.value[0].name }}"
-              },
-              {
-                "name": "Type",
-                "value": "Newsletter"
-              },
-              {
-                "name": "label",
-                "value": "={{ $('Classify Newsletter Type').item.json.message.content }}"
-              }
-            ]
-          }
-        }
-      },
-      "id": "e0766653-fb92-45d3-a8a8-d6626f7925c0",
-      "name": "Default Data Loader",
-      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
-      "position": [
-        420,
-        860
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "id": "f5395414-3f17-4cc0-a6f5-0cce85ba7071",
-      "name": "Embeddings OpenAI2",
-      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
-      "position": [
-        260,
-        860
-      ],
-      "typeVersion": 1.2,
-      "credentials": {
-        "openAiApi": {
-          "id": "zwCoTxavt4ELUwZx",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-      "typeVersion": 1.1,
-      "position": [
-        60,
-        660
-      ],
-      "id": "fd9549ad-2c4f-4f8e-93dc-9fedacf23d42",
-      "name": "When chat message received",
-      "webhookId": "2b54e392-a52d-456e-a867-ec9395c43237"
-    },
-    {
-      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }} . Remember that today is {{ $now }}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -251,7 +127,7 @@
     {
       "parameters": {
         "name": "ask_question",
-        "description": "Call this tool to ask a question to a personal trainer",
+        "description": "Call this tool to ask a question to a personal trainer or access the training knowledge base or training history",
         "workflowId": {
           "__rl": true,
           "value": "8C7VXqm5VkMDN6vS",
@@ -260,9 +136,33 @@
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
-          "value": {},
+          "value": {
+            "query": "={{ $('Telegram Trigger').item.json.message.text }}",
+            "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+          },
           "matchingColumns": [],
-          "schema": [],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "chatId",
+              "displayName": "chatId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
           "attemptToConvertTypes": false,
           "convertFieldsToString": false
         }
@@ -270,8 +170,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2,
       "position": [
-        1260,
-        100
+        1200,
+        40
       ],
       "id": "785bd57b-36d1-465a-b47c-b9d19f4c974e",
       "name": "Ask a question"
@@ -302,6 +202,8 @@
     },
     {
       "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.chat.id }}",
         "tableName": "n8n_personal_training_chat_histories"
       },
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
@@ -340,6 +242,129 @@
           "name": "Telegram account 2"
         }
       }
+    },
+    {
+      "parameters": {
+        "name": "add_training_data",
+        "description": "Call this tool to post training data to a database",
+        "workflowId": {
+          "__rl": true,
+          "value": "D2WNRVB9UZ7azFyu",
+          "mode": "list",
+          "cachedResultName": "POST training data"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('data', ``, 'string') }}",
+            "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('title', ``, 'string') }}",
+            "date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('date', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        1060,
+        40
+      ],
+      "id": "607c284a-1677-46c4-a885-cc50e2afbee9",
+      "name": "Add training data"
+    },
+    {
+      "parameters": {
+        "name": "add_resources",
+        "description": "Call this tool to add resources to personal trainer knowledge, like YouTube videos, PDFs, or other data.",
+        "workflowId": {
+          "__rl": true,
+          "value": "Ji2dDmHdrGfg8lw2",
+          "mode": "list",
+          "cachedResultName": "POST resource - personal trainer"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('title', ``, 'string') }}",
+            "data": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('data', ``, 'string') }}",
+            "date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('date', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        920,
+        40
+      ],
+      "id": "bf97f80b-53fe-48b7-87ee-77be8c77275a",
+      "name": "Add resources"
     }
   ],
   "pinData": {},
@@ -356,6 +381,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-05T15:56:13.000Z",
-  "versionId": "20cc8bcc-441c-4624-8cd2-d5ba16c2165f"
+  "updatedAt": "2025-05-06T16:59:02.000Z",
+  "versionId": "d9204677-c11b-42ea-a819-9f5dc91a1db3"
 }
