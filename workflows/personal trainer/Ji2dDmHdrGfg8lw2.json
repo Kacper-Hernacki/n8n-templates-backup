@@ -38,8 +38,70 @@
       "main": [
         [
           {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
             "node": "Insert Training resources to Vector Database",
             "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Insert Training video resources to Vector Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter1": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader1",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader1": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert Training video resources to Vector Database",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert Training video resources to Vector Database",
+            "type": "ai_embedding",
             "index": 0
           }
         ]
@@ -70,7 +132,7 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        100,
+        -80,
         60
       ],
       "id": "6462e4df-73a6-47bd-8c77-542882a721c9",
@@ -85,8 +147,8 @@
       "name": "Recursive Character Text Splitter",
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "position": [
-        540,
-        440
+        660,
+        180
       ],
       "typeVersion": 1
     },
@@ -103,7 +165,7 @@
               },
               {
                 "name": "date",
-                "value": "={{ $json.date }}"
+                "value": "={{ $json.date}} "
               }
             ]
           }
@@ -113,8 +175,8 @@
       "name": "Default Data Loader",
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "position": [
-        540,
-        260
+        640,
+        40
       ],
       "typeVersion": 1
     },
@@ -126,8 +188,8 @@
       "name": "Embeddings OpenAI",
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "position": [
-        380,
-        260
+        500,
+        40
       ],
       "typeVersion": 1.2,
       "credentials": {
@@ -147,8 +209,8 @@
       "name": "Insert Training resources to Vector Database",
       "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
       "position": [
-        440,
-        60
+        500,
+        -120
       ],
       "typeVersion": 1,
       "credentials": {
@@ -175,7 +237,7 @@
           "parameters": [
             {
               "name": "url",
-              "value": "=https://youtu.be/0qkVRLjDCiI?si=Wasm_Jfnd7iLAgZT"
+              "value": "={{ $json.data }}"
             }
           ]
         },
@@ -184,15 +246,164 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        340,
-        -100
+        280,
+        300
       ],
-      "id": "beaf8ccf-7114-4d76-9dc9-672849bd72d6",
+      "id": "43b56ee3-47c5-45c3-8c8c-0ffae1522e84",
       "name": "HTTP Request",
       "credentials": {
         "httpHeaderAuth": {
           "id": "VR2HADCVzHyCEv4F",
           "name": "aiAdaptiv"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.links }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "96a799dc-842b-44b6-a733-0e74549af664"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "707ac743-a6b0-4350-a597-29837331562f",
+                    "leftValue": "={{ $json.links }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "notExists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        100,
+        60
+      ],
+      "id": "870ff70b-e30e-40ce-bf18-e984db6f5eb7",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "chunkSize": 2000,
+        "options": {}
+      },
+      "id": "b1d61a68-7f46-41d3-adeb-a8172a6e03d3",
+      "name": "Recursive Character Text Splitter1",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "position": [
+        700,
+        640
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.response.transcript }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "title",
+                "value": "={{ $json.response.title }}"
+              },
+              {
+                "name": "date",
+                "value": "={{$now}} "
+              },
+              {
+                "name": "type",
+                "value": "video"
+              }
+            ]
+          }
+        }
+      },
+      "id": "6df48a9d-0566-4eff-be05-287bf407eedf",
+      "name": "Default Data Loader1",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "position": [
+        680,
+        500
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "95b2f081-5cf4-4fa8-99c4-4520730d937c",
+      "name": "Embeddings OpenAI1",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        540,
+        500
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "n8n_vectors_personal_trainer_resources",
+        "options": {}
+      },
+      "id": "448f759f-5643-45ef-b227-86dc17372520",
+      "name": "Insert Training video resources to Vector Database",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "position": [
+        540,
+        340
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
         }
       }
     }
@@ -211,6 +422,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-05-06T16:59:18.000Z",
-  "versionId": "3537e52b-5a75-4be1-a990-3bb97dc64062"
+  "updatedAt": "2025-05-08T14:50:12.000Z",
+  "versionId": "a2c6a20b-7ba1-45ba-9118-dd4765ca633e"
 }
