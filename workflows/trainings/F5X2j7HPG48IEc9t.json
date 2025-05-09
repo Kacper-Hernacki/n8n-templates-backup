@@ -1,0 +1,635 @@
+{
+  "active": false,
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ask a question": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Health Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Health Assistant",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Health Assistant",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add training data": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Health Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add resources": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Health Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Health Assistant": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Download File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set 'Text'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Transcribe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set 'Text'": {
+      "main": [
+        [
+          {
+            "node": "AI Health Assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe": {
+      "main": [
+        [
+          {
+            "node": "AI Health Assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-04T16:47:02.410Z",
+  "id": "F5X2j7HPG48IEc9t",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Health Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -140,
+        -440
+      ],
+      "id": "c2d9c7f9-c2e3-49c8-a196-9d3f2a11baa4",
+      "name": "Telegram Trigger",
+      "webhookId": "ece57ada-3f8a-4cd8-8a04-84e96adc02ef",
+      "credentials": {
+        "telegramApi": {
+          "id": "chCBPG5cf9LyBKIo",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "ask_question",
+        "description": "Call this tool to ask a question to a health assistant, access the training knowledge base, or view health or training history.",
+        "workflowId": {
+          "__rl": true,
+          "value": "8C7VXqm5VkMDN6vS",
+          "mode": "list",
+          "cachedResultName": "POST question - personal trainer"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ $('Telegram Trigger').item.json.message.text }}",
+            "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "chatId",
+              "displayName": "chatId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        -40
+      ],
+      "id": "785bd57b-36d1-465a-b47c-b9d19f4c974e",
+      "name": "Ask a question"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        840,
+        -240
+      ],
+      "id": "53fe7d8f-d7a1-4384-bcb9-1dcc9e976aac",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.chat.id }}",
+        "tableName": "n8n_personal_training_chat_histories"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        980,
+        -240
+      ],
+      "id": "e43fa53d-d67d-49f4-a28c-b8d78b8913ed",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1580,
+        -440
+      ],
+      "id": "9d4083ce-b655-49d7-a817-7a493062b0ca",
+      "name": "Telegram",
+      "webhookId": "d0bd2cde-d6a9-4820-be10-fa6524acdc63",
+      "credentials": {
+        "telegramApi": {
+          "id": "chCBPG5cf9LyBKIo",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "add_training_data",
+        "description": "Call this tool to post training data and mood or feelings during and after training to a database.",
+        "workflowId": {
+          "__rl": true,
+          "value": "D2WNRVB9UZ7azFyu",
+          "mode": "list",
+          "cachedResultName": "POST training data"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('data', ``, 'string') }}",
+            "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('title', ``, 'string') }}",
+            "date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('date', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        1260,
+        -40
+      ],
+      "id": "607c284a-1677-46c4-a885-cc50e2afbee9",
+      "name": "Add training data"
+    },
+    {
+      "parameters": {
+        "name": "add_resources",
+        "description": "Call this tool to add resources to a health assistant's knowledge, like YouTube videos, PDFs, images, or other data.",
+        "workflowId": {
+          "__rl": true,
+          "value": "Ji2dDmHdrGfg8lw2",
+          "mode": "list",
+          "cachedResultName": "POST resource - personal trainer"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('title', ``, 'string') }}",
+            "data": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('data', ``, 'string') }}",
+            "date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('date', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        1080,
+        -40
+      ],
+      "id": "bf97f80b-53fe-48b7-87ee-77be8c77275a",
+      "name": "Add resources"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }} . Remember that today is {{ $now }}",
+        "options": {
+          "systemMessage": "You are a helpful Kacper's health assistant."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1100,
+        -440
+      ],
+      "id": "e0a58254-7f66-4283-b1c9-331d89abd74a",
+      "name": "AI Health Assistant"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "a4bea312-4092-4f30-9d67-ba67d87cc086"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Voice"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8c844924-b2ed-48b0-935c-c66a8fd0c778",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b5215ee8-cbb4-4ba5-bfac-77bebbc62534",
+                    "leftValue": "={{ $json.message.photo[0].file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Photo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2d18fe3b-903d-4e78-a804-161a909909b8",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        140,
+        -440
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}"
+      },
+      "id": "0f1a0f9a-618f-43ee-b04a-8b20e470e8bd",
+      "name": "Download File",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        -600
+      ],
+      "webhookId": "83bb7385-33f6-4105-8294-1a91c0ebbee5",
+      "credentials": {
+        "telegramApi": {
+          "id": "Yw4fGDWV094gvJzF",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "id": "50ea8b8d-80a5-41a6-ac5b-08a454e0261f",
+      "name": "Transcribe",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        500,
+        -600
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fe7ecc99-e1e8-4a5e-bdd6-6fce9757b234",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4b8427a6-2647-4c03-9211-d12182606aeb",
+      "name": "Set 'Text'",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        500,
+        -440
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "file"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        -220
+      ],
+      "id": "29188366-ee92-4fba-b329-7ab98db6afcc",
+      "name": "Telegram1",
+      "webhookId": "88bf8087-ab4e-4f07-ba25-718fe0c0fa4c",
+      "credentials": {
+        "telegramApi": {
+          "id": "chCBPG5cf9LyBKIo",
+          "name": "Telegram account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-05-08T15:02:05.273Z",
+      "updatedAt": "2025-05-08T15:02:05.273Z",
+      "id": "JB8zv507hmqbzspO",
+      "name": "trainings"
+    },
+    {
+      "createdAt": "2025-05-08T15:02:08.819Z",
+      "updatedAt": "2025-05-08T15:02:08.819Z",
+      "id": "YY2gnPGMbZ5vVncI",
+      "name": "productivity"
+    },
+    {
+      "createdAt": "2025-05-08T15:02:00.946Z",
+      "updatedAt": "2025-05-08T15:02:00.946Z",
+      "id": "bjj8kdyNmoeSrrNc",
+      "name": "health"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-08T15:22:05.000Z",
+  "versionId": "a49704af-d2ef-4827-b2c4-784232e87e30"
+}
