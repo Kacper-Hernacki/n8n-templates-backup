@@ -125,6 +125,9 @@
             },
             {
               "name": "date"
+            },
+            {
+              "name": "url"
             }
           ]
         }
@@ -237,7 +240,7 @@
           "parameters": [
             {
               "name": "url",
-              "value": "={{ $json.data }}"
+              "value": "={{ $json.url }}"
             }
           ]
         },
@@ -272,11 +275,11 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json.links }}",
+                    "leftValue": "={{ $json.url }}",
                     "rightValue": "",
                     "operator": {
-                      "type": "boolean",
-                      "operation": "exists",
+                      "type": "string",
+                      "operation": "empty",
                       "singleValue": true
                     },
                     "id": "96a799dc-842b-44b6-a733-0e74549af664"
@@ -296,11 +299,11 @@
                 "conditions": [
                   {
                     "id": "707ac743-a6b0-4350-a597-29837331562f",
-                    "leftValue": "={{ $json.links }}",
+                    "leftValue": "={{ $json.url }}",
                     "rightValue": "",
                     "operator": {
-                      "type": "boolean",
-                      "operation": "notExists",
+                      "type": "string",
+                      "operation": "notEmpty",
                       "singleValue": true
                     }
                   }
@@ -422,6 +425,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-05-08T14:50:12.000Z",
-  "versionId": "a2c6a20b-7ba1-45ba-9118-dd4765ca633e"
+  "updatedAt": "2025-05-11T18:53:15.000Z",
+  "versionId": "b799ba13-0ae3-44a1-b987-a9378f1a8a26"
 }
