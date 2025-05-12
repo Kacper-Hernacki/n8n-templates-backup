@@ -118,7 +118,7 @@
       "main": [
         [
           {
-            "node": "AI Health Assistant",
+            "node": "AI Agent input",
             "type": "main",
             "index": 0
           }
@@ -126,6 +126,61 @@
       ]
     },
     "Transcribe": {
+      "main": [
+        [
+          {
+            "node": "AI Agent input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Set image description",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set image description": {
+      "main": [
+        [
+          {
+            "node": "AI Agent input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent input": {
       "main": [
         [
           {
@@ -213,7 +268,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2,
       "position": [
-        1440,
+        1680,
         -40
       ],
       "id": "785bd57b-36d1-465a-b47c-b9d19f4c974e",
@@ -231,7 +286,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        840,
+        1080,
         -240
       ],
       "id": "53fe7d8f-d7a1-4384-bcb9-1dcc9e976aac",
@@ -246,13 +301,13 @@
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $json.message.chat.id }}",
+        "sessionKey": "={{ $json.chatId }}",
         "tableName": "n8n_personal_training_chat_histories"
       },
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        980,
+        1220,
         -240
       ],
       "id": "e43fa53d-d67d-49f4-a28c-b8d78b8913ed",
@@ -273,7 +328,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1580,
+        1820,
         -440
       ],
       "id": "9d4083ce-b655-49d7-a817-7a493062b0ca",
@@ -343,7 +398,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2,
       "position": [
-        1260,
+        1500,
         -40
       ],
       "id": "607c284a-1677-46c4-a885-cc50e2afbee9",
@@ -352,7 +407,7 @@
     {
       "parameters": {
         "name": "add_resources",
-        "description": "Call this tool to add resources to a health assistant's knowledge, like YouTube videos, PDFs, images, or other data.",
+        "description": "Call this tool to add resources to a health assistant's knowledge, like YouTube videos, PDFs, images, or other data. For URL add only a specific youtube link, otherwise leave empty.",
         "workflowId": {
           "__rl": true,
           "value": "Ji2dDmHdrGfg8lw2",
@@ -364,7 +419,8 @@
           "value": {
             "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('title', ``, 'string') }}",
             "data": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('data', ``, 'string') }}",
-            "date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('date', ``, 'string') }}"
+            "date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('date', ``, 'string') }}",
+            "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('url', ``, 'string') }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -394,6 +450,16 @@
               "display": true,
               "canBeUsedToMatch": true,
               "type": "string"
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -403,7 +469,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2,
       "position": [
-        1080,
+        1320,
         -40
       ],
       "id": "bf97f80b-53fe-48b7-87ee-77be8c77275a",
@@ -412,7 +478,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $json.message.text }} . Remember that today is {{ $now }}",
+        "text": "={{ $json.input }} . Remember that today is {{ $now }}",
         "options": {
           "systemMessage": "You are a helpful Kacper's health assistant."
         }
@@ -420,7 +486,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        1100,
+        1320,
         -440
       ],
       "id": "e0a58254-7f66-4283-b1c9-331d89abd74a",
@@ -491,7 +557,7 @@
                 "conditions": [
                   {
                     "id": "b5215ee8-cbb4-4ba5-bfac-77bebbc62534",
-                    "leftValue": "={{ $json.message.photo[0].file_id }}",
+                    "leftValue": "={{ $json.message.document.file_unique_id }}",
                     "rightValue": "",
                     "operator": {
                       "type": "string",
@@ -585,13 +651,14 @@
     },
     {
       "parameters": {
-        "resource": "file"
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger').item.json.message.document.file_id }}"
       },
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
         320,
-        -220
+        -280
       ],
       "id": "29188366-ee92-4fba-b329-7ab98db6afcc",
       "name": "Telegram1",
@@ -602,6 +669,111 @@
           "name": "Telegram account 2"
         }
       }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.aiadaptiv.com/image/analyze-image",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "image",
+              "inputDataFieldName": "image"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        620,
+        -280
+      ],
+      "id": "5835494d-1301-4b5a-88ad-2e5e58dd49fa",
+      "name": "HTTP Request1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "VR2HADCVzHyCEv4F",
+          "name": "aiAdaptiv"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add binary data with correct MIME type\nfor (const item of $input.all()) {\n  // Get the file info from the Telegram response\n  const telegramResult = item.json.result;\n  const filePath = telegramResult.file_path;\n  \n  // Extract file name and extension\n  const fileName = filePath.split('/').pop();  \n  const extension = fileName.split('.').pop().toLowerCase();\n  \n  // Create the binary data with proper MIME type\n  // First make sure item.binary exists\n  if (!item.binary) {\n    item.binary = {};\n  }\n  \n  // Create image field for the HTTP request\n  item.binary.image = {\n    ...item.binary.data,  // Copy any existing binary data\n    fileName: fileName,\n    fileSize: telegramResult.file_size,\n    mimeType: extension === 'png' ? 'image/png' : 'image/jpeg'\n  };\n  \n  // For debugging\n  console.log('Set image field with MIME type:', item.binary.image.mimeType);\n}\n\n// Return all items\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        -280
+      ],
+      "id": "b2daac23-e85d-4b8b-97cd-15096eae2464",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fe7ecc99-e1e8-4a5e-bdd6-6fce9757b234",
+              "name": "text",
+              "value": "=there is a description of a provided image or screen\n- extracted text:\n{{ $json.data.analysis.extractedText }}\n- image description:\n{{ $json.data.analysis.imageDescription }}\n- source platform:\n{{ $json.data.analysis.sourcePlatform }}\n- full analysis:\n{{ $json.data.analysis.fullAnalysis }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8c3283e7-f89a-4487-b870-883a17efbf94",
+      "name": "Set image description",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        800,
+        -280
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fe7ecc99-e1e8-4a5e-bdd6-6fce9757b234",
+              "name": "input",
+              "value": "={{ $json.text ? $json.text : $json.message.text }}\n",
+              "type": "string"
+            },
+            {
+              "id": "a6138b3e-a5b3-4538-af5d-933a3f0395ad",
+              "name": "chatId",
+              "value": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1b15cdff-2c74-4b9f-9794-ecb067e01e53",
+      "name": "AI Agent input",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        980,
+        -440
+      ]
     }
   ],
   "pinData": {},
@@ -630,6 +802,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-08T15:22:05.000Z",
-  "versionId": "a49704af-d2ef-4827-b2c4-784232e87e30"
+  "updatedAt": "2025-05-11T18:56:31.000Z",
+  "versionId": "3b0b6d27-e5fd-4722-b475-a08af985a89b"
 }
