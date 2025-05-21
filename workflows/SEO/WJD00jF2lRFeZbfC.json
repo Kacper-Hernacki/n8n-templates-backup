@@ -1,0 +1,155 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Search Topic Ideas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Topic Ideas": {
+      "main": [
+        [
+          {
+            "node": "Prepare topic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-20T15:00:44.508Z",
+  "id": "WJD00jF2lRFeZbfC",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Topic Search",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 14
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4efef840-bad3-4d45-a725-29188d994515",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-search-preview",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-SEARCH-PREVIEW"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are a professional SEO & blog researcher.\nYour job is to discover content gaps and find ideas for aiAdaptiv blog.\n\naiAdaptiv is a company which helps to implement AI to buisnesses and also build tools, SaaS applications.\n\nCompetitors are any ai agencies which are using platforms like n8n, make.com and code custom AI solutions.\n\nYou may search content from competitors and take inspiration from their blog ideas. You may also identify new topics and angles and generate a new idea from scratch.",
+              "role": "system"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        220,
+        0
+      ],
+      "id": "282a8d80-0701-4d7e-ba3e-2a805c7862b1",
+      "name": "Search Topic Ideas",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are helpful SEO and blog content writer.\nGiven a niche or audience description, create an idea for a blog post.\n\nIt should contain:\n- A title for the blog post,\n- A description for the content,\n- A description of an image for a thumbnail,\n- An outline of the content as a list of chapter headings.\n\nThe idea should be relevant and up-tp-date.\nThe description should coherent and align with the idea.\n\nOutput the result in JSON:\n{\n \"title\": \"<title>\",\n \"content_description\": \"<content-description>\",\n \"image_description\": \"<image-description>\",\n \"outline\": [\n    \"<chapter-1>\",\n    \"<chapter-2>\".\n      ...\n  ]\n}",
+              "role": "system"
+            },
+            {
+              "content": "={{ $json.message.content }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        220,
+        280
+      ],
+      "id": "d56c6de0-3dc4-4fe3-b1f6-c7ceb0d96dc2",
+      "name": "Prepare topic",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Generate idea",
+        "height": 600,
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        160,
+        -80
+      ],
+      "id": "5c6dfaa0-1aec-485e-a066-33aae7301f35",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-05-20T15:03:28.871Z",
+      "updatedAt": "2025-05-20T15:03:28.871Z",
+      "id": "kIFdgjYFxaPxENet",
+      "name": "SEO"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-20T15:11:48.000Z",
+  "versionId": "64f61e27-d4ad-4133-b344-565c4acf157d"
+}
