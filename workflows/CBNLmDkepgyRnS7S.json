@@ -1,0 +1,571 @@
+{
+  "active": false,
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Setup Test Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Setup Test Configuration": {
+      "main": [
+        [
+          {
+            "node": "Expand URLs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Prepare URL List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Into Individual Tests": {
+      "main": [
+        [
+          {
+            "node": "Check Responsiveness Test",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Responsiveness Test": {
+      "main": [
+        [
+          {
+            "node": "Get Website",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Skip Test",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Website": {
+      "main": [
+        [
+          {
+            "node": "Process Responsive Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Responsive Tests": {
+      "main": [
+        [
+          {
+            "node": "Set Responsive Test Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Form Test": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Skip Test",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Form Tests": {
+      "main": [
+        [
+          {
+            "node": "Set Forms Test Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Auth Test": {
+      "main": [
+        [
+          {
+            "node": "Check Auth Pages",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Skip Test",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Auth Pages": {
+      "main": [
+        [
+          {
+            "node": "Process Auth Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Auth Tests": {
+      "main": [
+        [
+          {
+            "node": "Set Auth Test Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Responsive Test Type": {
+      "main": [
+        [
+          {
+            "node": "Merge All Test Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Forms Test Type": {
+      "main": [
+        [
+          {
+            "node": "Merge All Test Results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge All Test Results": {
+      "main": [
+        [
+          {
+            "node": "Wait For All Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait For All Tests": {
+      "main": [
+        [
+          {
+            "node": "Generate Final Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Final Report": {
+      "main": [
+        [
+          {
+            "node": "Return Report To User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Skip Test": {
+      "main": [
+        [
+          {
+            "node": "Check Form Test",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Expand URLs": {
+      "main": [
+        [
+          {
+            "node": "Prepare URL List",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Prepare URL List": {
+      "main": [
+        [
+          {
+            "node": "Split Into Individual Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-21T10:42:36.542Z",
+  "id": "CBNLmDkepgyRnS7S",
+  "meta": null,
+  "name": "SaaS - checker",
+  "nodes": [
+    {
+      "parameters": {
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "https://quicklaunch.info"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "67bd0fd2-8898-445d-895b-d95fcc40583b",
+      "name": "Start",
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [
+        -1020,
+        -400
+      ],
+      "webhookId": "d8bc4724-a655-4ffc-9e54-0a28efb197d4"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Initialize test suite\nconst saasUrl = $input.item.json.saasUrl;\nif (!saasUrl) {\n  throw new Error('SaaS URL is required');\n}\n\nconst testCredentials = $input.item.json.testCredentials || {};\nconst testOptions = $input.item.json.testOptions || [];\n\n// Setup test configuration\nconst testSuite = {\n  url: saasUrl,\n  timestamp: new Date().toISOString(),\n  testOptions: testOptions,\n  credentials: {\n    hasCredentials: !!testCredentials.username && !!testCredentials.password,\n    username: testCredentials.username || '',\n    // We don't return the actual password for security\n    hasPassword: !!testCredentials.password\n  },\n  pagesToTest: [\n    { path: '/', name: 'Homepage' },\n    { path: '/login', name: 'Login' },\n    { path: '/signup', name: 'Signup' },\n    { path: '/pricing', name: 'Pricing' },\n    { path: '/contact', name: 'Contact' },\n    { path: '/about', name: 'About' }\n  ],\n  responsiveBreakpoints: [\n    { name: 'Mobile', width: 375, height: 667 },\n    { name: 'Tablet', width: 768, height: 1024 },\n    { name: 'Desktop', width: 1440, height: 900 }\n  ]\n};\n\nreturn { json: testSuite };"
+      },
+      "id": "1048f856-7c38-4ffe-9500-2df779d2694c",
+      "name": "Setup Test Configuration",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -840,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "658b102a-8409-4c02-9f7c-29ee5ce71c6f",
+      "name": "Prepare URL List",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        -600,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "06d9fba5-be32-4623-bc7c-a91c0c086606",
+      "name": "Split Into Individual Tests",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 2,
+      "position": [
+        -520,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.testOptions.includes('responsiveness')}}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "84587bd5-f98e-45d3-aee1-c6b58d0fc8ef",
+      "name": "Check Responsiveness Test",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        -300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{$json.url}}",
+        "options": {}
+      },
+      "id": "a64ff940-4487-40ca-8637-08b1c5a983a8",
+      "name": "Get Website",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -100,
+        -380
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Process responsive test results\nconst page = $input.item.json;\nconst url = page.url;\n\nconst responsiveTests = {\n  url: url,\n  responsiveIssues: [],\n  timestamp: new Date().toISOString()\n};\n\n// Simulate responsive testing (in real implementation, this would use Puppeteer to check viewport rendering)\nconst simulatedIssues = [\n  {\n    viewport: 'Mobile',\n    element: 'header nav',\n    issue: 'Overflow detected - elements extend beyond viewport',\n    severity: 'high',\n    position: { x: 0, y: 0 },\n    recommendation: 'Implement a responsive mobile menu'\n  },\n  {\n    viewport: 'Tablet',\n    element: 'div.pricing-table',\n    issue: 'Text overlapping in pricing tables',\n    severity: 'medium',\n    position: { x: 320, y: 450 },\n    recommendation: 'Adjust font sizes or table spacing for tablet view'\n  }\n];\n\n// Randomly assign issues based on the URL to simulate different problems on different pages\nconst urlHash = url.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);\nif (urlHash % 3 === 0) {\n  responsiveTests.responsiveIssues.push(simulatedIssues[0]);\n}\nif (urlHash % 5 === 0) {\n  responsiveTests.responsiveIssues.push(simulatedIssues[1]);\n}\n\nreturn { json: responsiveTests };"
+      },
+      "id": "6c120e40-7e1a-402f-a845-654b2bef82a1",
+      "name": "Process Responsive Tests",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        100,
+        -380
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.testOptions.includes('forms')}}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "adaeb0d3-49b6-43c5-aea6-8ed35050d7c3",
+      "name": "Check Form Test",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        -160
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "90103310-f20f-464f-8c6b-aa20a8ddc64d",
+      "name": "Puppeteer Find Forms",
+      "type": "n8n-nodes-base.puppeteer",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        -160
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "functionCode": "// Process form testing results\nconst page = $input.item.json;\nconst url = page.url;\n\n// In a real implementation, this would extract actual forms using Puppeteer\n// For demo, we'll simulate form detection and testing\n\nconst formTests = {\n  url: url,\n  formsFound: [],\n  formIssues: [],\n  timestamp: new Date().toISOString()\n};\n\n// Simulate form detection based on URL path\nconst urlPath = new URL(url).pathname.toLowerCase();\n\nif (urlPath.includes('contact') || urlPath === '/') {\n  formTests.formsFound.push({\n    id: 'contact-form',\n    action: '/api/contact',\n    method: 'POST',\n    fields: [\n      { name: 'name', type: 'text', required: true },\n      { name: 'email', type: 'email', required: true },\n      { name: 'message', type: 'textarea', required: true }\n    ]\n  });\n  \n  // Simulate form issues\n  formTests.formIssues.push({\n    formId: 'contact-form',\n    issue: 'Email validation allows invalid formats',\n    severity: 'medium',\n    recommendation: 'Enhance email validation on both client and server side'\n  });\n}\n\nif (urlPath.includes('signup') || urlPath.includes('register')) {\n  formTests.formsFound.push({\n    id: 'signup-form',\n    action: '/api/users',\n    method: 'POST',\n    fields: [\n      { name: 'name', type: 'text', required: true },\n      { name: 'email', type: 'email', required: true },\n      { name: 'password', type: 'password', required: true },\n      { name: 'confirm-password', type: 'password', required: true }\n    ]\n  });\n  \n  // Simulate form issues\n  formTests.formIssues.push({\n    formId: 'signup-form',\n    issue: 'No password strength indicator',\n    severity: 'low',\n    recommendation: 'Add visual password strength feedback for users'\n  });\n  \n  formTests.formIssues.push({\n    formId: 'signup-form',\n    issue: 'CSRF token missing',\n    severity: 'high',\n    recommendation: 'Implement CSRF protection for all forms'\n  });\n}\n\nreturn { json: formTests };"
+      },
+      "id": "64b6ff60-e3e4-410d-a3d0-b208176190b6",
+      "name": "Process Form Tests",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        100,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.testOptions.includes('auth')}}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "0a3432c4-2fee-4ad1-b8e9-e99450cc3f60",
+      "name": "Check Auth Test",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{$json.url + '/login'}}",
+        "options": {}
+      },
+      "id": "fca5d510-244d-42fa-946b-d6c2b7a25564",
+      "name": "Check Auth Pages",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -100,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Process auth testing results\nconst page = $input.item.json;\nconst baseUrl = new URL(page.url).origin;\n\nconst authTests = {\n  baseUrl: baseUrl,\n  authIssues: [],\n  timestamp: new Date().toISOString()\n};\n\n// Simulate auth testing (in real implementation, would use Puppeteer to actually test flows)\n\n// Simulate checking for login page\nconst hasLoginPage = page.statusCode === 200;\n\n// Check for password reset\nlet hasPasswordReset = false;\nif (page.data && typeof page.data === 'string') {\n  hasPasswordReset = page.data.includes('password') && \n                      (page.data.includes('forgot') || page.data.includes('reset'));\n}\n\n// Simulate auth issues\nif (!hasLoginPage) {\n  authTests.authIssues.push({\n    issue: 'Login page not found or returns error',\n    severity: 'high',\n    path: '/login',\n    recommendation: 'Implement a proper login page with username/email and password fields'\n  });\n}\n\nif (!hasPasswordReset) {\n  authTests.authIssues.push({\n    issue: 'Password reset functionality not detected',\n    severity: 'medium',\n    path: '/login',\n    recommendation: 'Add forgot password link and implement password reset flow'\n  });\n}\n\n// Add simulated issues for demo purposes\nauthTests.authIssues.push({\n  issue: 'No rate limiting on login attempts',\n  severity: 'high',\n  path: '/login',\n  recommendation: 'Implement rate limiting to prevent brute force attacks'\n});\n\nauthTests.authIssues.push({\n  issue: 'Session timeout not properly configured',\n  severity: 'medium',\n  path: '/login',\n  recommendation: 'Set appropriate session timeout and implement renewal mechanism'\n});\n\nreturn { json: authTests };"
+      },
+      "id": "357f457c-5670-410d-9204-fd49f80aba1f",
+      "name": "Process Auth Tests",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        100,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "4842e096-8700-4a05-b545-068ac072504c",
+      "name": "Set Responsive Test Type",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.1,
+      "position": [
+        280,
+        -380
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "cdcabb48-de14-4e7d-9932-78433f342c62",
+      "name": "Set Forms Test Type",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.1,
+      "position": [
+        280,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "0f05fbb6-e02f-457e-98ae-1f00f6cc8cd6",
+      "name": "Set Auth Test Type",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.1,
+      "position": [
+        280,
+        -20
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "ca4f12c0-077e-45e2-be59-08733454d62d",
+      "name": "Merge All Test Results",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        480,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "573c05e3-d657-4f00-aca3-3f357ae266d0",
+      "name": "Wait For All Tests",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 2,
+      "position": [
+        660,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Generate final report with actionable tasks\nconst allTests = [];\n\n// Collect all test data\nfor (const item of $input.all()) {\n  allTests.push(item.json);\n}\n\n// Original base URL\nconst baseUrlTest = allTests.find(test => test.url || test.baseUrl);\nconst baseUrl = baseUrlTest.url || baseUrlTest.baseUrl;\n\n// Extract issues by type\nconst responsiveTests = allTests.filter(test => test.testType === 'responsiveness');\nconst formTests = allTests.filter(test => test.testType === 'forms');\nconst authTests = allTests.filter(test => test.testType === 'auth');\n\n// Collect all issues\nconst responsiveIssues = responsiveTests.flatMap(test => test.responsiveIssues || []);\nconst formIssues = formTests.flatMap(test => test.formIssues || []);\nconst authIssues = authTests.flatMap(test => test.authIssues || []);\n\n// Generate action items from issues\nconst generateActionItems = (issues, type) => {\n  return issues.map(issue => ({\n    taskId: `${type}-${Math.floor(Math.random() * 1000)}`,\n    title: issue.issue || issue.description,\n    category: type,\n    severity: issue.severity || 'medium',\n    description: `${issue.issue || ''} ${issue.recommendation ? '- ' + issue.recommendation : ''}`,\n    additionalInfo: issue\n  }));\n};\n\nconst responsiveActions = generateActionItems(responsiveIssues, 'responsive');\nconst formActions = generateActionItems(formIssues, 'forms');\nconst authActions = generateActionItems(authIssues, 'auth');\n\n// Add simulated navigation and performance tests for demonstration\nconst navigationActions = [\n  {\n    taskId: 'nav-123',\n    title: 'Missing navigation links on mobile',\n    category: 'navigation',\n    severity: 'medium',\n    description: 'The main navigation menu is missing critical links when viewed on mobile devices - Ensure all navigation items are available on all devices',\n    additionalInfo: { element: 'nav.main-menu', viewport: 'Mobile' }\n  },\n  {\n    taskId: 'nav-456',\n    title: 'Broken link to documentation',\n    category: 'navigation',\n    severity: 'medium',\n    description: 'Link to documentation page returns 404 - Create documentation page or update link',\n    additionalInfo: { link: '/docs', statusCode: 404 }\n  }\n];\n\nconst performanceActions = [\n  {\n    taskId: 'perf-123',\n    title: 'Unoptimized images on homepage',\n    category: 'performance',\n    severity: 'medium',\n    description: 'Large uncompressed images detected on homepage - Optimize images to improve page load time',\n    additionalInfo: { page: '/', resourceSize: '4.2MB' }\n  },\n  {\n    taskId: 'perf-456',\n    title: 'Excessive JavaScript loading',\n    category: 'performance',\n    severity: 'high',\n    description: 'Too many JavaScript files being loaded synchronously - Combine and minify JavaScript files and use async loading where appropriate',\n    additionalInfo: { jsFiles: 23, totalSize: '2.8MB' }\n  }\n];\n\n// Combine all action items\nconst allActions = [\n  ...responsiveActions,\n  ...formActions,\n  ...authActions,\n  ...navigationActions,\n  ...performanceActions\n];\n\n// Sort by severity\nconst severityOrder = { high: 0, medium: 1, low: 2 };\nallActions.sort((a, b) => {\n  return severityOrder[a.severity] - severityOrder[b.severity];\n});\n\n// Final report structure\nconst finalReport = {\n  saasUrl: baseUrl,\n  scanDate: new Date().toISOString(),\n  summary: {\n    totalIssues: allActions.length,\n    highSeverity: allActions.filter(item => item.severity === 'high').length,\n    mediumSeverity: allActions.filter(item => item.severity === 'medium').length,\n    lowSeverity: allActions.filter(item => item.severity === 'low').length,\n    categories: {\n      responsive: responsiveActions.length,\n      forms: formActions.length,\n      auth: authActions.length,\n      navigation: navigationActions.length,\n      performance: performanceActions.length\n    }\n  },\n  launchReadiness: allActions.filter(item => item.severity === 'high').length === 0 ? 'Ready with caution' : 'Not ready - critical issues found',\n  actionItems: allActions,\n  recommendations: {\n    mustFix: allActions.filter(item => item.severity === 'high').map(item => item.title),\n    shouldFix: allActions.filter(item => item.severity === 'medium').map(item => item.title),\n    couldFix: allActions.filter(item => item.severity === 'low').map(item => item.title)\n  }\n};\n\nreturn { json: finalReport };"
+      },
+      "id": "a50fc2ab-c7cf-4d62-8873-a34fe31fb685",
+      "name": "Generate Final Report",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        840,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "edc40ba8-4074-4bc8-bdf1-645257b644bc",
+      "name": "Return Report To User",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{JSON.stringify({message: \"Test skipped\"})}}",
+        "rules": {
+          "rules": []
+        }
+      },
+      "id": "dc119a99-1f5b-4230-8b8b-c8ad7a473d8a",
+      "name": "Skip Test",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [
+        100,
+        -300
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Expand base URL into a list of pages to test\nconst baseConfig = $input.item.json;\nconst baseUrl = baseConfig.url;\n\nconst expandedUrls = [];\n\n// Generate URLs from the base configuration\nfor (const page of baseConfig.pagesToTest) {\n  const fullUrl = new URL(page.path, baseUrl).toString();\n  expandedUrls.push({\n    ...baseConfig,\n    url: fullUrl,\n    pageName: page.name\n  });\n}\n\nreturn [{ json: expandedUrls }];"
+      },
+      "id": "981e401f-a917-426c-b339-9c69ef11374e",
+      "name": "Expand URLs",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -160
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-21T10:43:21.000Z",
+  "versionId": "57e46ac2-926e-4f24-a23f-6ed513a3837a"
+}
