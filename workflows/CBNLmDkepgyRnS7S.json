@@ -372,8 +372,8 @@
       "type": "n8n-nodes-base.puppeteer",
       "typeVersion": 1,
       "position": [
-        -100,
-        -160
+        -60,
+        220
       ],
       "retryOnFail": true,
       "maxTries": 3,
@@ -566,6 +566,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-05-21T10:43:21.000Z",
-  "versionId": "57e46ac2-926e-4f24-a23f-6ed513a3837a"
+  "updatedAt": "2025-05-22T10:18:57.000Z",
+  "versionId": "42333feb-50b5-4224-a774-a5925afdffca"
 }
