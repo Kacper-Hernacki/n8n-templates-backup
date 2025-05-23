@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "AI Agent": {
       "main": [
@@ -125,7 +125,9 @@
   },
   "createdAt": "2025-05-19T09:46:36.092Z",
   "id": "k9li7JZFX7aeffKz",
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "name": "aiAdaptiv landing page chatbot",
   "nodes": [
     {
@@ -242,6 +244,7 @@
       "parameters": {
         "httpMethod": "=POST",
         "path": "aiadaptiv_landingPage",
+        "authentication": "jwtAuth",
         "responseMode": "responseNode",
         "options": {
           "allowedOrigins": "*"
@@ -255,7 +258,13 @@
       ],
       "id": "623e83af-1ce5-4858-91d8-1aefa49def2b",
       "name": "Webhook",
-      "webhookId": "3eefcbeb-638f-483a-9924-e7a0f4524b02"
+      "webhookId": "3eefcbeb-638f-483a-9924-e7a0f4524b02",
+      "credentials": {
+        "jwtAuth": {
+          "id": "63OidyN205eJ9Pxk",
+          "name": "aiadaptiv-landing"
+        }
+      }
     },
     {
       "parameters": {
@@ -385,6 +394,6 @@
     }
   ],
   "triggerCount": 3,
-  "updatedAt": "2025-05-21T20:20:13.000Z",
-  "versionId": "c47f3c68-0a63-40c9-9132-c87ec783f2e9"
+  "updatedAt": "2025-05-22T11:20:03.000Z",
+  "versionId": "f41711fa-d6e5-4bed-8caa-f299867adb6b"
 }
