@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Search Topic Ideas",
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -22,6 +22,116 @@
           }
         ]
       ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Search Topic Ideas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare topic": {
+      "main": [
+        [
+          {
+            "node": "Search Article Information",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Article Information": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Internal Knowledge": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Write post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write post": {
+      "main": [
+        [
+          {
+            "node": "Flux Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flux Image": {
+      "main": [
+        [
+          {
+            "node": "Thumbnail Description",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Thumbnail Description": {
+      "main": [
+        [
+          {
+            "node": "Generate Thumbnail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-05-20T15:00:44.508Z",
@@ -29,7 +139,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "Topic Search",
+  "name": "SEO Agents team",
   "nodes": [
     {
       "parameters": {
@@ -44,7 +154,7 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        0,
+        -240,
         0
       ],
       "id": "4efef840-bad3-4d45-a725-29188d994515",
@@ -61,8 +171,11 @@
         "messages": {
           "values": [
             {
-              "content": "=You are a professional SEO & blog researcher.\nYour job is to discover content gaps and find ideas for aiAdaptiv blog.\n\naiAdaptiv is a company which helps to implement AI to buisnesses and also build tools, SaaS applications.\n\nCompetitors are any ai agencies which are using platforms like n8n, make.com and code custom AI solutions.\n\nYou may search content from competitors and take inspiration from their blog ideas. You may also identify new topics and angles and generate a new idea from scratch.",
+              "content": "=You are a professional SEO & blog researcher.\nYour job is to discover content gaps and find ideas for aiAdaptiv blog.\n\naiAdaptiv is a company which helps to implement AI to buisnesses and also build tools, SaaS applications.\n\nCompetitors are any ai agencies which are using platforms like n8n, make.com and code custom AI solutions.\n\nYou may search content from competitors and take inspiration from their blog ideas. You may also identify new topics and angles and generate a new idea from scratch.\n\nWhen prompted to generate an idea, you will be given a quick summary of our latest blog posts.\n\nIt is important to AVOID making duplicated content, so avoid ideas that are too similar to blog posts we recently published.",
               "role": "system"
+            },
+            {
+              "content": "=Content recently published: {{ $json.data.toJsonString() }}"
             }
           ]
         },
@@ -108,8 +221,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        220,
-        280
+        260,
+        260
       ],
       "id": "d56c6de0-3dc4-4fe3-b1f6-c7ceb0d96dc2",
       "name": "Prepare topic",
@@ -123,17 +236,306 @@
     {
       "parameters": {
         "content": "## Generate idea",
-        "height": 600,
-        "width": 480
+        "height": 560,
+        "width": 700,
+        "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        160,
+        -40,
         -80
       ],
       "id": "5c6dfaa0-1aec-485e-a066-33aae7301f35",
       "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "url": "https://stylish-bloom-8ec964fd40.strapiapp.com/api/articles",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "strapiTokenApi",
+        "sendQuery": true,
+        "specifyQuery": "json",
+        "jsonQuery": "{\n  \"fields\": \"title,description\",\n  \"pagination[pageSize]\":\"25\",\n  \"pagination[page]\":\"1\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "92667782-0a1f-4ab4-81d7-e0dfc3ff6a31",
+      "name": "HTTP Request",
+      "credentials": {
+        "strapiTokenApi": {
+          "id": "QW6JIjZLISUmCmJQ",
+          "name": "Strapi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-search-preview",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-SEARCH-PREVIEW"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an SEO and content researcher.\nYou will be given a title and a description for a blog post.\n\nYour job is to search for facts, statistics, and other relevant information that we can quote and reference by source.\n\nThey should be relevant to the central topics and themes of the planned article.",
+              "role": "system"
+            },
+            {
+              "content": "=Search for relevant information based on this proposed blog post:\n\nTitle:{{ $json.message.content.title }}\nDescription:{{ $json.message.content.content_description }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        840,
+        260
+      ],
+      "id": "38d93d63-398b-450a-b6f0-c5766fb6287a",
+      "name": "Search Article Information",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Use the GetInternalKnowledge tool to ask for questions about aiAdaptiv in relation of the topic.\n\nWhen you have all the knowledge you need (if any), summarize it and let that be your final output.\n\nIf no knowledge was retrieved from GetInternalKnowledge tool, simply output \"No specific knowledge\".\n\nTitle:{{ $('Prepare topic').item.json.message.content.title }}\nDescription:{{ $('Prepare topic').item.json.message.content.content_description }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        860,
+        460
+      ],
+      "id": "ce9c3887-568b-46b3-9b89-fbf30a550f30",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        740,
+        640
+      ],
+      "id": "a0260e58-5079-4627-a1fe-554be76dbf0f",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "1"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        860,
+        640
+      ],
+      "id": "0d373228-7c0b-473c-b989-cc4fe01fc856",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Ask questions about aiAdaptiv and get answers from the internal knowledge base.",
+        "method": "POST"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        640
+      ],
+      "id": "da930c5d-6b7b-4aa1-9f7a-f5c84150b231",
+      "name": "Get Internal Knowledge"
+    },
+    {
+      "parameters": {
+        "content": "## Research",
+        "height": 620,
+        "width": 540,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        720,
+        180
+      ],
+      "id": "f7d19337-1f03-4f30-84bf-b3313b30be09",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "o3-mini",
+          "mode": "list",
+          "cachedResultName": "O3-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are an expert SEO content writer.\nYou will be given a title, a description, and an outline as a list of chapters, and your job is to write an excellent blog post on the topic.\n\nYou will also be given some related research along with its cited sources. You should include any relevant parts of this research in the blog post along with their links.\n\nDO:\n- Write a long, detailed, in-depth chapter for each chapter in an outline.\n- Include relevant parts of the research you are provided.\n\nDON'T:\n- Write shallow, short, and generic.",
+              "role": "system"
+            },
+            {
+              "content": "=Title:{{ $('Prepare topic').item.json.message.content.title }}\nDescription:{{ $('Prepare topic').item.json.message.content.content_description }}\nOutline:{{ $('Prepare topic').item.json.message.content.outline.toJsonString() }}\nResearch:{{ $('Search Article Information').item.json.message.content }}\nSources:{{ $('Search Article Information').item.json.message.annotations.toJsonString() }}\nInternal Knowledge: {{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1440,
+        460
+      ],
+      "id": "76ff71ea-f3b9-4320-ad90-389fd5623d98",
+      "name": "Write post",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Write Post",
+        "height": 300,
+        "width": 360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        420
+      ],
+      "id": "772877ec-d5dd-4ee0-9f49-a0b95a0620c4",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.replicate.com/models/black-forest-labs/flux-1.1-pro/predictions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Prefer",
+              "value": "wait"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"input\": {\n    \"prompt\": \"{{ $('Prepare topic').item.json.message.content.image_description }}\",\n    \"aspect_ratio\": \"1:1\",\n    \"output_format\": \"png\",\n    \"output_quality\": 100,\n    \"safety_tolerance\": 5,\n    \"prompt_upsampling\":true\n  }  \n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        460
+      ],
+      "id": "59ed4676-a914-4bc7-8e28-d15aa7647cd4",
+      "name": "Flux Image",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "edQEqpSBfzUcieew",
+          "name": "Replicate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "messages": {
+          "values": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2140,
+        460
+      ],
+      "id": "94bf84c2-27b8-4d66-ad0b-201489875233",
+      "name": "Thumbnail Description",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2500,
+        460
+      ],
+      "id": "9a322ca7-b597-4c0a-b45f-e7e667504005",
+      "name": "Generate Thumbnail"
+    },
+    {
+      "parameters": {
+        "content": "## Generate Image",
+        "height": 320,
+        "width": 860,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1820,
+        400
+      ],
+      "id": "56bb333d-d658-4ca7-b1e3-b05f57d1b2cc",
+      "name": "Sticky Note3"
     }
   ],
   "pinData": {},
@@ -150,6 +552,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-05-20T15:11:48.000Z",
-  "versionId": "64f61e27-d4ad-4133-b344-565c4acf157d"
+  "updatedAt": "2025-05-26T17:35:35.000Z",
+  "versionId": "c32630df-07a9-4832-950f-af96918fda85"
 }
