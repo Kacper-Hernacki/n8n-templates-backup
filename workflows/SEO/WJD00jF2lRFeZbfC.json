@@ -313,7 +313,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Use the GetInternalKnowledge tool to ask for questions about aiAdaptiv in relation of the topic.\n\nWhen you have all the knowledge you need (if any), summarize it and let that be your final output.\n\nIf no knowledge was retrieved from GetInternalKnowledge tool, simply output \"No specific knowledge\".\n\nTitle:{{ $('Prepare topic').item.json.message.content.title }}\nDescription:{{ $('Prepare topic').item.json.message.content.content_description }}",
+        "text": "=Use the GetInternalKnowledge tool to ask for questions about aiAdaptiv in relation of the topic.\n\nWhen you have all the knowledge you need (if any), summarize it and let that be your final output.\n\n\n\nTitle:{{ $('Prepare topic').item.json.message.content.title }}\nDescription:{{ $('Prepare topic').item.json.message.content.content_description }}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -483,8 +483,9 @@
       "parameters": {
         "modelId": {
           "__rl": true,
+          "value": "gpt-4o-mini",
           "mode": "list",
-          "value": ""
+          "cachedResultName": "GPT-4O-MINI"
         },
         "messages": {
           "values": [
@@ -510,6 +511,9 @@
     },
     {
       "parameters": {
+        "url": "https://api.aiadaptiv.com",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -519,7 +523,13 @@
         460
       ],
       "id": "9a322ca7-b597-4c0a-b45f-e7e667504005",
-      "name": "Generate Thumbnail"
+      "name": "Generate Thumbnail",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "VR2HADCVzHyCEv4F",
+          "name": "aiAdaptiv"
+        }
+      }
     },
     {
       "parameters": {
@@ -552,6 +562,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-05-26T17:35:35.000Z",
-  "versionId": "c32630df-07a9-4832-950f-af96918fda85"
+  "updatedAt": "2025-05-28T18:22:21.000Z",
+  "versionId": "726107b2-819c-48be-a554-3c96553dd9a2"
 }
