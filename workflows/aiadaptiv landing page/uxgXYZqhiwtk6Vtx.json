@@ -1,0 +1,277 @@
+{
+  "active": false,
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Knowledgebase",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Knowledgebase": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Knowledgebase",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-02T12:25:28.470Z",
+  "id": "uxgXYZqhiwtk6Vtx",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "RagFLOW",
+  "nodes": [
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "={{ $json.body.message }}",
+        "options": {
+          "humanMessage": "TOOLS\n------\nAlways use the knowledge base tool to obtain information and context about topics you are unfamiliar with. Tools:\n\nKnowledgebase - ALWAYS use it to know the context\n\nUSER'S INPUT\n--------------------\nHere is the user's input (remember to respond with a markdown code snippet of a json blob with a single action, and NOTHING else):\n\n{{input}}",
+          "systemMessage": "Assistant is a large language model trained by OpenAI.\n\nAssistant is designed to be able to assist with a wide range of tasks, from answering simple questions to providing in-depth explanations and discussions on a wide range of topics. As a language model, Assistant is able to generate human-like text based on the input it receives, allowing it to engage in natural-sounding conversations and provide responses that are coherent and relevant to the topic at hand.\n\nAssistant is constantly learning and improving, and its capabilities are constantly evolving. It is able to process and understand large amounts of text, and can use this knowledge to provide accurate and informative responses to a wide range of questions. Additionally, Assistant is able to generate its own text based on the input it receives, allowing it to engage in discussions and provide explanations and descriptions on a wide range of topics.\n\nOverall, Assistant is a powerful system that can help with a wide range of tasks and provide valuable insights and information on a wide range of topics. Whether you need help with a specific question or just want to have a conversation about a particular topic, Assistant is here to assist."
+        }
+      },
+      "id": "04320a7b-b9ec-4797-be2b-5ad0eb305780",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        720,
+        0
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "7811313c-ae04-4ea8-8df5-32a5f79e7445",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        720,
+        620
+      ],
+      "typeVersion": 1.1,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "0de63fd2-526c-4340-89da-90caffe12e66",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        480,
+        240
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "74e14f33-bb7f-466e-8be9-ba3bb1d5efb2",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        1080,
+        500
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "Knowledgebase",
+        "description": "Accesses the knowledge base to retrieve any information the user needs."
+      },
+      "id": "8edad017-b64e-4200-a672-6aaebdc1d676",
+      "name": "Knowledgebase",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "position": [
+        900,
+        240
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "httpMethod": "=POST",
+        "path": "b9acf7c6-3ed9-4507-86d2-6384916b2907",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        320,
+        0
+      ],
+      "id": "3e172fbf-4a01-4978-bae0-19f5fbac9bc5",
+      "name": "Webhook",
+      "webhookId": "b9acf7c6-3ed9-4507-86d2-6384916b2907"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1080,
+        0
+      ],
+      "id": "03dcfe22-651a-43d0-bf65-bb4f35b437f1",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "='{{ $('Webhook').first().json.body.knowledge_base.knowledge_base_id }}'",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        740,
+        420
+      ],
+      "id": "1bcc602d-3e8e-41e3-b495-524620e808d5",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "LpggpsMIrSKYJsZa",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook').item.json.body.conversation_id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1020,
+        220
+      ],
+      "id": "bb6f893c-8b5c-4890-8ef3-5bfcb496c042",
+      "name": "Window Buffer Memory"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-05-19T09:46:42.704Z",
+      "updatedAt": "2025-05-19T09:46:42.704Z",
+      "id": "fAgqobWqijRH7JSN",
+      "name": "aiadaptiv landing page"
+    }
+  ],
+  "triggerCount": 3,
+  "updatedAt": "2025-06-02T15:12:09.000Z",
+  "versionId": "15ba3fad-23cc-4a3d-b5ec-e6dbd9bf4196"
+}
