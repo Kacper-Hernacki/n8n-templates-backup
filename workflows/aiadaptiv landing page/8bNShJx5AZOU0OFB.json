@@ -1,0 +1,373 @@
+{
+  "active": false,
+  "connections": {
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Knowledgebase",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres PGVector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Knowledgebase",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Knowledgebase": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert data to aiadaptiv context",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert data to aiadaptiv context",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Insert data to aiadaptiv context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-11T10:22:27.923Z",
+  "id": "8bNShJx5AZOU0OFB",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "aiAdaptiv landing page chatbot - external trigger",
+  "nodes": [
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "humanMessage": "TOOLS\n------\nAssistant can ask the user to use tools to look up information that may be helpful in answering the users original question. The tools the human can use are:\n\n{tools}\n\n{format_instructions}\n\nPRICING CONTEXT\n--------------\nYou have access to complete pricing information for aiAdaptiv services. Always provide specific costs and calculate total estimates when possible.\n\nUSER'S INPUT\n--------------------\nHere is the user's input about aiAdaptiv pricing (respond with a markdown code snippet of a json blob with a single action, and NOTHING else):\n\n{{input}}",
+          "systemMessage": "You are the aiAdaptiv Pricing Specialist, an expert assistant focused exclusively on providing pricing information and cost estimates for aiAdaptiv's AI services.\n\n**STRICT SCOPE LIMITATION:**\n- You ONLY answer questions related to aiAdaptiv services pricing\n- If asked about anything else, politely redirect: \"I specialize in aiAdaptiv pricing. What would you like to know about our AI chatbot, AI agent, MVP, or SaaS pricing?\"\n\n**YOUR EXPERTISE:**\nYou retrieve pricing information from the knowledge base and use it to provide accurate cost estimates and calculations.\n\n**YOUR APPROACH:**\n1. **Retrieve Pricing Data:** Use available tools to get current pricing information from the knowledge base\n2. **Calculate & Provide Totals:** Always sum up costs and give clear total estimates based on retrieved data\n3. **Ask Clarifying Questions:** When pricing depends on variables (like number of tools, specific features), ask specific questions to provide accurate estimates\n4. **Be Detailed:** Explain what's included in each price point based on the retrieved information\n5. **Guide Users:** Help them understand options and make informed decisions\n6. **Sum Multiple Services:** When users need multiple services, calculate the combined total cost\n\n**CALCULATION PROCESS:**\n- Retrieve relevant pricing information for requested services\n- Ask clarifying questions about scope (number of tools, specific features, etc.)\n- Calculate individual service costs\n- Sum up all components for a total estimate\n- Present breakdown and total clearly\n\n**RESPONSE PATTERN:**\n1. Acknowledge the request\n2. Retrieve pricing information using available tools\n3. Ask any necessary clarifying questions\n4. Calculate and present total costs with breakdown\n5. Explain what's included\n6. Offer to adjust estimate based on specific needs\n\nAlways provide specific numbers, ask relevant follow-up questions, and calculate totals when you have enough information from the knowledge base.\n"
+        }
+      },
+      "id": "f4ea826d-e79c-4374-821b-e49d5d1a9f42",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        720,
+        0
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e284a3bd-0629-47c1-8e1f-f3d446e9ea75",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        760,
+        660
+      ],
+      "typeVersion": 1.1,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "8c305f1c-e904-4cdd-83ab-e624c937de43",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        480,
+        240
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "d56c63e5-a691-4d26-bb7a-1bac8bc3974c",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        1100,
+        520
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableName": "n8n_vectors_aiadaptiv_landing_page",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1,
+      "position": [
+        780,
+        480
+      ],
+      "id": "cd33523f-ec5d-44fe-acce-6e53fb24b22f",
+      "name": "Postgres PGVector Store",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "aiAdaptivKnowledgebase",
+        "description": "Access aiAdaptiv knowledge base for retrieving any information he needs."
+      },
+      "id": "88bf658c-790c-4d28-a1a2-edf00c9e8d58",
+      "name": "Knowledgebase",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "position": [
+        920,
+        240
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "chunkSize": 2000,
+        "options": {}
+      },
+      "id": "710b2328-0171-47ce-84d4-cf68bcc7d369",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "position": [
+        940,
+        1460
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.chatInput }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "label",
+                "value": "=aiadaptiv context"
+              },
+              {
+                "name": "id",
+                "value": "={{ $json.sessionId }}"
+              },
+              {
+                "name": "date",
+                "value": "={{$now}} "
+              }
+            ]
+          }
+        }
+      },
+      "id": "00713123-8c6d-452a-b9f6-5e0761b93230",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "position": [
+        960,
+        1280
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "c53dc797-ed69-488c-aa0c-dcafdcd3fb6f",
+      "name": "Embeddings OpenAI1",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        760,
+        1280
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        380,
+        1080
+      ],
+      "id": "e42748f1-8e4e-49f3-846e-509c049b13ec",
+      "name": "When chat message received",
+      "webhookId": "f6ba72c2-af7c-46fe-84c4-31efc29df53c"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "n8n_vectors_aiadaptiv_landing_page",
+        "options": {}
+      },
+      "id": "da3d3f90-ae41-4ba5-ad60-528fd5d84221",
+      "name": "Insert data to aiadaptiv context",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "position": [
+        820,
+        1080
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "chatInput"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        380,
+        0
+      ],
+      "id": "a04502ca-84a6-42ed-b3f9-f7fe34476000",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-05-19T09:46:42.704Z",
+      "updatedAt": "2025-05-19T09:46:42.704Z",
+      "id": "fAgqobWqijRH7JSN",
+      "name": "aiadaptiv landing page"
+    }
+  ],
+  "triggerCount": 3,
+  "updatedAt": "2025-06-11T10:27:08.000Z",
+  "versionId": "00b18b6b-2688-4839-9d37-c6422c295dab"
+}
