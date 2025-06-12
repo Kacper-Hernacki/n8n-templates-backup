@@ -78,17 +78,6 @@
         ]
       ]
     },
-    "Get Internal Knowledge": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "AI Agent": {
       "main": [
         [
@@ -115,7 +104,7 @@
       "main": [
         [
           {
-            "node": "Thumbnail Description",
+            "node": "Generate Thumbnail",
             "type": "main",
             "index": 0
           }
@@ -124,10 +113,15 @@
     },
     "Thumbnail Description": {
       "main": [
+        []
+      ]
+    },
+    "GetInternalKnowledge": {
+      "ai_tool": [
         [
           {
-            "node": "Generate Thumbnail",
-            "type": "main",
+            "node": "AI Agent",
+            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -365,20 +359,6 @@
     },
     {
       "parameters": {
-        "toolDescription": "Ask questions about aiAdaptiv and get answers from the internal knowledge base.",
-        "method": "POST"
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
-      "typeVersion": 1.1,
-      "position": [
-        1120,
-        640
-      ],
-      "id": "da930c5d-6b7b-4aa1-9f7a-f5c84150b231",
-      "name": "Get Internal Knowledge"
-    },
-    {
-      "parameters": {
         "content": "## Research",
         "height": 620,
         "width": 540,
@@ -447,7 +427,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.replicate.com/models/black-forest-labs/flux-1.1-pro/predictions",
+        "url": "https://api.replicate.com/v1/models/black-forest-labs/flux-1.1-pro/predictions",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,
@@ -497,8 +477,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        2140,
-        460
+        2120,
+        880
       ],
       "id": "94bf84c2-27b8-4d66-ad0b-201489875233",
       "name": "Thumbnail Description",
@@ -511,15 +491,19 @@
     },
     {
       "parameters": {
-        "url": "https://api.aiadaptiv.com",
+        "method": "POST",
+        "url": "https://api.aiadaptiv.com/template/generate-thumbnail",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"title\": \"{{ $('Prepare topic').item.json.message.content.title }}\",\n  \"replicateResponse\": [\n    {\n      \"output\": \"{{ $json.output }}\"\n    }\n  ]\n} \n\n",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2500,
+        2260,
         460
       ],
       "id": "9a322ca7-b597-4c0a-b45f-e7e667504005",
@@ -546,6 +530,91 @@
       ],
       "id": "56bb333d-d658-4ca7-b1e3-b05f57d1b2cc",
       "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1880,
+        1160
+      ],
+      "id": "669735cd-db3c-4452-a9ea-62f08b31274a",
+      "name": "Post Newsletter"
+    },
+    {
+      "parameters": {
+        "content": "## Generate & Publish Newsletter",
+        "height": 340,
+        "width": 500
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1700,
+        1060
+      ],
+      "id": "7916a906-a88d-49e9-a4ca-15abd8bb38e8",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Publish to Social Medias",
+        "height": 340,
+        "width": 500
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2760,
+        1060
+      ],
+      "id": "fe6f1cfa-52cd-4fd0-90f4-5c6066b27e4b",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "name": "GetInternalKnowledge",
+        "description": "Ask questions about aiAdaptiv and get answers from the internal knowledge base.",
+        "workflowId": {
+          "__rl": true,
+          "value": "8bNShJx5AZOU0OFB",
+          "mode": "list",
+          "cachedResultName": "aiAdaptiv landing page chatbot - external trigger"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chatInput": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('chatInput', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "chatInput",
+              "displayName": "chatInput",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        640
+      ],
+      "id": "4b3f9047-7022-4c89-92c2-5096565d3e3b",
+      "name": "GetInternalKnowledge"
     }
   ],
   "pinData": {},
@@ -562,6 +631,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-05-28T18:22:21.000Z",
-  "versionId": "726107b2-819c-48be-a554-3c96553dd9a2"
+  "updatedAt": "2025-06-11T12:45:34.000Z",
+  "versionId": "a02676a6-f316-4ad6-8a0e-ecdb7ee678f2"
 }
