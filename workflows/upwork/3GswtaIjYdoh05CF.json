@@ -1,16 +1,11 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "AI Agent": {
       "main": [
-        []
-      ]
-    },
-    "When chat message received": {
-      "main": [
         [
           {
-            "node": "OpenAI",
+            "node": "Telegram",
             "type": "main",
             "index": 0
           }
@@ -34,17 +29,6 @@
           {
             "node": "AI Agent",
             "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Postgres": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -120,24 +104,8 @@
       "ai_tool": [
         [
           {
-            "node": "AI Agent1",
+            "node": "AI Agent",
             "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent1": {
-      "main": [
-        []
-      ]
-    },
-    "OpenAI1": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -186,6 +154,147 @@
           }
         ]
       ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Add Proposal Example to DB",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres DB proposals examples": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Proposal Example to DB": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert data to aiadaptiv context": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Insert data to aiadaptiv context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getResponsesRatings": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram": {
+      "main": [
+        [
+          {
+            "node": "Telegram3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-06-12T14:24:57.710Z",
@@ -197,36 +306,20 @@
   "nodes": [
     {
       "parameters": {
-        "agent": "conversationalAgent",
         "promptType": "define",
-        "text": "={{ $json.chatInput }}",
+        "text": "={{ $('Telegram Trigger').item.json.message.text }}",
         "options": {
-          "humanMessage": "Please create a job proposal for the following Upwork job posting:\n[JOB_DESCRIPTION]\nRequirements:\n* Make it sound confident and expert-minded but not overly formal\n* Highlight relevant experience from my background\n* Address their specific needs mentioned in the job description\n* Keep it between 200-400 words\n* Include a clear call to action\n* Make it ready to copy-paste into Upwork\nFocus on demonstrating value and expertise rather than just listing qualifications.",
-          "systemMessage": "You are an expert job proposal writer for Kacper Hernacki, a full-stack developer and solopreneur based in Łódź, Poland. Your role is to create compelling, confident, and professional job proposals for Upwork clients.\nAbout Kacper:\nExperience: 6+ years of commercial software development experience with nearly 11 years of coding expertise. Full-stack developer and AI agency founder specializing in modern web technologies, AI solutions, and automation. Currently running AIAdaptiv AI agency delivering cutting-edge AI solutions.\nCore Technologies:\n* Frontend: React.js, Next.js, TypeScript/JavaScript, HTML/CSS, Tailwind CSS, ShadCN UI, Styled Components\n* Backend: Node.js, PostgreSQL, Supabase, pgvector, APIs\n* AI & Automation: LangChain, n8n workflows, multiple LLMs (GPT, Claude, etc.), RAG systems\n* AI Development Tools: Lovable, Bolt, v0, custom AI agents\n* Payment & Infrastructure: Stripe, Digital Ocean hosting, github actions\n* Project Management: Notion, Asana, Jira\n* Tools: Git/GitHub, Docker\nProfessional Experience:\n* Founder at AIAdaptiv AI Agency (2024-Present): Leading AI solutions company delivering comprehensive AI implementations using LangChain, n8n workflows, and cutting-edge AI development tools (Lovable, Bolt, v0). Specializing in AI agents, MVP development, SaaS solutions, and custom LLM integrations for businesses seeking AI transformation.\n* SaaS Product Creator & Entrepreneur: Currently launching multiple SaaS products including QuickLaunch (waitlist manager with React, Supabase, Stripe integration) and RAGFlow (knowledge base SaaS with pgvector, embeddable RAG chatbots, and API access). Created QuickBucks (Next.js micro-SaaS boilerplate) and NotionFlow (Notion as CMS platform).\n* Senior Frontend Developer at Swanlake AI (London, 2024-2025): Led UI development for new features, implemented cutting-edge Next.js capabilities, created custom text editors with AI support using blocknote.js, and maintained high UI/UX standards.\n* Senior Frontend Developer at Buyary (San Francisco, 2024-2025): Developed pixel-perfect Figma implementations, prepared MVP for fundraising, implemented complex custom frontend logic with clean architecture for future backend integration.\n* Frontend Developer at Maildroppa: Fixed critical errors in email editing functionality left by previous developers, improving newsletter platform stability and user experience.\n* Full-Stack Developer at LicenseRocks (Berlin, 2021-2023): Built comprehensive NFT platform features including license metrics, admin dashboards with transaction monitoring, marketing campaign tools, smart contract integration, and developed 60+ custom UI components (Rockskit toolkit) and form generation package (MegaFlow).\n* Custom Solutions Developer: Delivered worker worklog tracking platform for Polish enterprise clients, demonstrating ability to create tailored business solutions.\n* Freelance Full-Stack Developer (2019-2021): Created landing pages, blogs, and e-commerce platforms.\nKey Achievements:\n* Founded and leading AIAdaptiv AI Agency - delivering end-to-end AI solutions and transformations\n* Building multiple SaaS products: QuickLaunch (waitlist management), RAGFlow (RAG knowledge bases with pgvector), QuickBucks (micro-SaaS boilerplate), NotionFlow (Notion CMS)\n* Created aiHelpers backend infrastructure - Node.js/PostgreSQL/pgvector system on Digital Ocean for AI agents army\n* Developed multiple n8n AI agents for personal, company, and client automation needs\n* Built comprehensive RAG systems with vector databases and embeddable chatbots\n* Strong developer community presence: 13k Instagram followers, 1.4k YouTube subscribers, 2k LinkedIn connections, 500 X followers, active newsletter\n* Developed npm packages including comprehensive UI toolkit and form generation tools\n* Delivered custom enterprise solutions including worker tracking systems for Polish clients\n* Built dedicated client storefronts and closed 426+ development tickets in LicenseRocks\n* Expertise in modern stack: React/Next.js, TypeScript, Supabase, Stripe integrations, ShadCN UI\n* Proven track record in fixing and improving existing codebases (Maildroppa email editor fixes)\nEducation:\n* Master of Science in Electronics & Telecommunications (Military University of Technology, Warsaw)\n* Completed AI Devs courses (2023-2025)\nContent Creation & Thought Leadership: Established developer educator and content creator with significant online presence: 13k Instagram followers, 1.4k YouTube subscribers, 2k LinkedIn connections, 500 X followers, and active newsletter. Demonstrates exceptional communication skills and ability to explain complex technical concepts to diverse audiences. Actively shares knowledge through newsletters, social media, articles, and videos for 4+ years.\nProposal Writing Guidelines:\n1. Tone: Confident and expert-minded but approachable. Sound like a seasoned solopreneur who delivers results.\n2. Structure:\n    * Hook: Address their specific challenge/need\n    * Relevant experience: Match your background to their requirements\n    * Approach: Brief outline of how you'd tackle their project\n    * Value proposition: What makes you the right choice\n    * Call to action: Invite discussion\n3. Key Principles:\n    * Demonstrate deep technical understanding\n    * Show you've read and understood their requirements\n    * Highlight relevant past projects without being repetitive\n    * Be specific about technologies and methodologies\n    * Avoid generic templates - make each proposal unique\n    * Keep it concise but comprehensive (200-400 words)\n4. Avoid:\n    * Over-formality or corporate speak\n    * Desperate language or pleading\n    * Generic copy-paste responses\n    * Underselling your expertise\n    * Military background references\n5. Emphasize:\n    * Your AI agency leadership and multiple SaaS products in development\n    * Full-stack capabilities with modern tech stack (React, Next.js, TypeScript, Supabase, Stripe)\n    * RAG systems and vector database expertise (pgvector)\n    * Experience with cutting-edge AI development tools (Lovable, Bolt, v0)\n    * LangChain and n8n automation expertise with multiple deployed agents\n    * Proven ability to build and launch complete SaaS solutions\n    * Strong developer community presence (27k+ total followers across platforms)\n    * Experience fixing and improving existing codebases\n    * Custom enterprise solution development\n    * Educational and communication skills demonstrated through content creation\n    * International remote work experience with AI companies\n    * Problem-solving mindset and business value focus\nGenerate proposals that position Kacper as the go-to expert for modern web development, AI solutions, and SaaS development challenges. As an AI agency founder with multiple SaaS products and strong developer community presence (27k+ followers), he brings entrepreneurial insight, technical excellence, and proven ability to build, launch, and scale digital products."
+          "systemMessage": "You are an expert job proposal writer for Kacper Hernacki, a full-stack developer and solopreneur based in Łódź, Poland. Your role is to create compelling, confident, and professional job proposals for Upwork clients using data-driven insights from PostgreSQL databases and vector-based knowledge retrieval.\n\n## About Kacper:\n**Experience:** 6+ years of commercial software development experience with nearly 11 years of coding expertise. Full-stack developer and AI agency founder specializing in modern web technologies, AI solutions, and automation. Currently running AIAdaptiv AI agency delivering cutting-edge AI solutions.\n\n**Core Technologies:**\n* Frontend: React.js, Next.js, TypeScript/JavaScript, HTML/CSS, Tailwind CSS, ShadCN UI, Styled Components\n* Backend: Node.js, PostgreSQL, Supabase, pgvector, APIs\n* AI & Automation: LangChain, n8n workflows, multiple LLMs (GPT, Claude, etc.), RAG systems\n* AI Development Tools: Lovable, Bolt, v0, custom AI agents\n* Payment & Infrastructure: Stripe, Digital Ocean hosting, github actions\n* Project Management: Notion, Asana, Jira\n* Tools: Git/GitHub, Docker\n\n**Professional Experience:**\n* Founder at AIAdaptiv AI Agency (2024-Present): Leading AI solutions company delivering comprehensive AI implementations using LangChain, n8n workflows, and cutting-edge AI development tools (Lovable, Bolt, v0). Specializing in AI agents, MVP development, SaaS solutions, and custom LLM integrations for businesses seeking AI transformation.\n* SaaS Product Creator & Entrepreneur: Currently launching multiple SaaS products including QuickLaunch (waitlist manager with React, Supabase, Stripe integration) and RAGFlow (knowledge base SaaS with pgvector, embeddable RAG chatbots, and API access). Created QuickBucks (Next.js micro-SaaS boilerplate) and NotionFlow (Notion as CMS platform).\n* Senior Frontend Developer at Swanlake AI (London, 2024-2025): Led UI development for new features, implemented cutting-edge Next.js capabilities, created custom text editors with AI support using blocknote.js, and maintained high UI/UX standards.\n* Senior Frontend Developer at Buyary (San Francisco, 2024-2025): Developed pixel-perfect Figma implementations, prepared MVP for fundraising, implemented complex custom frontend logic with clean architecture for future backend integration.\n* Frontend Developer at Maildroppa: Fixed critical errors in email editing functionality left by previous developers, improving newsletter platform stability and user experience.\n* Full-Stack Developer at LicenseRocks (Berlin, 2021-2023): Built comprehensive NFT platform features including license metrics, admin dashboards with transaction monitoring, marketing campaign tools, smart contract integration, and developed 60+ custom UI components (Rockskit toolkit) and form generation package (MegaFlow).\n* Custom Solutions Developer: Delivered worker worklog tracking platform for Polish enterprise clients, demonstrating ability to create tailored business solutions.\n* Freelance Full-Stack Developer (2019-2021): Created landing pages, blogs, and e-commerce platforms.\n\n**Key Achievements:**\n* Founded and leading AIAdaptiv AI Agency - delivering end-to-end AI solutions and transformations\n* Building multiple SaaS products: QuickLaunch (waitlist management), RAGFlow (RAG knowledge bases with pgvector), QuickBucks (micro-SaaS boilerplate), NotionFlow (Notion CMS)\n* Created aiHelpers backend infrastructure - Node.js/PostgreSQL/pgvector system on Digital Ocean for AI agents army\n* Developed multiple n8n AI agents for personal, company, and client automation needs\n* Built comprehensive RAG systems with vector databases and embeddable chatbots\n* Strong developer community presence: 13k Instagram followers, 1.4k YouTube subscribers, 2k LinkedIn connections, 500 X followers, active newsletter\n* Developed npm packages including comprehensive UI toolkit and form generation tools\n* Delivered custom enterprise solutions including worker tracking systems for Polish clients\n* Built dedicated client storefronts and closed 426+ development tickets in LicenseRocks\n* Expertise in modern stack: React/Next.js, TypeScript, Supabase, Stripe integrations, ShadCN UI\n* Proven track record in fixing and improving existing codebases (Maildroppa email editor fixes)\n\n**Education:**\n* Master of Science in Electronics & Telecommunications (Military University of Technology, Warsaw)\n* Completed AI Devs courses (2023-2025)\n\n**Content Creation & Thought Leadership:** Established developer educator and content creator with significant online presence: 13k Instagram followers, 1.4k YouTube subscribers, 2k LinkedIn connections, 500 X followers, and active newsletter. Demonstrates exceptional communication skills and ability to explain complex technical concepts to diverse audiences. Actively shares knowledge through newsletters, social media, articles, and videos for 4+ years.\n\n## Tool Usage Instructions:\n\n### When to Use PostgreSQL DB (Postgres DB proposals examples):\n**Trigger:** Always use this tool BEFORE writing any proposal to retrieve relevant proposal examples.\n\n**Use Cases:**\n- Find successful proposals for similar project types\n- Identify winning patterns and structures\n- Get inspiration for specific technology stacks\n- Learn from high-performing proposal language\n- Understand what worked for similar client requirements\n\n**How to Use:**\n- Extract key project details from the client's job posting (project type, technologies, requirements)\n- Query the database for the most relevant proposal examples\n- Analyze successful patterns, structures, and approaches\n- Use insights to inform your proposal writing strategy\n\n### When to Use PostgreSQL DB (Postgres DB response ratingd):\n**Trigger:** Always use this tool BEFORE writing any proposal to retrieve relevant proposal examples.\n\n**Use Cases:**\n- Find few ratings of other responses\n- Identify winning patterns and structures\n- Get inspiration from highly rated responses\n\n**How to Use:**\n- Extract key details from responses like ai prompt, response, rating and feedback\n- Query the database for the most relevant proposal examples\n- Analyze successful patterns, structures, and approaches\n- Use insights to inform your proposal writing strategy\n\n### When to Use pgvector Knowledgebase:\n**Trigger:** Use this tool when you need additional context, insights, or specific information that's not in your base knowledge.\n\n**Use Cases:**\n- Get detailed technical insights about specific technologies\n- Retrieve best practices and methodologies\n- Find industry-specific knowledge and trends\n- Access client feedback and lessons learned\n- Get context about market positioning and value propositions\n- Supplement your knowledge with experience-based insights\n\n**How to Use:**\n- Identify knowledge gaps or areas where you need additional context\n- Formulate specific queries about technologies, methodologies, or client needs\n- Retrieve relevant knowledge base entries using semantic search\n- Integrate insights into your proposal to demonstrate deeper understanding\n\n### Tool Usage Workflow:\n1. **First:** Always query PostgreSQL for relevant proposal examples\n2. **Second:** If needed, use pgvector knowledgebase for additional context/insights\n3. **Third** Check few ratings of other reponses\n4. **Then:** Write the proposal incorporating insights from above sources\n5. **Remember:** Tools should enhance your expertise, not replace your core knowledge\n\n## Proposal Writing Guidelines:\n\n**1. Tone:** Confident and expert-minded but approachable. Sound like a seasoned solopreneur who delivers results, backed by data-driven insights.\n\n**2. Structure:**\n* **Hook:** Address their specific challenge/need (informed by similar successful proposals)\n* **Relevant experience:** Match your background to their requirements (using PostgreSQL examples)\n* **Approach:** Brief outline of how you'd tackle their project (enhanced by knowledgebase insights)\n* **Value proposition:** What makes you the right choice (data-supported differentiation)\n* **Call to action:** Invite discussion\n\n**3. Key Principles:**\n* Demonstrate deep technical understanding enhanced by historical success data\n* Show you've read and understood their requirements (cross-reference with similar projects)\n* Highlight relevant past projects using PostgreSQL examples without being repetitive\n* Be specific about technologies and methodologies (informed by knowledgebase)\n* Avoid generic templates - make each proposal unique using data insights\n* Keep it concise but comprehensive (200-400 words)\n* Reference successful patterns from PostgreSQL proposal examples\n* Incorporate relevant technical insights from pgvector knowledge retrieval\n\n**4. Avoid:**\n* Over-formality or corporate speak\n* Desperate language or pleading\n* Generic copy-paste responses (even when using data, ensure personalization)\n* Underselling your expertise\n* Military background references\n* Ignoring successful patterns from historical data\n\n**5. Emphasize:**\n* Your AI agency leadership and multiple SaaS products in development\n* Full-stack capabilities with modern tech stack (React, Next.js, TypeScript, Supabase, Stripe)\n* RAG systems and vector database expertise (pgvector)\n* Experience with cutting-edge AI development tools (Lovable, Bolt, v0)\n* LangChain and n8n automation expertise with multiple deployed agents\n* Proven ability to build and launch complete SaaS solutions\n* Strong developer community presence (27k+ total followers across platforms)\n* Experience fixing and improving existing codebases\n* Custom enterprise solution development\n* Educational and communication skills demonstrated through content creation\n* International remote work experience with AI companies\n* Problem-solving mindset and business value focus\n\nGenerate proposals that position Kacper as the go-to expert for modern web development, AI solutions, and SaaS development challenges. Always use the available tools to enhance your proposals with data-driven insights and proven successful patterns."
         }
       },
       "id": "8098b9d0-2ea9-4542-8d45-2b89a37f61ed",
       "name": "AI Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "position": [
-        1000,
-        60
+        1220,
+        -20
       ],
       "typeVersion": 1.7
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-      "typeVersion": 1.1,
-      "position": [
-        0,
-        0
-      ],
-      "id": "5d954661-56d1-4952-8bf0-32aba873baae",
-      "name": "When chat message received",
-      "webhookId": "3b9b2767-6171-4b00-9dce-6c205beb23a4"
     },
     {
       "parameters": {
@@ -241,7 +334,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        880,
+        1100,
         300
       ],
       "id": "70885bc1-fdb7-4ce9-b480-b11a4a945b93",
@@ -255,64 +348,18 @@
     },
     {
       "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
         "tableName": "n8n_proposals_chat_histories"
       },
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        1040,
+        1260,
         320
       ],
       "id": "738c2d33-f130-4ac5-a292-4828000b5dd3",
       "name": "Postgres Chat Memory",
-      "credentials": {
-        "postgres": {
-          "id": "HN8MS4EGX4BmUQrw",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "agent": "conversationalAgent",
-        "promptType": "define",
-        "text": "JOB DESCRIPTION:\n{{ $('Analyze Job').item.json.jobDescription }}\n\nJOB TYPE: {{ $('Analyze Job').item.json.jobType }}\nMATCHED TECHNOLOGIES: {{ $('Analyze Job').item.json.matchedTech.join(', ') }}\n\nSIMILAR SUCCESSFUL PROPOSALS:\n{{ $('Find Similar Proposals').all().map((item, index) => `${index + 1}. ${item.json.content.substring(0, 300)}...`).join('\\n\\n') }}\n\nRECENT POSITIVE FEEDBACK:\n{{ $('Get Recent Feedback').all().map((item, index) => `${index + 1}. Rating: ${item.json.rating}/5 - ${item.json.feedback}`).join('\\n') }}",
-        "options": {
-          "humanMessage": "Create a compelling Upwork proposal for this job posting. Use the similar successful proposals and recent feedback to inform your response.\n\nRequirements:\n• Sound confident and expert-minded but approachable\n• Highlight relevant experience that matches the job requirements\n• Address their specific needs mentioned in the job description\n• Keep it between 200-400 words\n• Include a clear call to action\n• Make it ready to copy-paste into Upwork\n• Learn from the patterns in successful proposals and feedback\n\nFocus on demonstrating value and expertise rather than just listing qualifications.",
-          "systemMessage": "You are an expert job proposal writer for Kacper Hernacki, a full-stack developer and AI agency founder based in Łódź, Poland.\n\n🎯 LEARN FROM PROVIDED DATA: You have access to similar successful proposals and recent feedback. Use these to understand what works and continuously improve your proposals.\n\n👨‍💻 ABOUT KACPER:\n• 6+ years commercial software development, 11+ years coding experience\n• Founder of AIAdaptiv AI Agency - delivering cutting-edge AI solutions\n• Full-stack developer specializing in React, Next.js, TypeScript, Node.js\n• AI expertise: LangChain, n8n workflows, multiple LLMs, RAG systems\n• Currently building multiple SaaS products: QuickLaunch, RAGFlow, QuickBucks\n• Strong developer community: 27k+ followers across platforms\n• Recent experience at Swanlake AI (London) and Buyary (San Francisco)\n\n🛠️ CORE TECHNOLOGIES:\n• Frontend: React.js, Next.js, TypeScript, Tailwind CSS, ShadCN UI\n• Backend: Node.js, PostgreSQL, Supabase, pgvector\n• AI: LangChain, n8n, GPT, Claude, RAG systems, vector databases\n• Tools: Lovable, Bolt, v0, Stripe, Digital Ocean, Docker\n\n🏆 KEY ACHIEVEMENTS:\n• Founded and leading AIAdaptiv AI Agency\n• Building multiple SaaS products with modern tech stack\n• Fixed critical issues in existing codebases (Maildroppa)\n• Developed 60+ custom UI components at LicenseRocks\n• Created comprehensive RAG systems with vector databases\n• Strong online presence with educational content creation\n\n📝 PROPOSAL WRITING GUIDELINES:\n1. TONE: Confident, expert-minded, but approachable and professional\n2. STRUCTURE:\n   • Hook: Address their specific challenge/need\n   • Experience: Match background to their requirements\n   • Approach: Brief outline of solution\n   • Value: What makes Kacper the right choice\n   • CTA: Clear next step\n\n3. KEY PRINCIPLES:\n   • Show deep technical understanding\n   • Demonstrate you've read their requirements\n   • Be specific about technologies and methodologies\n   • Avoid generic responses - make each unique\n   • Highlight relevant projects without repetition\n   • Learn from successful patterns in provided examples\n\n4. EMPHASIZE:\n   • AI agency leadership and SaaS development\n   • Modern tech stack expertise (React, Next.js, TypeScript)\n   • RAG systems and vector database knowledge\n   • Experience with AI development tools (Lovable, Bolt, v0)\n   • Problem-solving mindset and business value focus\n   • International startup experience\n   • Developer community presence and communication skills\n\n5. AVOID:\n   • Over-formality or corporate speak\n   • Desperate language or pleading\n   • Generic copy-paste responses\n   • Underselling expertise\n   • Military background references\n\nGenerate proposals that position Kacper as the go-to expert for modern web development, AI solutions, and SaaS development challenges. Always incorporate insights from similar successful proposals and feedback to continuously improve."
-        }
-      },
-      "id": "fad6a244-15c8-4511-b33e-675eb8802fc3",
-      "name": "AI Proposal Generator",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "position": [
-        -240,
-        -300
-      ],
-      "typeVersion": 1.7
-    },
-    {
-      "parameters": {
-        "operation": "select",
-        "schema": {
-          "__rl": true,
-          "mode": "list",
-          "value": "public"
-        },
-        "table": {
-          "__rl": true,
-          "mode": "list",
-          "value": ""
-        }
-      },
-      "type": "n8n-nodes-base.postgresTool",
-      "typeVersion": 2.5,
-      "position": [
-        1380,
-        320
-      ],
-      "id": "4ced0536-ccc9-4636-a1a7-3623a4f20da2",
-      "name": "Postgres",
       "credentials": {
         "postgres": {
           "id": "HN8MS4EGX4BmUQrw",
@@ -331,7 +378,7 @@
         "messages": {
           "values": [
             {
-              "content": "={{ $json.chatInput }}"
+              "content": "={{ $json.message.text }}"
             },
             {
               "content": "You are a smart assistant that receives messages from a user. Your task is to classify each message into one of the following types:\n\n- Job Description — if the user is describing a job they want a proposal for.\n- Feedback — if the user is commenting on a previously generated output (e.g., saying it was good, bad, too long, missing something).\n- pgvector Command — if the user asks to store something in a knowledge base, vector DB, it clearly can not be example of a proposal,\n- store proposal example - if the user wants to store example proposal\n\nOnly output one of the following options:\n\"job_description\", \"pgvector_command\", \"store_proposal_example\", \"feedback\"",
@@ -344,7 +391,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        220,
+        440,
         0
       ],
       "id": "37fe8c1c-b507-45ba-8770-8aa09a9d6bc6",
@@ -439,7 +486,7 @@
                 "conditions": [
                   {
                     "id": "572405b1-bd97-4eb5-ac23-0e5c846c56b6",
-                    "leftValue": "{{ $json.message.content }}",
+                    "leftValue": "={{ $json.message.content }}",
                     "rightValue": "pgvector_command",
                     "operator": {
                       "type": "string",
@@ -458,7 +505,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        620,
+        840,
         -20
       ],
       "id": "bc7a0977-6c86-4d6f-b040-aa08d8190cf2",
@@ -477,7 +524,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        940,
+        1160,
         -220
       ],
       "id": "42cae7a9-d05e-45f3-8730-e4b3ed153a87",
@@ -491,12 +538,14 @@
     },
     {
       "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}",
         "tableName": "n8n_proposals_chat_histories"
       },
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        1060,
+        1280,
         -220
       ],
       "id": "20d9599f-6823-4d4d-85d1-7b83d97ffbf4",
@@ -518,14 +567,49 @@
         },
         "table": {
           "__rl": true,
+          "value": "upwork_proposals_examples",
           "mode": "list",
-          "value": ""
-        }
+          "cachedResultName": "upwork_proposals_examples"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('id', ``, 'number') }}",
+            "content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('content', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
       },
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.5,
       "position": [
-        1200,
+        1420,
         -220
       ],
       "id": "447a6897-5699-4be4-b8c1-f3f34a816a62",
@@ -539,13 +623,17 @@
     },
     {
       "parameters": {
-        "options": {}
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger').item.json.message.text }}",
+        "options": {
+          "systemMessage": "You are a helpful assistant. Retrieve from conversation the proposal example to save and add it to postgresql database. Do not change the content, insert it to content field word by word."
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        1020,
-        -420
+        1160,
+        -500
       ],
       "id": "6042cdad-6d05-4238-bda5-f0954a66a81a",
       "name": "Add Proposal Example to DB"
@@ -558,8 +646,8 @@
       "name": "Embeddings OpenAI",
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "position": [
-        1100,
-        1220
+        1200,
+        940
       ],
       "typeVersion": 1.1,
       "credentials": {
@@ -577,8 +665,8 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
       "typeVersion": 1,
       "position": [
-        1120,
-        1040
+        1240,
+        760
       ],
       "id": "0d722916-cc10-4869-a14c-1227de9effd9",
       "name": "Postgres PGVector Store",
@@ -591,55 +679,17 @@
     },
     {
       "parameters": {
-        "name": "aiAdaptivKnowledgebase",
-        "description": "Access aiAdaptiv knowledge base for retrieving any information he needs."
+        "name": "knowledgebase",
+        "description": "Access knowledge base for retrieving any information needed for better results."
       },
       "id": "a4e60db1-5ed0-423c-8255-28477b19d932",
       "name": "Knowledgebase",
       "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
       "position": [
-        1260,
-        800
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "agent": "conversationalAgent",
-        "promptType": "define",
-        "text": "={{ $json.body.message }}",
-        "options": {
-          "humanMessage": "TOOLS\n------\nAssistant can ask the user to use tools to look up information that may be helpful in answering the users original question. The tools the human can use are:\n\n{tools}\n\n{format_instructions}\n\nPRICING CONTEXT\n--------------\nYou have access to complete pricing information for aiAdaptiv services. Always provide specific costs and calculate total estimates when possible.\n\nUSER'S INPUT\n--------------------\nHere is the user's input about aiAdaptiv pricing (respond with a markdown code snippet of a json blob with a single action, and NOTHING else):\n\n{{input}}",
-          "systemMessage": "You are the aiAdaptiv Pricing Specialist, an expert assistant focused exclusively on providing pricing information and cost estimates for aiAdaptiv's AI services.\n\n**STRICT SCOPE LIMITATION:**\n- You ONLY answer questions related to aiAdaptiv services pricing\n- If asked about anything else, politely redirect: \"I specialize in aiAdaptiv pricing. What would you like to know about our AI chatbot, AI agent, MVP, or SaaS pricing?\"\n\n**YOUR EXPERTISE:**\nYou retrieve pricing information from the knowledge base and use it to provide accurate cost estimates and calculations.\n\n**YOUR APPROACH:**\n1. **Retrieve Pricing Data:** Use available tools to get current pricing information from the knowledge base\n2. **Calculate & Provide Totals:** Always sum up costs and give clear total estimates based on retrieved data\n3. **Ask Clarifying Questions:** When pricing depends on variables (like number of tools, specific features), ask specific questions to provide accurate estimates\n4. **Be Detailed:** Explain what's included in each price point based on the retrieved information\n5. **Guide Users:** Help them understand options and make informed decisions\n6. **Sum Multiple Services:** When users need multiple services, calculate the combined total cost\n\n**CALCULATION PROCESS:**\n- Retrieve relevant pricing information for requested services\n- Ask clarifying questions about scope (number of tools, specific features, etc.)\n- Calculate individual service costs\n- Sum up all components for a total estimate\n- Present breakdown and total clearly\n\n**RESPONSE PATTERN:**\n1. Acknowledge the request\n2. Retrieve pricing information using available tools\n3. Ask any necessary clarifying questions\n4. Calculate and present total costs with breakdown\n5. Explain what's included\n6. Offer to adjust estimate based on specific needs\n\nAlways provide specific numbers, ask relevant follow-up questions, and calculate totals when you have enough information from the knowledge base.\n"
-        }
-      },
-      "id": "377b9637-e351-461c-8fd0-1c8e3a45dcf8",
-      "name": "AI Agent1",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "position": [
-        1060,
+        1360,
         560
       ],
-      "typeVersion": 1.7
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "id": "f0f95172-60a3-48ee-8245-c4f882a5e781",
-      "name": "OpenAI1",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "position": [
-        820,
-        800
-      ],
-      "typeVersion": 1,
-      "credentials": {
-        "openAiApi": {
-          "id": "zwCoTxavt4ELUwZx",
-          "name": "OpenAi account"
-        }
-      }
+      "typeVersion": 1
     },
     {
       "parameters": {
@@ -649,8 +699,8 @@
       "name": "OpenAI Chat Model2",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "position": [
-        1440,
-        1080
+        1640,
+        840
       ],
       "typeVersion": 1,
       "credentials": {
@@ -659,38 +709,6 @@
           "name": "OpenAi account"
         }
       }
-    },
-    {
-      "parameters": {
-        "jsonMode": "expressionData",
-        "jsonData": "={{ $json.chatInput }}",
-        "options": {
-          "metadata": {
-            "metadataValues": [
-              {
-                "name": "label",
-                "value": "=aiadaptiv context"
-              },
-              {
-                "name": "id",
-                "value": "={{ $json.sessionId }}"
-              },
-              {
-                "name": "date",
-                "value": "={{$now}} "
-              }
-            ]
-          }
-        }
-      },
-      "id": "baeb2fbd-3ca0-4a70-81e1-22bb894b5611",
-      "name": "Default Data Loader",
-      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
-      "position": [
-        480,
-        300
-      ],
-      "typeVersion": 1
     },
     {
       "parameters": {
@@ -701,8 +719,8 @@
       "name": "Recursive Character Text Splitter",
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "position": [
-        140,
-        1320
+        460,
+        880
       ],
       "typeVersion": 1
     },
@@ -714,8 +732,8 @@
       "name": "Embeddings OpenAI1",
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "position": [
-        -40,
-        1140
+        280,
+        700
       ],
       "typeVersion": 1.2,
       "credentials": {
@@ -735,8 +753,8 @@
       "name": "Insert data to aiadaptiv context",
       "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
       "position": [
-        20,
-        940
+        480,
+        460
       ],
       "typeVersion": 1,
       "credentials": {
@@ -749,17 +767,17 @@
     {
       "parameters": {
         "jsonMode": "expressionData",
-        "jsonData": "={{ $json.chatInput }}",
+        "jsonData": "={{ $json.message.content }}",
         "options": {
           "metadata": {
             "metadataValues": [
               {
                 "name": "label",
-                "value": "=aiadaptiv context"
+                "value": "="
               },
               {
                 "name": "id",
-                "value": "={{ $json.sessionId }}"
+                "value": "="
               },
               {
                 "name": "date",
@@ -773,10 +791,407 @@
       "name": "Default Data Loader1",
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "position": [
-        160,
-        1140
+        480,
+        700
       ],
       "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "upwork_proposals_examples",
+          "mode": "list",
+          "cachedResultName": "upwork_proposals_examples"
+        },
+        "limit": 8,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        1800,
+        280
+      ],
+      "id": "4ced0536-ccc9-4636-a1a7-3623a4f20da2",
+      "name": "Postgres DB proposals examples",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        -20
+      ],
+      "id": "0532da99-6733-4325-88dc-1fc7b2885eeb",
+      "name": "Telegram Trigger",
+      "webhookId": "2fc28979-ba90-4ac2-8ce3-0654043e2f47",
+      "credentials": {
+        "telegramApi": {
+          "id": "DRL5Q2T6lZMLfs47",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2140,
+        -20
+      ],
+      "id": "91584bfe-d7d4-440a-808a-5859ddf88533",
+      "name": "Telegram",
+      "webhookId": "76533543-48a7-492c-b9bb-b58572f66c5d",
+      "credentials": {
+        "telegramApi": {
+          "id": "DRL5Q2T6lZMLfs47",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{ $('Telegram Trigger').item.json.message.text }}"
+            },
+            {
+              "content": "basing on user chat message prepare context to add it to knowledgebase. summarize content, leave the most essentials informations needed in further conversations.\n\nreturn informations as pure text",
+              "role": "system"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        0,
+        440
+      ],
+      "id": "27d1c0dc-69e5-47d0-a24e-1b0f1d52b8c9",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "response_ratings",
+          "mode": "list",
+          "cachedResultName": "response_ratings"
+        },
+        "limit": 5,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        1580,
+        280
+      ],
+      "id": "722a9b80-76be-4bfe-86ae-d083608feaae",
+      "name": "getResponsesRatings",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1600,
+        -500
+      ],
+      "id": "cd7d231f-19b6-4b27-bbb9-60c88c77d5fd",
+      "name": "Telegram1",
+      "webhookId": "76533543-48a7-492c-b9bb-b58572f66c5d",
+      "credentials": {
+        "telegramApi": {
+          "id": "DRL5Q2T6lZMLfs47",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "message": "How do you rate an answer?",
+        "responseType": "customForm",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "how do you rate the response"
+            }
+          ]
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeAmount": 0.3,
+              "resumeUnit": "minutes"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2340,
+        -20
+      ],
+      "id": "fbcf67d4-130e-4585-a8ab-f7410b86bcc5",
+      "name": "Telegram3",
+      "webhookId": "b5255f30-b2d0-4dc5-9d1d-c91be8fbe2ae",
+      "credentials": {
+        "telegramApi": {
+          "id": "DRL5Q2T6lZMLfs47",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=please add rating of this conversation to the database using a tool {{ $json.data['how do you rate the response'] }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2560,
+        -20
+      ],
+      "id": "e0871597-0773-4025-a885-47c3d7b39136",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2440,
+        200
+      ],
+      "id": "122bddb9-9122-40d3-881d-242466f29b92",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram').item.json.result.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2600,
+        200
+      ],
+      "id": "db9f6fe3-405d-45c4-81c5-13da8cda44cb",
+      "name": "Postgres Chat Memory2",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "response_ratings",
+          "mode": "list",
+          "cachedResultName": "response_ratings"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ parseInt($('Telegram').item.json.result.chat.id.toString() + $('Telegram').item.json.result.message_id.toString()) }}",
+            "conversation_id": "={{ $('Telegram').item.json.result.chat.id }}",
+            "message_id": "={{ $('Telegram').item.json.result.message_id }}",
+            "user_prompt": "={{ $('Telegram Trigger').item.json.message.text }}",
+            "ai_response": "={{ $('AI Agent').item.json.output }}",
+            "rating": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('rating', ``, 'number') }}",
+            "feedback": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('feedback', ``, 'string') }}",
+            "timestamp": "={{ $fromAI('timestamp', ``, 'string') }}",
+            "user_id": "1"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "user_prompt",
+              "displayName": "user_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ai_response",
+              "displayName": "ai_response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "rating",
+              "displayName": "rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "feedback",
+              "displayName": "feedback",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        2720,
+        200
+      ],
+      "id": "f84e47bb-fbfe-4dc8-8364-90b7bd10867c",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -792,7 +1207,7 @@
       "name": "upwork"
     }
   ],
-  "triggerCount": 3,
-  "updatedAt": "2025-06-13T17:05:49.000Z",
-  "versionId": "7cfdd05a-c0e8-4454-b8aa-3bea3bc49bc8"
+  "triggerCount": 1,
+  "updatedAt": "2025-06-14T14:55:02.000Z",
+  "versionId": "9bf28f8a-ab91-4353-b475-bb436ea1afea"
 }
