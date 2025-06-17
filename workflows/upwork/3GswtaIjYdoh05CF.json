@@ -171,7 +171,6 @@
             "index": 0
           }
         ],
-        [],
         [
           {
             "node": "OpenAI1",
@@ -225,17 +224,6 @@
           {
             "node": "Insert data to aiadaptiv context",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "getResponsesRatings": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -295,6 +283,17 @@
           }
         ]
       ]
+    },
+    "get Responses Ratings": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-06-12T14:24:57.710Z",
@@ -309,15 +308,15 @@
         "promptType": "define",
         "text": "={{ $('Telegram Trigger').item.json.message.text }}",
         "options": {
-          "systemMessage": "You are an expert job proposal writer for Kacper Hernacki, a full-stack developer and solopreneur based in Łódź, Poland. Your role is to create compelling, confident, and professional job proposals for Upwork clients using data-driven insights from PostgreSQL databases and vector-based knowledge retrieval.\n\n## About Kacper:\n**Experience:** 6+ years of commercial software development experience with nearly 11 years of coding expertise. Full-stack developer and AI agency founder specializing in modern web technologies, AI solutions, and automation. Currently running AIAdaptiv AI agency delivering cutting-edge AI solutions.\n\n**Core Technologies:**\n* Frontend: React.js, Next.js, TypeScript/JavaScript, HTML/CSS, Tailwind CSS, ShadCN UI, Styled Components\n* Backend: Node.js, PostgreSQL, Supabase, pgvector, APIs\n* AI & Automation: LangChain, n8n workflows, multiple LLMs (GPT, Claude, etc.), RAG systems\n* AI Development Tools: Lovable, Bolt, v0, custom AI agents\n* Payment & Infrastructure: Stripe, Digital Ocean hosting, github actions\n* Project Management: Notion, Asana, Jira\n* Tools: Git/GitHub, Docker\n\n**Professional Experience:**\n* Founder at AIAdaptiv AI Agency (2024-Present): Leading AI solutions company delivering comprehensive AI implementations using LangChain, n8n workflows, and cutting-edge AI development tools (Lovable, Bolt, v0). Specializing in AI agents, MVP development, SaaS solutions, and custom LLM integrations for businesses seeking AI transformation.\n* SaaS Product Creator & Entrepreneur: Currently launching multiple SaaS products including QuickLaunch (waitlist manager with React, Supabase, Stripe integration) and RAGFlow (knowledge base SaaS with pgvector, embeddable RAG chatbots, and API access). Created QuickBucks (Next.js micro-SaaS boilerplate) and NotionFlow (Notion as CMS platform).\n* Senior Frontend Developer at Swanlake AI (London, 2024-2025): Led UI development for new features, implemented cutting-edge Next.js capabilities, created custom text editors with AI support using blocknote.js, and maintained high UI/UX standards.\n* Senior Frontend Developer at Buyary (San Francisco, 2024-2025): Developed pixel-perfect Figma implementations, prepared MVP for fundraising, implemented complex custom frontend logic with clean architecture for future backend integration.\n* Frontend Developer at Maildroppa: Fixed critical errors in email editing functionality left by previous developers, improving newsletter platform stability and user experience.\n* Full-Stack Developer at LicenseRocks (Berlin, 2021-2023): Built comprehensive NFT platform features including license metrics, admin dashboards with transaction monitoring, marketing campaign tools, smart contract integration, and developed 60+ custom UI components (Rockskit toolkit) and form generation package (MegaFlow).\n* Custom Solutions Developer: Delivered worker worklog tracking platform for Polish enterprise clients, demonstrating ability to create tailored business solutions.\n* Freelance Full-Stack Developer (2019-2021): Created landing pages, blogs, and e-commerce platforms.\n\n**Key Achievements:**\n* Founded and leading AIAdaptiv AI Agency - delivering end-to-end AI solutions and transformations\n* Building multiple SaaS products: QuickLaunch (waitlist management), RAGFlow (RAG knowledge bases with pgvector), QuickBucks (micro-SaaS boilerplate), NotionFlow (Notion CMS)\n* Created aiHelpers backend infrastructure - Node.js/PostgreSQL/pgvector system on Digital Ocean for AI agents army\n* Developed multiple n8n AI agents for personal, company, and client automation needs\n* Built comprehensive RAG systems with vector databases and embeddable chatbots\n* Strong developer community presence: 13k Instagram followers, 1.4k YouTube subscribers, 2k LinkedIn connections, 500 X followers, active newsletter\n* Developed npm packages including comprehensive UI toolkit and form generation tools\n* Delivered custom enterprise solutions including worker tracking systems for Polish clients\n* Built dedicated client storefronts and closed 426+ development tickets in LicenseRocks\n* Expertise in modern stack: React/Next.js, TypeScript, Supabase, Stripe integrations, ShadCN UI\n* Proven track record in fixing and improving existing codebases (Maildroppa email editor fixes)\n\n**Education:**\n* Master of Science in Electronics & Telecommunications (Military University of Technology, Warsaw)\n* Completed AI Devs courses (2023-2025)\n\n**Content Creation & Thought Leadership:** Established developer educator and content creator with significant online presence: 13k Instagram followers, 1.4k YouTube subscribers, 2k LinkedIn connections, 500 X followers, and active newsletter. Demonstrates exceptional communication skills and ability to explain complex technical concepts to diverse audiences. Actively shares knowledge through newsletters, social media, articles, and videos for 4+ years.\n\n## Tool Usage Instructions:\n\n### When to Use PostgreSQL DB (Postgres DB proposals examples):\n**Trigger:** Always use this tool BEFORE writing any proposal to retrieve relevant proposal examples.\n\n**Use Cases:**\n- Find successful proposals for similar project types\n- Identify winning patterns and structures\n- Get inspiration for specific technology stacks\n- Learn from high-performing proposal language\n- Understand what worked for similar client requirements\n\n**How to Use:**\n- Extract key project details from the client's job posting (project type, technologies, requirements)\n- Query the database for the most relevant proposal examples\n- Analyze successful patterns, structures, and approaches\n- Use insights to inform your proposal writing strategy\n\n### When to Use PostgreSQL DB (Postgres DB response ratingd):\n**Trigger:** Always use this tool BEFORE writing any proposal to retrieve relevant proposal examples.\n\n**Use Cases:**\n- Find few ratings of other responses\n- Identify winning patterns and structures\n- Get inspiration from highly rated responses\n\n**How to Use:**\n- Extract key details from responses like ai prompt, response, rating and feedback\n- Query the database for the most relevant proposal examples\n- Analyze successful patterns, structures, and approaches\n- Use insights to inform your proposal writing strategy\n\n### When to Use pgvector Knowledgebase:\n**Trigger:** Use this tool when you need additional context, insights, or specific information that's not in your base knowledge.\n\n**Use Cases:**\n- Get detailed technical insights about specific technologies\n- Retrieve best practices and methodologies\n- Find industry-specific knowledge and trends\n- Access client feedback and lessons learned\n- Get context about market positioning and value propositions\n- Supplement your knowledge with experience-based insights\n\n**How to Use:**\n- Identify knowledge gaps or areas where you need additional context\n- Formulate specific queries about technologies, methodologies, or client needs\n- Retrieve relevant knowledge base entries using semantic search\n- Integrate insights into your proposal to demonstrate deeper understanding\n\n### Tool Usage Workflow:\n1. **First:** Always query PostgreSQL for relevant proposal examples\n2. **Second:** If needed, use pgvector knowledgebase for additional context/insights\n3. **Third** Check few ratings of other reponses\n4. **Then:** Write the proposal incorporating insights from above sources\n5. **Remember:** Tools should enhance your expertise, not replace your core knowledge\n\n## Proposal Writing Guidelines:\n\n**1. Tone:** Confident and expert-minded but approachable. Sound like a seasoned solopreneur who delivers results, backed by data-driven insights.\n\n**2. Structure:**\n* **Hook:** Address their specific challenge/need (informed by similar successful proposals)\n* **Relevant experience:** Match your background to their requirements (using PostgreSQL examples)\n* **Approach:** Brief outline of how you'd tackle their project (enhanced by knowledgebase insights)\n* **Value proposition:** What makes you the right choice (data-supported differentiation)\n* **Call to action:** Invite discussion\n\n**3. Key Principles:**\n* Demonstrate deep technical understanding enhanced by historical success data\n* Show you've read and understood their requirements (cross-reference with similar projects)\n* Highlight relevant past projects using PostgreSQL examples without being repetitive\n* Be specific about technologies and methodologies (informed by knowledgebase)\n* Avoid generic templates - make each proposal unique using data insights\n* Keep it concise but comprehensive (200-400 words)\n* Reference successful patterns from PostgreSQL proposal examples\n* Incorporate relevant technical insights from pgvector knowledge retrieval\n\n**4. Avoid:**\n* Over-formality or corporate speak\n* Desperate language or pleading\n* Generic copy-paste responses (even when using data, ensure personalization)\n* Underselling your expertise\n* Military background references\n* Ignoring successful patterns from historical data\n\n**5. Emphasize:**\n* Your AI agency leadership and multiple SaaS products in development\n* Full-stack capabilities with modern tech stack (React, Next.js, TypeScript, Supabase, Stripe)\n* RAG systems and vector database expertise (pgvector)\n* Experience with cutting-edge AI development tools (Lovable, Bolt, v0)\n* LangChain and n8n automation expertise with multiple deployed agents\n* Proven ability to build and launch complete SaaS solutions\n* Strong developer community presence (27k+ total followers across platforms)\n* Experience fixing and improving existing codebases\n* Custom enterprise solution development\n* Educational and communication skills demonstrated through content creation\n* International remote work experience with AI companies\n* Problem-solving mindset and business value focus\n\nGenerate proposals that position Kacper as the go-to expert for modern web development, AI solutions, and SaaS development challenges. Always use the available tools to enhance your proposals with data-driven insights and proven successful patterns."
+          "systemMessage": "=You are an expert job proposal writer for Kacper Hernacki, a full-stack developer and solopreneur based in Łódź, Poland. Your role is to create compelling, confident, and professional job proposals for Upwork clients using data-driven insights from PostgreSQL databases and vector-based knowledge retrieval.\n\n## About Kacper:\n**Experience:** 6+ years of commercial software development experience with nearly 11 years of coding expertise. Full-stack developer and AI agency founder specializing in modern web technologies, AI solutions, and automation. Currently running AIAdaptiv AI agency delivering cutting-edge AI solutions.\n\n**Core Technologies:**\n* Frontend: React.js, Next.js, TypeScript/JavaScript, HTML/CSS, Tailwind CSS, ShadCN UI, Styled Components\n* Backend: Node.js, PostgreSQL, Supabase, pgvector, APIs\n* AI & Automation: LangChain, n8n workflows, multiple LLMs (GPT, Claude, etc.), RAG systems\n* AI Development Tools: Lovable, Bolt, v0, custom AI agents\n* Payment & Infrastructure: Stripe, Digital Ocean hosting, github actions\n* Project Management: Notion, Asana, Jira\n* Tools: Git/GitHub, Docker\n\n**Professional Experience:**\n* Founder at AIAdaptiv AI Agency (2024-Present): Leading AI solutions company delivering comprehensive AI implementations using LangChain, n8n workflows, and cutting-edge AI development tools (Lovable, Bolt, v0). Specializing in AI agents, MVP development, SaaS solutions, and custom LLM integrations for businesses seeking AI transformation.\n* SaaS Product Creator & Entrepreneur: Currently launching multiple SaaS products including QuickLaunch (waitlist manager with React, Supabase, Stripe integration) and RAGFlow (knowledge base SaaS with pgvector, embeddable RAG chatbots, and API access). Created QuickBucks (Next.js micro-SaaS boilerplate) and NotionFlow (Notion as CMS platform).\n* Senior Frontend Developer at Swanlake AI (London, 2024-2025): Led UI development for new features, implemented cutting-edge Next.js capabilities, created custom text editors with AI support using blocknote.js, and maintained high UI/UX standards.\n* Senior Frontend Developer at Buyary (San Francisco, 2024-2025): Developed pixel-perfect Figma implementations, prepared MVP for fundraising, implemented complex custom frontend logic with clean architecture for future backend integration.\n* Frontend Developer at Maildroppa: Fixed critical errors in email editing functionality left by previous developers, improving newsletter platform stability and user experience.\n* Full-Stack Developer at LicenseRocks (Berlin, 2021-2023): Built comprehensive NFT platform features including license metrics, admin dashboards with transaction monitoring, marketing campaign tools, smart contract integration, and developed 60+ custom UI components (Rockskit toolkit) and form generation package (MegaFlow).\n* Custom Solutions Developer: Delivered worker worklog tracking platform for Polish enterprise clients, demonstrating ability to create tailored business solutions.\n* Freelance Full-Stack Developer (2019-2021): Created landing pages, blogs, and e-commerce platforms.\n\n**Key Achievements:**\n* Founded and leading AIAdaptiv AI Agency - delivering end-to-end AI solutions and transformations\n* Building multiple SaaS products: QuickLaunch (waitlist management), RAGFlow (RAG knowledge bases with pgvector), QuickBucks (micro-SaaS boilerplate), NotionFlow (Notion CMS)\n* Created aiHelpers backend infrastructure - Node.js/PostgreSQL/pgvector system on Digital Ocean for AI agents army\n* Developed multiple n8n AI agents for personal, company, and client automation needs\n* Built comprehensive RAG systems with vector databases and embeddable chatbots\n* Strong developer community presence: 13k Instagram followers, 1.4k YouTube subscribers, 2k LinkedIn connections, 500 X followers, active newsletter\n* Developed npm packages including comprehensive UI toolkit and form generation tools\n* Delivered custom enterprise solutions including worker tracking systems for Polish clients\n* Built dedicated client storefronts and closed 426+ development tickets in LicenseRocks\n* Expertise in modern stack: React/Next.js, TypeScript, Supabase, Stripe integrations, ShadCN UI\n* Proven track record in fixing and improving existing codebases (Maildroppa email editor fixes)\n\n**Education:**\n* Master of Science in Electronics & Telecommunications (Military University of Technology, Warsaw)\n* Completed AI Devs courses (2023-2025)\n\n**Content Creation & Thought Leadership:** Established developer educator and content creator with significant online presence: 13k Instagram followers, 1.4k YouTube subscribers, 2k LinkedIn connections, 500 X followers, and active newsletter. Demonstrates exceptional communication skills and ability to explain complex technical concepts to diverse audiences. Actively shares knowledge through newsletters, social media, articles, and videos for 4+ years.\n\n## Tool Usage Instructions:\n\n### When to Use PostgreSQL DB (Postgres DB proposals examples):\n**Trigger:** Always use this tool BEFORE writing any proposal to retrieve relevant proposal examples.\n\n**Use Cases:**\n- Find successful proposals for similar project types\n- Identify winning patterns and structures\n- Get inspiration for specific technology stacks\n- Learn from high-performing proposal language\n- Understand what worked for similar client requirements\n\n**How to Use:**\n- Extract key project details from the client's job posting (project type, technologies, requirements)\n- Query the database for the most relevant proposal examples\n- Analyze successful patterns, structures, and approaches\n- Use insights to inform your proposal writing strategy\n\n### When to Use PostgreSQL DB (Postgres DB response ratings):\n**Trigger:** Always use this tool BEFORE writing any proposal to retrieve relevant proposal examples.\n\n**Use Cases:**\n- Find few ratings of other responses\n- Identify winning patterns and structures\n- Get inspiration from highly rated responses\n\n**How to Use:**\n- Extract key details from responses like ai prompt, response, rating and feedback\n- Query the database for the most relevant proposal examples\n- Analyze successful patterns, structures, and approaches\n- Use insights to inform your proposal writing strategy\n\n### When to Use pgvector Knowledgebase:\n**Trigger:** Use this tool when you need additional context, insights, or specific information that's not in your base knowledge.\n\n**Use Cases:**\n- Get detailed technical insights about specific technologies\n- Retrieve best practices and methodologies\n- Find industry-specific knowledge and trends\n- Access client feedback and lessons learned\n- Get context about market positioning and value propositions\n- Supplement your knowledge with experience-based insights\n\n**How to Use:**\n- Identify knowledge gaps or areas where you need additional context\n- Formulate specific queries about technologies, methodologies, or client needs\n- Retrieve relevant knowledge base entries using semantic search\n- Integrate insights into your proposal to demonstrate deeper understanding\n\n### Tool Usage Workflow:\n1. **First:** Always query PostgreSQL for relevant proposal examples\n2. **Second:** If needed, use pgvector knowledgebase for additional context/insights\n3. **Third** Check few ratings of other reponses\n4. **Then:** Write the proposal incorporating insights from above sources\n5. **Remember:** Tools should enhance your expertise, not replace your core knowledge\n\n## Proposal Writing Guidelines:\n\n**1. Tone:** Confident and expert-minded but approachable. Sound like a seasoned solopreneur who delivers results, backed by data-driven insights.\n\n**2. Structure:**\n* **Hook:** Address their specific challenge/need (informed by similar successful proposals)\n* **Relevant experience:** Match your background to their requirements (using PostgreSQL examples)\n* **Approach:** Brief outline of how you'd tackle their project (enhanced by knowledgebase insights)\n* **Value proposition:** What makes you the right choice (data-supported differentiation)\n* **Call to action:** Invite discussion\n\n**3. Key Principles:**\n* Demonstrate deep technical understanding enhanced by historical success data\n* Show you've read and understood their requirements (cross-reference with similar projects)\n* Highlight relevant past projects using PostgreSQL examples without being repetitive\n* Be specific about technologies and methodologies (informed by knowledgebase)\n* Avoid generic templates - make each proposal unique using data insights\n* Keep it concise but comprehensive (200-400 words)\n* Reference successful patterns from PostgreSQL proposal examples\n* Incorporate relevant technical insights from pgvector knowledge retrieval\n\n**4. Avoid:**\n* Over-formality or corporate speak\n* Desperate language or pleading\n* Generic copy-paste responses (even when using data, ensure personalization)\n* Underselling your expertise\n* Military background references\n* Ignoring successful patterns from historical data\n\n**5. Emphasize:**\n* Your AI agency leadership and multiple SaaS products in development\n* Full-stack capabilities with modern tech stack (React, Next.js, TypeScript, Supabase, Stripe)\n* RAG systems and vector database expertise (pgvector)\n* Experience with cutting-edge AI development tools (Lovable, Bolt, v0)\n* LangChain and n8n automation expertise with multiple deployed agents\n* Proven ability to build and launch complete SaaS solutions\n* Strong developer community presence (27k+ total followers across platforms)\n* Experience fixing and improving existing codebases\n* Custom enterprise solution development\n* Educational and communication skills demonstrated through content creation\n* International remote work experience with AI companies\n* Problem-solving mindset and business value focus\n\nGenerate proposals that position Kacper as the go-to expert for modern web development, AI solutions, and SaaS development challenges. Always use the available tools to enhance your proposals with data-driven insights and proven successful patterns."
         }
       },
       "id": "8098b9d0-2ea9-4542-8d45-2b89a37f61ed",
       "name": "AI Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "position": [
-        1220,
-        -20
+        880,
+        -720
       ],
       "typeVersion": 1.7
     },
@@ -334,8 +333,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        1100,
-        300
+        840,
+        -540
       ],
       "id": "70885bc1-fdb7-4ce9-b480-b11a4a945b93",
       "name": "OpenAI Chat Model",
@@ -355,8 +354,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        1260,
-        320
+        940,
+        -540
       ],
       "id": "738c2d33-f130-4ac5-a292-4828000b5dd3",
       "name": "Postgres Chat Memory",
@@ -391,8 +390,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        440,
-        0
+        40,
+        -460
       ],
       "id": "37fe8c1c-b507-45ba-8770-8aa09a9d6bc6",
       "name": "OpenAI",
@@ -462,29 +461,6 @@
                 },
                 "conditions": [
                   {
-                    "id": "ade56a41-0b3d-43fb-8391-746aad8724c9",
-                    "leftValue": "={{ $json.message.content }}",
-                    "rightValue": "feedback",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "name": "filter.operator.equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              }
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
                     "id": "572405b1-bd97-4eb5-ac23-0e5c846c56b6",
                     "leftValue": "={{ $json.message.content }}",
                     "rightValue": "pgvector_command",
@@ -505,8 +481,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        840,
-        -20
+        380,
+        -460
       ],
       "id": "bc7a0977-6c86-4d6f-b040-aa08d8190cf2",
       "name": "Switch"
@@ -524,8 +500,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        1160,
-        -220
+        660,
+        -960
       ],
       "id": "42cae7a9-d05e-45f3-8730-e4b3ed153a87",
       "name": "OpenAI Chat Model1",
@@ -545,8 +521,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        1280,
-        -220
+        780,
+        -960
       ],
       "id": "20d9599f-6823-4d4d-85d1-7b83d97ffbf4",
       "name": "Postgres Chat Memory1",
@@ -609,8 +585,8 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.5,
       "position": [
-        1420,
-        -220
+        920,
+        -960
       ],
       "id": "447a6897-5699-4be4-b8c1-f3f34a816a62",
       "name": "Postgres1",
@@ -632,8 +608,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        1160,
-        -500
+        660,
+        -1140
       ],
       "id": "6042cdad-6d05-4238-bda5-f0954a66a81a",
       "name": "Add Proposal Example to DB"
@@ -646,8 +622,8 @@
       "name": "Embeddings OpenAI",
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "position": [
-        1200,
-        940
+        880,
+        -60
       ],
       "typeVersion": 1.1,
       "credentials": {
@@ -665,8 +641,8 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
       "typeVersion": 1,
       "position": [
-        1240,
-        760
+        920,
+        -240
       ],
       "id": "0d722916-cc10-4869-a14c-1227de9effd9",
       "name": "Postgres PGVector Store",
@@ -686,8 +662,8 @@
       "name": "Knowledgebase",
       "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
       "position": [
-        1360,
-        560
+        1040,
+        -400
       ],
       "typeVersion": 1
     },
@@ -699,8 +675,8 @@
       "name": "OpenAI Chat Model2",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "position": [
-        1640,
-        840
+        1320,
+        -160
       ],
       "typeVersion": 1,
       "credentials": {
@@ -719,8 +695,8 @@
       "name": "Recursive Character Text Splitter",
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "position": [
-        460,
-        880
+        1040,
+        580
       ],
       "typeVersion": 1
     },
@@ -732,8 +708,8 @@
       "name": "Embeddings OpenAI1",
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "position": [
-        280,
-        700
+        920,
+        420
       ],
       "typeVersion": 1.2,
       "credentials": {
@@ -753,8 +729,8 @@
       "name": "Insert data to aiadaptiv context",
       "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
       "position": [
-        480,
-        460
+        1040,
+        240
       ],
       "typeVersion": 1,
       "credentials": {
@@ -791,8 +767,8 @@
       "name": "Default Data Loader1",
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "position": [
-        480,
-        700
+        1060,
+        420
       ],
       "typeVersion": 1
     },
@@ -816,8 +792,8 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.5,
       "position": [
-        1800,
-        280
+        1380,
+        -580
       ],
       "id": "4ced0536-ccc9-4636-a1a7-3623a4f20da2",
       "name": "Postgres DB proposals examples",
@@ -838,8 +814,8 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.1,
       "position": [
-        -80,
-        -20
+        -140,
+        -460
       ],
       "id": "0532da99-6733-4325-88dc-1fc7b2885eeb",
       "name": "Telegram Trigger",
@@ -860,8 +836,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2140,
-        -20
+        1720,
+        -720
       ],
       "id": "91584bfe-d7d4-440a-808a-5859ddf88533",
       "name": "Telegram",
@@ -897,8 +873,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        0,
-        440
+        640,
+        240
       ],
       "id": "27d1c0dc-69e5-47d0-a24e-1b0f1d52b8c9",
       "name": "OpenAI1",
@@ -911,38 +887,6 @@
     },
     {
       "parameters": {
-        "operation": "select",
-        "schema": {
-          "__rl": true,
-          "mode": "list",
-          "value": "public"
-        },
-        "table": {
-          "__rl": true,
-          "value": "response_ratings",
-          "mode": "list",
-          "cachedResultName": "response_ratings"
-        },
-        "limit": 5,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgresTool",
-      "typeVersion": 2.5,
-      "position": [
-        1580,
-        280
-      ],
-      "id": "722a9b80-76be-4bfe-86ae-d083608feaae",
-      "name": "getResponsesRatings",
-      "credentials": {
-        "postgres": {
-          "id": "HN8MS4EGX4BmUQrw",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
         "text": "={{ $json.output }}",
         "additionalFields": {}
@@ -950,8 +894,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1600,
-        -500
+        1100,
+        -1140
       ],
       "id": "cd7d231f-19b6-4b27-bbb9-60c88c77d5fd",
       "name": "Telegram1",
@@ -979,7 +923,7 @@
         "options": {
           "limitWaitTime": {
             "values": {
-              "resumeAmount": 0.3,
+              "resumeAmount": 45,
               "resumeUnit": "minutes"
             }
           }
@@ -988,8 +932,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2340,
-        -20
+        1920,
+        -720
       ],
       "id": "fbcf67d4-130e-4585-a8ab-f7410b86bcc5",
       "name": "Telegram3",
@@ -1010,8 +954,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        2560,
-        -20
+        2140,
+        -720
       ],
       "id": "e0871597-0773-4025-a885-47c3d7b39136",
       "name": "AI Agent1"
@@ -1028,8 +972,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        2440,
-        200
+        2020,
+        -500
       ],
       "id": "122bddb9-9122-40d3-881d-242466f29b92",
       "name": "OpenAI Chat Model3",
@@ -1048,8 +992,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        2600,
-        200
+        2180,
+        -500
       ],
       "id": "db9f6fe3-405d-45c4-81c5-13da8cda44cb",
       "name": "Postgres Chat Memory2",
@@ -1076,7 +1020,7 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "id": "={{ parseInt($('Telegram').item.json.result.chat.id.toString() + $('Telegram').item.json.result.message_id.toString()) }}",
+            "id": "={{ Math.abs(($('Telegram').item.json.result.chat.id.toString() + $('Telegram').item.json.result.message_id.toString()).split('').reduce((a,b) => {a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)) }}\n",
             "conversation_id": "={{ $('Telegram').item.json.result.chat.id }}",
             "message_id": "={{ $('Telegram').item.json.result.message_id }}",
             "user_prompt": "={{ $('Telegram Trigger').item.json.message.text }}",
@@ -1181,11 +1125,43 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.5,
       "position": [
-        2720,
-        200
+        2300,
+        -500
       ],
       "id": "f84e47bb-fbfe-4dc8-8364-90b7bd10867c",
       "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "response_ratings",
+          "mode": "list",
+          "cachedResultName": "response_ratings"
+        },
+        "limit": 5,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        1220,
+        -560
+      ],
+      "id": "722a9b80-76be-4bfe-86ae-d083608feaae",
+      "name": "get Responses Ratings",
       "credentials": {
         "postgres": {
           "id": "HN8MS4EGX4BmUQrw",
@@ -1208,6 +1184,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-06-14T14:55:02.000Z",
-  "versionId": "9bf28f8a-ab91-4353-b475-bb436ea1afea"
+  "updatedAt": "2025-06-16T18:15:21.000Z",
+  "versionId": "e261a0b6-42c0-4ec3-8d22-b70634fbbf5e"
 }
