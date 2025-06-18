@@ -1,0 +1,198 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-17T08:06:51.339Z",
+  "id": "MhuX7N7mkU3mityY",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "firecrawl",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        -60
+      ],
+      "id": "d583a88e-6cea-473c-b3d6-794d86c2a957",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/extract",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"urls\": [\n    \"\"\n  ],\n  \"prompt\": \"<string>\",\n  \"schema\": {},\n  \"enableWebSearch\": false,\n  \"ignoreSitemap\": false,\n  \"includeSubdomains\": true,\n  \"showSources\": false,\n  \"scrapeOptions\": {\n    \"formats\": [\n      \"markdown\"\n    ],\n    \"onlyMainContent\": true,\n    \"includeTags\": [\n      \"<string>\"\n    ],\n    \"excludeTags\": [\n      \"<string>\"\n    ],\n    \"maxAge\": 0,\n    \"headers\": {},\n    \"waitFor\": 0,\n    \"mobile\": false,\n    \"skipTlsVerification\": false,\n    \"timeout\": 30000,\n    \"parsePDF\": true,\n    \"jsonOptions\": {\n      \"schema\": {},\n      \"systemPrompt\": \"<string>\",\n      \"prompt\": \"<string>\"\n    },\n    \"actions\": [\n      {\n        \"type\": \"wait\",\n        \"milliseconds\": 2,\n        \"selector\": \"#my-element\"\n      }\n    ],\n    \"location\": {\n      \"country\": \"US\",\n      \"languages\": [\n        \"en-US\"\n      ]\n    },\n    \"removeBase64Images\": true,\n    \"blockAds\": true,\n    \"proxy\": \"basic\",\n    \"changeTrackingOptions\": {\n      \"modes\": [\n        \"git-diff\"\n      ],\n      \"schema\": {},\n      \"prompt\": \"<string>\",\n      \"tag\": null\n    },\n    \"storeInCache\": true\n  },\n  \"ignoreInvalidURLs\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -520,
+        -60
+      ],
+      "id": "7b49a4e2-e479-46df-861d-408687add5e3",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "ddW2pufPSWpBy7RU",
+          "name": "Firecrawl"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -300,
+        -60
+      ],
+      "id": "860d24ce-518e-4c1a-bd38-2ec84ddf6886",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d3ffa17b-29e8-4042-b8a6-b266b8cf4d4b",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -80,
+        -60
+      ],
+      "id": "edb50edc-2b53-4eda-8c56-aa430e6f8552",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        160,
+        -240
+      ],
+      "id": "ceb9a172-cfcb-4b2a-b947-2a3fc18fcc38",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        140,
+        20
+      ],
+      "id": "8ac20c94-e763-417b-a311-c359cd399287",
+      "name": "Wait",
+      "webhookId": "db91a9cf-a96e-4f13-ba07-4416f6067297"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-17T15:38:49.000Z",
+  "versionId": "469d6e59-03f8-4610-933a-62ca5a682def"
+}
