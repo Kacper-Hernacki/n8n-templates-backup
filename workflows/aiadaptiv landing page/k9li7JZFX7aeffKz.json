@@ -125,6 +125,7 @@
   },
   "createdAt": "2025-05-19T09:46:36.092Z",
   "id": "k9li7JZFX7aeffKz",
+  "isArchived": false,
   "meta": {
     "templateCredsSetupCompleted": true
   },
@@ -393,7 +394,7 @@
       "name": "aiadaptiv landing page"
     }
   ],
-  "triggerCount": 3,
-  "updatedAt": "2025-06-11T10:22:17.000Z",
+  "triggerCount": 2,
+  "updatedAt": "2025-06-18T16:09:24.000Z",
   "versionId": "25385969-5eae-4fa0-bef4-46d4150bd7bf"
 }
