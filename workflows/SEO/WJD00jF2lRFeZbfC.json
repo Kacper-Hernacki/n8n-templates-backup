@@ -111,11 +111,6 @@
         ]
       ]
     },
-    "Thumbnail Description": {
-      "main": [
-        []
-      ]
-    },
     "GetInternalKnowledge": {
       "ai_tool": [
         [
@@ -130,6 +125,7 @@
   },
   "createdAt": "2025-05-20T15:00:44.508Z",
   "id": "WJD00jF2lRFeZbfC",
+  "isArchived": false,
   "meta": {
     "templateCredsSetupCompleted": true
   },
@@ -461,43 +457,13 @@
     },
     {
       "parameters": {
-        "modelId": {
-          "__rl": true,
-          "value": "gpt-4o-mini",
-          "mode": "list",
-          "cachedResultName": "GPT-4O-MINI"
-        },
-        "messages": {
-          "values": [
-            {}
-          ]
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1.8,
-      "position": [
-        2120,
-        880
-      ],
-      "id": "94bf84c2-27b8-4d66-ad0b-201489875233",
-      "name": "Thumbnail Description",
-      "credentials": {
-        "openAiApi": {
-          "id": "zwCoTxavt4ELUwZx",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "method": "POST",
         "url": "https://api.aiadaptiv.com/template/generate-thumbnail",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"title\": \"{{ $('Prepare topic').item.json.message.content.title }}\",\n  \"replicateResponse\": [\n    {\n      \"output\": \"{{ $json.output }}\"\n    }\n  ]\n} \n\n",
+        "jsonBody": "={\n  \"title\": \"{{ $('Prepare topic').item.json.message.content.title }}\",\n  \"replicateResponse\": [\n    {\n      \"output\": \"{{ $json.urls.stream }}\"\n    }\n  ]\n} \n\n",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -539,8 +505,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1880,
-        1160
+        1940,
+        2760
       ],
       "id": "669735cd-db3c-4452-a9ea-62f08b31274a",
       "name": "Post Newsletter"
@@ -554,8 +520,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1700,
-        1060
+        1760,
+        2660
       ],
       "id": "7916a906-a88d-49e9-a4ca-15abd8bb38e8",
       "name": "Sticky Note4"
@@ -569,8 +535,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        2760,
-        1060
+        2820,
+        2660
       ],
       "id": "fe6f1cfa-52cd-4fd0-90f4-5c6066b27e4b",
       "name": "Sticky Note5"
@@ -631,6 +597,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-06-11T12:45:34.000Z",
-  "versionId": "a02676a6-f316-4ad6-8a0e-ecdb7ee678f2"
+  "updatedAt": "2025-06-18T16:09:07.000Z",
+  "versionId": "442f865f-9a44-4c9d-9432-8d7a9bd660e6"
 }
