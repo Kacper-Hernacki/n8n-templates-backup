@@ -167,6 +167,7 @@
   },
   "createdAt": "2025-03-10T11:25:55.737Z",
   "id": "8L5dHVecY8G49Wx6",
+  "isArchived": false,
   "meta": null,
   "name": "Mails AI Agent",
   "nodes": [
