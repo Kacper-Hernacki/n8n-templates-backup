@@ -1,0 +1,35 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-06-18T16:05:32.988Z",
+  "id": "HNY1TBldikHaviKY",
+  "isArchived": false,
+  "meta": null,
+  "name": "update script in DO",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## How to update in DO n8n safely\n\nHow to Safely Update n8n on Digital Ocean with Docker Compose\nPrerequisites Check\n\nEnsure you have a Docker Compose setup (check for docker-compose.yml file)\nUse docker compose (with space) not docker-compose (with hyphen) for modern Docker installations\n\nStep-by-Step Update Process\n1. Navigate to your n8n directory\nbashcd /path/to/your/n8n-directory\n# Example: cd /home/kacper/n8n-docker-caddy\n2. Create a backup (recommended)\nbashmkdir -p ~/n8n-backup\ndocker run --rm -v n8n_data:/source -v ~/n8n-backup:/backup alpine tar czf /backup/n8n-backup-$(date +%Y%m%d).tar.gz -C /source .\n3. Update the containers\nbash# Pull latest images\ndocker compose pull\n\n# Restart with new versions\ndocker compose up -d\n4. Monitor the update\nbash# Check container status\ndocker compose ps\n\n# Watch startup logs\ndocker compose logs -f n8n\n5. Verify the update\nbash# Check version\ndocker compose exec n8n n8n --version\n\n# Test accessibility (replace with your domain)\ncurl -I https://your-domain.com\nWhat Gets Preserved Automatically\n\n✅ All workflows and automations\n✅ User accounts and credentials (encrypted)\n✅ Execution history\n✅ All configurations and settings\n✅ SSL certificates (via Caddy)\n\nSafety Notes\n\nData is stored in Docker volumes - these persist across container updates\nAlways backup before major updates - though data loss is extremely rare\nMonitor logs during startup - database migrations may run automatically\nYour n8n stays accessible - minimal downtime during the update\n\nCommon Issues & Solutions\n\nPort conflicts: Stop existing containers first with docker compose down\nPermission warnings: These are informational and don't affect functionality\nMigration messages: These are normal during updates - let them complete\nDeprecated warnings: Update your docker-compose.yml file as suggested\n\nThis process typically takes 2-5 minutes and ensures zero data loss while getting the latest n8n features and security updates.\n\nhttps://claude.ai/share/097b8255-69bc-49be-a2c7-a3f2d7e864df",
+        "height": 1060,
+        "width": 920
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        -180
+      ],
+      "id": "4a04e365-3f40-4de3-93f6-6dd260bd2bbd",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-18T16:08:52.000Z",
+  "versionId": "08cf89fa-2ac8-437c-89f1-f749ae523bf6"
+}
