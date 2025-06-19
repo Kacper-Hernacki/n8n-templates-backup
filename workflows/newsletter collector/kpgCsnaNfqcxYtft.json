@@ -114,6 +114,7 @@
   },
   "createdAt": "2025-03-10T11:19:18.158Z",
   "id": "kpgCsnaNfqcxYtft",
+  "isArchived": false,
   "meta": null,
   "name": "RAG knowledgebase (Newsletters)",
   "nodes": [
@@ -390,7 +391,7 @@
   "staticData": {
     "node:Gmail Trigger": {
       "Gmail Trigger": {
-        "lastTimeChecked": 1747377251,
+        "lastTimeChecked": 1750262569,
         "possibleDuplicates": [
           "195a33fc310b3083",
           "195a30cf772a8214"
