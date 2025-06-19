@@ -404,6 +404,7 @@
   },
   "createdAt": "2025-03-12T16:55:11.715Z",
   "id": "I1eepaQ8D85KCFUQ",
+  "isArchived": false,
   "meta": null,
   "name": "Agentic RAG",
   "nodes": [
