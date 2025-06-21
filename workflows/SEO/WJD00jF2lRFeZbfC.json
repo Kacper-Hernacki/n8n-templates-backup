@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -120,6 +120,66 @@
             "index": 0
           }
         ]
+      ]
+    },
+    "Generate Thumbnail": {
+      "main": [
+        [
+          {
+            "node": "Download Thumbnail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Thumbnail": {
+      "main": [
+        [
+          {
+            "node": "Upload thumbnail to media",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload thumbnail to media": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Set Body to Post Blog Article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Body to Post Blog Article": {
+      "main": [
+        [
+          {
+            "node": "Post Article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Article": {
+      "main": [
+        []
       ]
     }
   },
@@ -380,7 +440,7 @@
         "messages": {
           "values": [
             {
-              "content": "You are an expert SEO content writer.\nYou will be given a title, a description, and an outline as a list of chapters, and your job is to write an excellent blog post on the topic.\n\nYou will also be given some related research along with its cited sources. You should include any relevant parts of this research in the blog post along with their links.\n\nDO:\n- Write a long, detailed, in-depth chapter for each chapter in an outline.\n- Include relevant parts of the research you are provided.\n\nDON'T:\n- Write shallow, short, and generic.",
+              "content": "You are an expert SEO content writer.\nYou will be given a title, a description, and an outline as a list of chapters, and your job is to write an excellent blog post on the topic.\n\nYou will also be given some related research along with its cited sources. You should include any relevant parts of this research in the blog post along with their links.\n\n**DO:**\n- Write a long, detailed, in-depth chapter for each chapter in an outline.\n- Include relevant parts of the research you are provided.\n- **IMPORTANT: Format the entire blog post using standard Markdown syntax.**\n    - **Use '#' or '##' for main section headings and sub-headings (e.g., '# Chapter Title' or '## Sub-heading').**\n    - **Use '---' (three hyphens) on a new line for horizontal rules/separators.**\n    - **Use '*' or '-' for bullet points.**\n    - **Ensure there is a blank line before and after headings, and before and after horizontal rules.**\n    - **Ensure there is a blank line between paragraphs.**\n    - **For bold text, use '**double asterisks**'. For italics, use '*single asterisks*'.**\n    - **For links, use '[link text](URL)'.**\n\n**DON'T:**\n- Write shallow, short, and generic.\n- **Do NOT use Unicode characters like '•' for bullet points or '──────────────────────────────' for horizontal rules.**\n- **Do NOT use numbered lists (e.g., '1. Introduction') as headings. Use Markdown heading syntax instead.**",
               "role": "system"
             },
             {
@@ -499,47 +559,18 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1940,
-        2760
-      ],
-      "id": "669735cd-db3c-4452-a9ea-62f08b31274a",
-      "name": "Post Newsletter"
-    },
-    {
-      "parameters": {
         "content": "## Generate & Publish Newsletter",
         "height": 340,
-        "width": 500
+        "width": 1220
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1760,
-        2660
+        2720,
+        380
       ],
       "id": "7916a906-a88d-49e9-a4ca-15abd8bb38e8",
       "name": "Sticky Note4"
-    },
-    {
-      "parameters": {
-        "content": "## Publish to Social Medias",
-        "height": 340,
-        "width": 500
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        2820,
-        2660
-      ],
-      "id": "fe6f1cfa-52cd-4fd0-90f4-5c6066b27e4b",
-      "name": "Sticky Note5"
     },
     {
       "parameters": {
@@ -581,13 +612,127 @@
       ],
       "id": "4b3f9047-7022-4c89-92c2-5096565d3e3b",
       "name": "GetInternalKnowledge"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2740,
+        460
+      ],
+      "id": "5ea3a527-0aac-47b8-b57e-390124c4c3c0",
+      "name": "Download Thumbnail"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://stylish-bloom-8ec964fd40.strapiapp.com/api/upload",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "strapiTokenApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "files",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2960,
+        460
+      ],
+      "id": "71123855-3a04-4891-87c8-3bc7f93e0667",
+      "name": "Upload thumbnail to media",
+      "credentials": {
+        "strapiTokenApi": {
+          "id": "QW6JIjZLISUmCmJQ",
+          "name": "Strapi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  json: {\n    formattedRichText: $('Write post').first().json.message.content // Or wherever your raw markdown is coming from\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3240,
+        460
+      ],
+      "id": "06344427-e98a-4d01-a206-31da3b7d7b17",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fd61d529-efc7-4262-b7ea-106624458f7e",
+              "name": "lexicalBodyString",
+              "value": "={{($('Code').item.json.formattedRichText) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3460,
+        460
+      ],
+      "id": "8515fef5-a622-4027-ad3c-41a9ca32c3f8",
+      "name": "Set Body to Post Blog Article"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://stylish-bloom-8ec964fd40.strapiapp.com/api/articles",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "strapiTokenApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{\nJSON.stringify({\n  \"data\": {\n    \"title\": $('Prepare topic').item.json.message.content.title,\n    \"description\": $('Prepare topic').item.json.message.content.content_description.substring(0, 76) + '...',\n    \"slug\": $('Prepare topic').item.json.message.content.title\n  .toLowerCase()\n  .replace(/[^a-z0-9-]/g, '')\n  .replace(/-+/g, '-')\n  .replace(/^-|-$/g, ''),\n    \"cover\": {\n      \"id\": $('Upload thumbnail to media').item.json.id\n    },\n    \"blocks\": [\n      {\n        \"__component\": \"shared.rich-text\",\n        \"body\": $('Set Body to Post Blog Article').item.json.lexicalBodyString\n      }\n    ]\n  }\n})\n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3720,
+        460
+      ],
+      "id": "669735cd-db3c-4452-a9ea-62f08b31274a",
+      "name": "Post Article",
+      "credentials": {
+        "strapiTokenApi": {
+          "id": "QW6JIjZLISUmCmJQ",
+          "name": "Strapi account"
+        }
+      }
     }
   ],
   "pinData": {},
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "tags": [
     {
       "createdAt": "2025-05-20T15:03:28.871Z",
@@ -596,7 +741,7 @@
       "name": "SEO"
     }
   ],
-  "triggerCount": 0,
-  "updatedAt": "2025-06-18T16:09:07.000Z",
-  "versionId": "442f865f-9a44-4c9d-9432-8d7a9bd660e6"
+  "triggerCount": 1,
+  "updatedAt": "2025-06-20T18:17:42.000Z",
+  "versionId": "b168646a-10a9-4348-a819-779b7fd943ec"
 }
