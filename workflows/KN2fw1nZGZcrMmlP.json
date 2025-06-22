@@ -1,0 +1,1311 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Run Ad Library Scraper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter For Likes": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Video Ads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Image Ads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Text Ads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Text Ads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Image Ads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Video": {
+      "main": [
+        [
+          {
+            "node": "Upload Video to Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Video to Drive": {
+      "main": [
+        [
+          {
+            "node": "Begin Gemini Upload Session",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Video Ads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Ad Library Scraper": {
+      "main": [
+        [
+          {
+            "node": "Filter For Likes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Image Ads": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Analyze Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Text Ads": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Output Text Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Video Ads": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Download Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Begin Gemini Upload Session": {
+      "main": [
+        [
+          {
+            "node": "Redownload Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redownload Video": {
+      "main": [
+        [
+          {
+            "node": "Upload Video to Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Video to Gemini": {
+      "main": [
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Video with Gemini": {
+      "main": [
+        [
+          {
+            "node": "Output Video Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output Video Summary": {
+      "main": [
+        [
+          {
+            "node": "Add as Type = Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add as Type = Video": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Image": {
+      "main": [
+        [
+          {
+            "node": "Output Image Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output Image Summary": {
+      "main": [
+        [
+          {
+            "node": "Add as Type = Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add as Type = Image": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output Text Summary": {
+      "main": [
+        [
+          {
+            "node": "Add as Type = Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add as Type = Text": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Analyze Video with Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-21T18:03:44.770Z",
+  "id": "KN2fw1nZGZcrMmlP",
+  "isArchived": false,
+  "meta": null,
+  "name": "FB Ad Spy Tool",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        20,
+        420
+      ],
+      "id": "a10d51a6-dded-4db9-bcd6-4f1f213697fd",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.snapshot.videos[0].video_sd_url }}",
+                    "rightValue": "=https://video-",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "9dbbe6e7-fd80-44ab-88f0-ab438cfd997e"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Video"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0b7cee75-ca57-4946-971e-1f526b49324f",
+                    "leftValue": "={{ $json.snapshot.images[0].original_image_url }}",
+                    "rightValue": "https://scontent-ho",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Image"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "Text"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        680,
+        420
+      ],
+      "id": "4cec726b-b119-4d26-8f08-866498c4d5eb",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1d74591-13e8-4c79-9a34-117cc6816dfb",
+              "leftValue": "={{ $json.advertiser.ad_library_page_info.page_info.likes }}",
+              "rightValue": 1000,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        460,
+        420
+      ],
+      "id": "796ea868-97af-4c02-a56f-6f463439004b",
+      "name": "Filter For Likes"
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1700,
+        720
+      ],
+      "id": "de264e80-97d1-4c06-8b67-23aa050bafff",
+      "name": "Wait",
+      "webhookId": "1cda7407-6321-4d8d-b532-19f42514eb63"
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1960,
+        420
+      ],
+      "id": "b35a2147-5dcc-4e1c-8a37-32f9f3c3ec94",
+      "name": "Wait1",
+      "webhookId": "1cda7407-6321-4d8d-b532-19f42514eb63"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.snapshot.videos[0].video_sd_url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        40
+      ],
+      "id": "a40982c2-9631-49f9-a912-471c9f078a82",
+      "name": "Download Video"
+    },
+    {
+      "parameters": {
+        "name": "Example File",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "root",
+          "cachedResultName": "/ (Root folder)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1420,
+        40
+      ],
+      "id": "991d4b08-6021-4bd7-a2f5-8694c555033f",
+      "name": "Upload Video to Drive"
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3420,
+        120
+      ],
+      "id": "c59927dd-e14c-4b27-a65f-0582f4a08901",
+      "name": "Wait2",
+      "webhookId": "1cda7407-6321-4d8d-b532-19f42514eb63"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/XtaWFhbtfxyzqrFmd/run-sync-get-dataset-items",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer <yourApiKey>"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \"count\": 200,\n    \"period\": \"last7d\",\n    \"scrapeAdDetails\": true,\n    \"scrapePageAds.activeStatus\": \"active\",\n    \"urls\": [\n        {\n            \"url\": \"https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=US&is_targeted_country=false&media_type=all&q=%22ai%20automation%22&search_type=keyword_exact_phrase&start_date[min]=2025-06-12&start_date[max]\",\n            \"method\": \"GET\"\n        }\n    ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        420
+      ],
+      "id": "9faaf7b6-0717-4fea-83ab-ae2f468d173a",
+      "name": "Run Ad Library Scraper"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        900,
+        420
+      ],
+      "id": "365da3c9-c3c4-4d3f-a6f9-e7a6f7638674",
+      "name": "Loop Over Image Ads"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        900,
+        720
+      ],
+      "id": "edc26188-fbd7-471a-a6be-37aa5c3ead4c",
+      "name": "Loop Over Text Ads"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        900,
+        120
+      ],
+      "id": "c1f5c160-66b0-42dd-9bdf-778988a978c4",
+      "name": "Loop Over Video Ads"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/upload/v1beta/files",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "<yourApiKey>"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Goog-Upload-Protocol",
+              "value": "resumable"
+            },
+            {
+              "name": "X-Goog-Upload-Command",
+              "value": "start"
+            },
+            {
+              "name": "X-Goog-Upload-Header-Content-Length",
+              "value": "={{ $json.size }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1620,
+        40
+      ],
+      "id": "93e10b16-75ee-4ddb-bf79-34b0376d4f94",
+      "name": "Begin Gemini Upload Session"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Upload Video to Drive').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1840,
+        40
+      ],
+      "id": "e5be5890-3345-49e9-902d-8d8f659e0580",
+      "name": "Redownload Video"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.headers['x-goog-upload-url'] }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "<yourApiKey>"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Length",
+              "value": "={{ $('Upload Video to Drive').item.json.size }}"
+            },
+            {
+              "name": "X-Goog-Upload-Offset",
+              "value": "0"
+            },
+            {
+              "name": "X-Goog-Upload-Command",
+              "value": "upload, finalize"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2060,
+        40
+      ],
+      "id": "72260c58-e7e0-4e8b-b636-1e5bceae5757",
+      "name": "Upload Video to Gemini"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "<yourApiKey>"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"Describe this video in excruciating detail. Do not output anything but the description of the video.\"\n        },\n        {\n          \"file_data\": {\n            \"mime_type\": \"{{ $json.file.mimeType }}\",\n            \"file_uri\": \"{{ $json.file.uri }}\"\n          }\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2540,
+        40
+      ],
+      "id": "4673918f-03cc-4fb3-8bf4-9ffb355b9dfb",
+      "name": "Analyze Video with Gemini",
+      "retryOnFail": true,
+      "waitBetweenTries": 15
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You're a helpful, intelligent advertisement analysis bot. You analyze advertisements.",
+              "role": "system"
+            },
+            {
+              "content": "Your task is to take as input a scraped javascript object from an advertisement in the FB ad library, and then summarize it + spin (repurpose, rewrite) the ad copy. \n\nYou're doing this for strategic intelligence. We run an advertising agency and we're always looking at what our competitor advertisers are doing.\n\nOutput your results in this JSON format:\n\n{\"summary\":\"\",\"rewrittenAdCopy\":\"\"}\n\nRules:\n- The intended style and attitude is generally analytical, inquisitive, and precise, despite exploring complex topics, in the “classic style” of Western writing.\nthe level of formality should be inverse to the topic’s novelty: the weirder something is, the more formal. For ‘safer’ topics, one should cut loose with the humor, epigraphs, typographical stunts and experiments, etc.\n- Avoid hedging and qualifying, even at the risk of making overly-strong claims. It is a slippery slope.\n- Use casual abbreviations (like San Francisco -> SF, thanks -> thx, question -> q ), casual contractions (like \"I've\"), shortened forms of common nouns (like \"info\", \"vid\", \"app\") as this signals more human written speech. Do not use em dashes (eliminate — from your vocabulary completely!\n- No rhetorical questions.\n- Make your summary extremely comprehensive and analytical."
+            },
+            {
+              "content": "=JSON scrape:\n\n{{ $('Loop Over Video Ads').item.json.toJsonString() }}\n\nVideo description:\n\n{{ $json.candidates[0].content.parts[0].text }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2820,
+        40
+      ],
+      "id": "41b77d63-9634-41f2-a1d9-6d15ad7fa226",
+      "name": "Output Video Summary"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Cgm0DfKQxgtsjdw6h2LFVBtZnLAioTntzdXgfJCJIqo",
+          "mode": "list",
+          "cachedResultName": "Facebook Ad Library Analyzer DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Cgm0DfKQxgtsjdw6h2LFVBtZnLAioTntzdXgfJCJIqo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Ads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Cgm0DfKQxgtsjdw6h2LFVBtZnLAioTntzdXgfJCJIqo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ad_archive_id": "={{ $('Loop Over Video Ads').item.json.ad_archive_id }}",
+            "page_id": "={{ $('Loop Over Video Ads').item.json.page_id }}",
+            "date_added": "={{ $now }}",
+            "page_name": "={{ $('Loop Over Video Ads').item.json.snapshot.page_name }}",
+            "summary": "={{ $json.message.content.summary }}",
+            "rewritten_ad_copy": "={{ $json.message.content.rewrittenAdCopy }}",
+            "page_url": "={{ $('Loop Over Video Ads').item.json.snapshot.page_profile_uri }}",
+            "image_prompt": "=",
+            "type": "video",
+            "video_prompt": "={{ $('Analyze Video with Gemini').item.json.candidates[0].content.parts[0].text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ad_archive_id",
+              "displayName": "ad_archive_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "page_id",
+              "displayName": "page_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "date_added",
+              "displayName": "date_added",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "page_name",
+              "displayName": "page_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "page_url",
+              "displayName": "page_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "rewritten_ad_copy",
+              "displayName": "rewritten_ad_copy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "image_prompt",
+              "displayName": "image_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "video_prompt",
+              "displayName": "video_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        3180,
+        40
+      ],
+      "id": "d7f94415-b380-414b-9617-5d14ffdb73df",
+      "name": "Add as Type = Video"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "text": "What's in this image? Be extremely comprehensive.",
+        "imageUrls": "={{ $json.snapshot.images[0].original_image_url }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1200,
+        340
+      ],
+      "id": "dc03b34e-eb44-479f-8a53-13ee9e4328f7",
+      "name": "Analyze Image"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You're a helpful, intelligent advertisement analysis bot. You analyze advertisements.",
+              "role": "system"
+            },
+            {
+              "content": "Your task is to take as input a scraped javascript object from an advertisement in the FB ad library, and then summarize it + spin (repurpose, rewrite) the ad copy. \n\nYou're doing this for strategic intelligence. We run an advertising agency and we're always looking at what our competitor advertisers are doing.\n\nOutput your results in this JSON format:\n\n{\"summary\":\"\",\"rewrittenAdCopy\":\"\"}\n\nRules:\n- The intended style and attitude is generally analytical, inquisitive, and precise, despite exploring complex topics, in the “classic style” of Western writing.\nthe level of formality should be inverse to the topic’s novelty: the weirder something is, the more formal. For ‘safer’ topics, one should cut loose with the humor, epigraphs, typographical stunts and experiments, etc.\n- Avoid hedging and qualifying, even at the risk of making overly-strong claims. It is a slippery slope.\n- Use casual abbreviations (like San Francisco -> SF, thanks -> thx, question -> q ), casual contractions (like \"I've\"), shortened forms of common nouns (like \"info\", \"vid\", \"app\") as this signals more human written speech. Do not use em dashes (eliminate — from your vocabulary completely!\n- No rhetorical questions.\n- Make your summary extremely comprehensive and analytical."
+            },
+            {
+              "content": "=JSON scrape:\n\n{{ $('Loop Over Image Ads').item.json.toJsonString() }}\n\nImage description:\n\n{{ $json.content }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1400,
+        340
+      ],
+      "id": "cd4a4858-e9d8-4525-8315-3f2820ca8d6d",
+      "name": "Output Image Summary"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Cgm0DfKQxgtsjdw6h2LFVBtZnLAioTntzdXgfJCJIqo",
+          "mode": "list",
+          "cachedResultName": "Facebook Ad Library Analyzer DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Cgm0DfKQxgtsjdw6h2LFVBtZnLAioTntzdXgfJCJIqo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Ads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Cgm0DfKQxgtsjdw6h2LFVBtZnLAioTntzdXgfJCJIqo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ad_archive_id": "={{ $('Loop Over Image Ads').item.json.ad_archive_id }}",
+            "page_id": "={{ $('Loop Over Image Ads').item.json.page_id }}",
+            "date_added": "={{ $now }}",
+            "page_name": "={{ $('Loop Over Image Ads').item.json.snapshot.page_name }}",
+            "summary": "={{ $json.message.content.summary }}",
+            "rewritten_ad_copy": "={{ $json.message.content.rewrittenAdCopy }}",
+            "page_url": "={{ $('Loop Over Image Ads').item.json.snapshot.page_profile_uri }}",
+            "image_prompt": "={{ $('Analyze Image').item.json.content }}",
+            "type": "image"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ad_archive_id",
+              "displayName": "ad_archive_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "page_id",
+              "displayName": "page_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "date_added",
+              "displayName": "date_added",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "page_name",
+              "displayName": "page_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "page_url",
+              "displayName": "page_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "rewritten_ad_copy",
+              "displayName": "rewritten_ad_copy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "image_prompt",
+              "displayName": "image_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "video_prompt",
+              "displayName": "video_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1760,
+        340
+      ],
+      "id": "c8e7b4e8-a8cf-4a27-83dd-0095d47f558b",
+      "name": "Add as Type = Image"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You're a helpful, intelligent advertisement analysis bot. You analyze advertisements.",
+              "role": "system"
+            },
+            {
+              "content": "Your task is to take as input a scraped javascript object from an advertisement in the FB ad library, and then summarize it + spin (repurpose, rewrite) the ad copy. \n\nYou're doing this for strategic intelligence. We run an advertising agency and we're always looking at what our competitor advertisers are doing.\n\nOutput your results in this JSON format:\n\n{\"summary\":\"\",\"rewrittenAdCopy\":\"\"}\n\nRules:\n- The intended style and attitude is generally analytical, inquisitive, and precise, despite exploring complex topics, in the “classic style” of Western writing.\nthe level of formality should be inverse to the topic’s novelty: the weirder something is, the more formal. For ‘safer’ topics, one should cut loose with the humor, epigraphs, typographical stunts and experiments, etc.\n- Avoid hedging and qualifying, even at the risk of making overly-strong claims. It is a slippery slope.\n- Use casual abbreviations (like San Francisco -> SF, thanks -> thx, question -> q ), casual contractions (like \"I've\"), shortened forms of common nouns (like \"info\", \"vid\", \"app\") as this signals more human written speech. Do not use em dashes (eliminate — from your vocabulary completely!\n- No rhetorical questions.\n- Make your summary extremely comprehensive and analytical."
+            },
+            {
+              "content": "={{ $json.toJsonString() }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1120,
+        640
+      ],
+      "id": "e38905f7-7469-4c7d-9dcf-caa6200d3eb9",
+      "name": "Output Text Summary"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Cgm0DfKQxgtsjdw6h2LFVBtZnLAioTntzdXgfJCJIqo",
+          "mode": "list",
+          "cachedResultName": "Facebook Ad Library Analyzer DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Cgm0DfKQxgtsjdw6h2LFVBtZnLAioTntzdXgfJCJIqo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Ads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Cgm0DfKQxgtsjdw6h2LFVBtZnLAioTntzdXgfJCJIqo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ad_archive_id": "={{ $('Loop Over Text Ads').item.json.ad_archive_id }}",
+            "page_id": "={{ $('Loop Over Text Ads').item.json.page_id }}",
+            "type": "text",
+            "date_added": "={{ $now }}",
+            "page_name": "={{ $('Loop Over Text Ads').item.json.snapshot.page_name }}",
+            "summary": "={{ $json.message.content.summary }}",
+            "rewritten_ad_copy": "={{ $json.message.content.rewrittenAdCopy }}",
+            "page_url": "={{ $('Loop Over Text Ads').item.json.snapshot.page_profile_uri }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ad_archive_id",
+              "displayName": "ad_archive_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "page_id",
+              "displayName": "page_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "date_added",
+              "displayName": "date_added",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "page_name",
+              "displayName": "page_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "page_url",
+              "displayName": "page_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "rewritten_ad_copy",
+              "displayName": "rewritten_ad_copy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "image_prompt",
+              "displayName": "image_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "video_prompt",
+              "displayName": "video_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1480,
+        640
+      ],
+      "id": "5207e6b1-c5c5-49ba-b271-dcb147539e52",
+      "name": "Add as Type = Text"
+    },
+    {
+      "parameters": {
+        "content": "## AI Facebook Ad Spy Tool\n\nSteps:\n1. Add API key to \"Run Ad Library Scraper\" node\n2. Add filtering threshold in \"Filter For Likes\" node\n3. Add Gemini API key to \"Begin Gemini Upload Session\", \"Upload Video to Gemini\", and \"Analyze Video with Gemini\" nodes\n4. Adjust prompts to AI as needed and swap in your Google Sheet in the Google Sheets nodes.\n\n\n### Happy building!",
+        "height": 260,
+        "width": 700
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0222ccbe-f298-41be-b4a9-63c0a7664c21",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2280,
+        40
+      ],
+      "id": "5bbc11e8-7869-410a-bc23-eb087942e779",
+      "name": "Wait3",
+      "webhookId": "ac11c85a-5b73-4a29-9667-615e811a5ad8"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-21T18:03:44.000Z",
+  "versionId": "c9d2923e-8b88-444b-bce6-d8db273ebbe6"
+}
