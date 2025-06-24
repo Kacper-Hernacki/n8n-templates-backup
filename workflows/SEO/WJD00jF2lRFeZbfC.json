@@ -722,6 +722,119 @@
           "name": "Strapi account"
         }
       }
+    },
+    {
+      "parameters": {
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        3140,
+        1740
+      ],
+      "id": "0e7a311d-02a9-4c00-8438-0d441b1ae497",
+      "name": "X"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "channelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        3140,
+        1920
+      ],
+      "id": "cbf1c1d9-b6ad-4251-a893-6e10adfc92f0",
+      "name": "Discord",
+      "webhookId": "c1e6023e-087b-4f9e-bec8-9cdaa30901aa"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        3140,
+        1580
+      ],
+      "id": "c7f2142b-1e3c-43e0-95b5-0fc4d087856a",
+      "name": "Slack",
+      "webhookId": "fcc22b43-5cdf-4a76-92c2-09882262385c",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "rFjvNsRylbVjLbK6",
+          "name": "Slack account OAuth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3140,
+        1260
+      ],
+      "id": "86ae3a43-2935-45da-a97a-06c1f15e154a",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3140,
+        1420
+      ],
+      "id": "c01e3240-e83d-4996-ae39-0f4a94b4ecb7",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        3140,
+        2100
+      ],
+      "id": "11a23104-6ef4-4eea-90c4-02f9f8df5a2e",
+      "name": "LinkedIn"
+    },
+    {
+      "parameters": {
+        "content": "## Post content",
+        "height": 1100,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3060,
+        1200
+      ],
+      "id": "ea26a096-1edf-4937-9073-86d55e86560f",
+      "name": "Sticky Note5"
     }
   ],
   "pinData": {},
@@ -742,6 +855,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-06-20T18:17:42.000Z",
-  "versionId": "b168646a-10a9-4348-a819-779b7fd943ec"
+  "updatedAt": "2025-06-23T20:13:26.000Z",
+  "versionId": "4c8be985-874d-4586-a150-0cdd42258891"
 }
