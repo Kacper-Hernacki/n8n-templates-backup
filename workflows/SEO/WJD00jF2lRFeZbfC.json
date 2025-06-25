@@ -790,19 +790,6 @@
       "typeVersion": 4.2,
       "position": [
         3140,
-        1260
-      ],
-      "id": "86ae3a43-2935-45da-a97a-06c1f15e154a",
-      "name": "HTTP Request1"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        3140,
         1420
       ],
       "id": "c01e3240-e83d-4996-ae39-0f4a94b4ecb7",
@@ -824,7 +811,7 @@
     {
       "parameters": {
         "content": "## Post content",
-        "height": 1100,
+        "height": 1260,
         "width": 300
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -835,6 +822,45 @@
       ],
       "id": "ea26a096-1edf-4937-9073-86d55e86560f",
       "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3140,
+        2300
+      ],
+      "id": "64ad5d6e-4826-4d37-8281-5419e6af2e96",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.beehiiv.com/v2/publications/pub_a8440fb5-2914-4cae-b241-6978a4daaf22/emails",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"subject\": \"Your Newsletter Subject\",\n  \"content\": {\n    \"html\": \"<h1>Hello!</h1><p>This is your newsletter content.</p>\",\n    \"text\": \"Hello! This is your newsletter content.\"\n  },\n  \"recipient_group\": \"hernackikacper@gmail.com\",\n  \"from_name\": \"Your Newsletter Name\",\n  \"from_email\": \"your@email.com\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3140,
+        1260
+      ],
+      "id": "86ae3a43-2935-45da-a97a-06c1f15e154a",
+      "name": "Beehiiv Send Newsletter",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "VLPhz1Pm1UNh5kB1",
+          "name": "Beehiiv"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -855,6 +881,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-06-23T20:13:26.000Z",
-  "versionId": "4c8be985-874d-4586-a150-0cdd42258891"
+  "updatedAt": "2025-06-24T16:02:29.000Z",
+  "versionId": "f732e369-7f4b-4d2c-a44d-7a88c725b212"
 }
