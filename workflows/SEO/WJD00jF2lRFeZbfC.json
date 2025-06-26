@@ -204,8 +204,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -240,
-        0
+        -640,
+        260
       ],
       "id": "4efef840-bad3-4d45-a725-29188d994515",
       "name": "Schedule Trigger"
@@ -234,8 +234,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        220,
-        0
+        -120,
+        260
       ],
       "id": "282a8d80-0701-4d7e-ba3e-2a805c7862b1",
       "name": "Search Topic Ideas",
@@ -271,7 +271,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        260,
+        300,
         260
       ],
       "id": "d56c6de0-3dc4-4fe3-b1f6-c7ceb0d96dc2",
@@ -286,15 +286,15 @@
     {
       "parameters": {
         "content": "## Generate idea",
-        "height": 560,
-        "width": 700,
+        "height": 380,
+        "width": 1100,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -40,
-        -80
+        -440,
+        180
       ],
       "id": "5c6dfaa0-1aec-485e-a066-33aae7301f35",
       "name": "Sticky Note"
@@ -312,8 +312,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        0,
-        0
+        -360,
+        260
       ],
       "id": "92667782-0a1f-4ab4-81d7-e0dfc3ff6a31",
       "name": "HTTP Request",
@@ -407,7 +407,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        860,
+        920,
         640
       ],
       "id": "0d373228-7c0b-473c-b989-cc4fe01fc856",
@@ -861,6 +861,88 @@
           "name": "Beehiiv"
         }
       }
+    },
+    {
+      "parameters": {
+        "content": "## Connect Resources from my personal researches",
+        "height": 380,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        640
+      ],
+      "id": "b55c131e-f136-44d7-86d1-1144f90085d4",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Inspire with the latest articles of writing GURU's and my style of publishing\n",
+        "height": 380,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        140,
+        640
+      ],
+      "id": "e5b6e902-0601-4542-9576-0b9f07f72f48",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Personal list of ideas",
+        "height": 380,
+        "width": 700
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        -260
+      ],
+      "id": "f10730d6-ac01-4a5b-aebf-3e66cbf6c17c",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1a6218e7-b693-80e5-a228-e8a8559e029b",
+          "mode": "list",
+          "cachedResultName": "Content Ideas",
+          "cachedResultUrl": "https://www.notion.so/1a6218e7b69380e5a228e8a8559e029b"
+        },
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "isPublished|checkbox",
+              "condition": "equals"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        -140
+      ],
+      "id": "abf18ffc-7608-4664-a910-805e8fcfc897",
+      "name": "get personal content ideas",
+      "credentials": {
+        "notionApi": {
+          "id": "DFu4pheXYNBPA1mA",
+          "name": "Notion account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -881,6 +963,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-06-24T16:02:29.000Z",
-  "versionId": "f732e369-7f4b-4d2c-a44d-7a88c725b212"
+  "updatedAt": "2025-06-25T12:19:16.000Z",
+  "versionId": "76d83625-30a0-4f3e-bea4-8d90ba439ab5"
 }
