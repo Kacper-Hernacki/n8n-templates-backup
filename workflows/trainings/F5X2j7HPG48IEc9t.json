@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Telegram Trigger": {
       "main": [
@@ -803,6 +803,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-11T18:56:31.000Z",
+  "updatedAt": "2025-07-03T17:48:13.000Z",
   "versionId": "3b0b6d27-e5fd-4722-b475-a08af985a89b"
 }
