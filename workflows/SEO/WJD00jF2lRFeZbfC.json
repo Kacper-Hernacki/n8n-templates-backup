@@ -27,7 +27,7 @@
       "main": [
         [
           {
-            "node": "Search Topic Ideas",
+            "node": "get personal content ideas",
             "type": "main",
             "index": 0
           }
@@ -179,7 +179,46 @@
     },
     "Post Article": {
       "main": [
-        []
+        [
+          {
+            "node": "Check Idea published",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get personal content ideas": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Search Topic Ideas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Idea published": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -204,7 +243,7 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -640,
+        -1120,
         260
       ],
       "id": "4efef840-bad3-4d45-a725-29188d994515",
@@ -221,11 +260,11 @@
         "messages": {
           "values": [
             {
-              "content": "=You are a professional SEO & blog researcher.\nYour job is to discover content gaps and find ideas for aiAdaptiv blog.\n\naiAdaptiv is a company which helps to implement AI to buisnesses and also build tools, SaaS applications.\n\nCompetitors are any ai agencies which are using platforms like n8n, make.com and code custom AI solutions.\n\nYou may search content from competitors and take inspiration from their blog ideas. You may also identify new topics and angles and generate a new idea from scratch.\n\nWhen prompted to generate an idea, you will be given a quick summary of our latest blog posts.\n\nIt is important to AVOID making duplicated content, so avoid ideas that are too similar to blog posts we recently published.",
+              "content": "=You are a professional SEO & blog researcher.\nYour job is to discover content gaps and find ideas for aiAdaptiv blog.\n\naiAdaptiv is a company which helps to implement AI to buisnesses and also build tools, SaaS applications.\n\nCompetitors are any ai agencies which are using platforms like n8n, make.com and code custom AI solutions.\n\nYou may search content from competitors and take inspiration from their blog ideas. You may also identify new topics and angles and generate a new idea from scratch.\n\nWhen prompted to generate an idea, you will be given a quick summary of our latest blog posts and my own recent not published idea.\n\nIt is important to AVOID making duplicated content, so avoid ideas that are too similar to blog posts we recently published.\n\nTake my recent ideas as a priority, research if it makes sense to publish them, do not stick with title and subtitle, you can change it a little, but keep the context. If there are more own ideas, pick one and return also an id of picked item so that I can later note that it is published.\n\nAlways return one topic, never more even if there are more my own ideas!",
               "role": "system"
             },
             {
-              "content": "=Content recently published: {{ $json.data.toJsonString() }}"
+              "content": "=Content recently published:{{ $('HTTP Request').item.json.data.toJsonString() }}\nMy recent own ideas: {{ $json.toJsonString() }}"
             }
           ]
         },
@@ -257,7 +296,7 @@
         "messages": {
           "values": [
             {
-              "content": "=You are helpful SEO and blog content writer.\nGiven a niche or audience description, create an idea for a blog post.\n\nIt should contain:\n- A title for the blog post,\n- A description for the content,\n- A description of an image for a thumbnail,\n- An outline of the content as a list of chapter headings.\n\nThe idea should be relevant and up-tp-date.\nThe description should coherent and align with the idea.\n\nOutput the result in JSON:\n{\n \"title\": \"<title>\",\n \"content_description\": \"<content-description>\",\n \"image_description\": \"<image-description>\",\n \"outline\": [\n    \"<chapter-1>\",\n    \"<chapter-2>\".\n      ...\n  ]\n}",
+              "content": "=You are helpful SEO and blog content writer.\nGiven a niche or audience description, create an idea for a blog post.\n\nIt should contain:\n- A title for the blog post,\n- id of own idea topic if used,\n- A description for the content,\n- A description of an image for a thumbnail,\n- An outline of the content as a list of chapter headings.\n\nThe idea should be relevant and up-tp-date.\nThe description should coherent and align with the idea.\n\nOutput the result in JSON:\n{\n \"title\": \"<title>\",\n \"own_idea_id\": \"<id>\",\n \"content_description\": \"<content-description>\",\n \"image_description\": \"<image-description>\",\n \"outline\": [\n    \"<chapter-1>\",\n    \"<chapter-2>\".\n      ...\n  ]\n}",
               "role": "system"
             },
             {
@@ -287,13 +326,13 @@
       "parameters": {
         "content": "## Generate idea",
         "height": 380,
-        "width": 1100,
+        "width": 840,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -440,
+        -180,
         180
       ],
       "id": "5c6dfaa0-1aec-485e-a066-33aae7301f35",
@@ -312,7 +351,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -360,
+        -880,
         260
       ],
       "id": "92667782-0a1f-4ab4-81d7-e0dfc3ff6a31",
@@ -894,15 +933,15 @@
     },
     {
       "parameters": {
-        "content": "## Personal list of ideas",
+        "content": "## Personal list of ideas & previous posts",
         "height": 380,
         "width": 700
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -420,
-        -260
+        -940,
+        140
       ],
       "id": "f10730d6-ac01-4a5b-aebf-3e66cbf6c17c",
       "name": "Sticky Note8"
@@ -932,15 +971,128 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 2.2,
       "position": [
-        -320,
-        -140
+        -660,
+        260
       ],
       "id": "abf18ffc-7608-4664-a910-805e8fcfc897",
       "name": "get personal content ideas",
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "notesInFlow": false,
       "credentials": {
         "notionApi": {
           "id": "DFu4pheXYNBPA1mA",
           "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "name"
+            },
+            {
+              "fieldToAggregate": "property_subheader"
+            },
+            {
+              "fieldToAggregate": "id"
+            }
+          ]
+        },
+        "options": {
+          "mergeLists": true
+        }
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        260
+      ],
+      "id": "e93662c5-711b-4420-892e-df9766aeb00e",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Prepare topic').item.json.message.content.own_idea_id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "isPublished|checkbox",
+              "checkboxValue": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        4180,
+        460
+      ],
+      "id": "42a331e2-6701-45ec-8840-10637dfc13d1",
+      "name": "Check Idea published",
+      "credentials": {
+        "notionApi": {
+          "id": "DFu4pheXYNBPA1mA",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Check idea published",
+        "height": 340,
+        "width": 500
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3980,
+        380
+      ],
+      "id": "dd7dc3f8-16fd-41ef-b8c3-e3d1bb432fda",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Look at the published article and transform it into an Instagram and LinkedIn post. \n\nTake the essentials and make a short eight-paragraph essay. Each paragraph should be max 18 words.\n\nContent should be engaging and make the user want to explore more.\n\nReaders are often non technical peaople, buisness owners who does not know anything about ai other than using chat gpt. Write slides which can help them understand and leverage mentioned technology. Use terminology thay can understand. Do not hesitate to paste 2-3 emojis.\n\nIn the end, always attach th aiAdaptiv link for more info, etc. Link: https://aiadaptiv.com\n\nArticle content to transform:\n {{ $('Write post').item.json.message.content }}\n\nOutput the result in JSON:\n{\n \"outline\": [\n    \"<slide-1>\",\n    \"<slide-2>\".\n      ...\n  ]\n}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1920,
+        1300
+      ],
+      "id": "eed198a8-0afb-41b2-99ec-8a38334f1d21",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
         }
       }
     }
@@ -963,6 +1115,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-06-25T12:19:16.000Z",
-  "versionId": "76d83625-30a0-4f3e-bea4-8d90ba439ab5"
+  "updatedAt": "2025-07-13T12:22:11.000Z",
+  "versionId": "5e2bc7ec-dbfc-4276-b444-2a1bcc4a5aa2"
 }
