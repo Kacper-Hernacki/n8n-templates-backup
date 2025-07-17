@@ -1,5 +1,5 @@
 {
-  "active": true,
+  "active": false,
   "connections": {
     "Wait": {
       "main": [
@@ -356,16 +356,17 @@
   "staticData": {
     "node:Gmail Trigger": {
       "Gmail Trigger": {
-        "lastTimeChecked": 1752641396,
+        "lastTimeChecked": 1752658912,
         "possibleDuplicates": [
-          "1981191637375215",
-          "198118777e35781d"
+          "198129ca82e4fbe0",
+          "198129b534c550e0",
+          "198129a2e146fddf"
         ]
       }
     }
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-07-09T10:58:08.000Z",
+  "updatedAt": "2025-07-16T13:36:34.000Z",
   "versionId": "35ccbbf1-53c7-4a81-9afd-dce5289e9f37"
 }
