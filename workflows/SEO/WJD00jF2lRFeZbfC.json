@@ -220,6 +220,61 @@
           }
         ]
       ]
+    },
+    "Postgres": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres PGVector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Knowledgebase",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Knowledgebase",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Knowledgebase": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-05-20T15:00:44.508Z",
@@ -296,7 +351,7 @@
         "messages": {
           "values": [
             {
-              "content": "=You are helpful SEO and blog content writer.\nGiven a niche or audience description, create an idea for a blog post.\n\nIt should contain:\n- A title for the blog post,\n- id of own idea topic if used,\n- A description for the content,\n- A description of an image for a thumbnail,\n- An outline of the content as a list of chapter headings.\n\nThe idea should be relevant and up-tp-date.\nThe description should coherent and align with the idea.\n\nOutput the result in JSON:\n{\n \"title\": \"<title>\",\n \"own_idea_id\": \"<id>\",\n \"content_description\": \"<content-description>\",\n \"image_description\": \"<image-description>\",\n \"outline\": [\n    \"<chapter-1>\",\n    \"<chapter-2>\".\n      ...\n  ]\n}",
+              "content": "=You are helpful SEO and blog content writer.\nGiven a niche or audience description, create an idea for a blog post.\n\nIt should contain:\n- A title for the blog post,\n- id of own idea topic if used: {{ $('Aggregate').item.json.id[0] }},\n- A description for the content,\n- A description of an image for a thumbnail,\n- An outline of the content as a list of chapter headings.\n\nThe idea should be relevant and up-tp-date.\nThe description should coherent and align with the idea.\n\nOutput the result in JSON:\n{\n \"title\": \"<title>\",\n \"own_idea_id\": \"<id>\",\n \"content_description\": \"<content-description>\",\n \"image_description\": \"<image-description>\",\n \"outline\": [\n    \"<chapter-1>\",\n    \"<chapter-2>\".\n      ...\n  ]\n}",
               "role": "system"
             },
             {
@@ -646,8 +701,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2,
       "position": [
-        1120,
-        640
+        1140,
+        660
       ],
       "id": "4b3f9047-7022-4c89-92c2-5096565d3e3b",
       "name": "GetInternalKnowledge"
@@ -850,7 +905,7 @@
     {
       "parameters": {
         "content": "## Post content",
-        "height": 1260,
+        "height": 1440,
         "width": 300
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -904,14 +959,14 @@
     {
       "parameters": {
         "content": "## Connect Resources from my personal researches",
-        "height": 380,
-        "width": 460
+        "height": 700,
+        "width": 600
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -440,
-        640
+        480,
+        840
       ],
       "id": "b55c131e-f136-44d7-86d1-1144f90085d4",
       "name": "Sticky Note6"
@@ -919,14 +974,14 @@
     {
       "parameters": {
         "content": "## Inspire with the latest articles of writing GURU's and my style of publishing\n",
-        "height": 380,
-        "width": 520
+        "height": 320,
+        "width": 400
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        140,
-        640
+        1120,
+        840
       ],
       "id": "e5b6e902-0601-4542-9576-0b9f07f72f48",
       "name": "Sticky Note7"
@@ -1095,6 +1150,121 @@
           "name": "OpenAi account"
         }
       }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        3140,
+        2480
+      ],
+      "id": "e49772d4-f87b-4178-a980-1329a65923da",
+      "name": "Facebook Graph API"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        1220,
+        960
+      ],
+      "id": "06008e61-d5a9-4cee-97b9-0cda06a93254",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e6cdd406-a657-4c4b-9cf3-628fc37b47a6",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        600,
+        1400
+      ],
+      "typeVersion": 1.1,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableName": "n8n_vectors_aiadaptiv_landing_page_support",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1,
+      "position": [
+        620,
+        1220
+      ],
+      "id": "6a2a5c3f-ef45-49e8-8125-bbc6233354d8",
+      "name": "Postgres PGVector Store",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "aiAdaptivKnowledgebase",
+        "description": "Access aiAdaptiv knowledge base for retrieving any information he needs."
+      },
+      "id": "e47a422c-cc8f-4587-b418-c627830b3895",
+      "name": "Knowledgebase",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "position": [
+        760,
+        980
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "01bf8541-f2c6-432f-9629-d81315b6a809",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        940,
+        1260
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -1115,6 +1285,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-07-13T12:22:11.000Z",
-  "versionId": "5e2bc7ec-dbfc-4276-b444-2a1bcc4a5aa2"
+  "updatedAt": "2025-07-16T17:17:02.000Z",
+  "versionId": "475bdd1c-dbab-4fba-87a6-76adf38976eb"
 }
