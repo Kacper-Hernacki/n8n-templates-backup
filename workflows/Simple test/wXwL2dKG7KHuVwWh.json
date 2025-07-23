@@ -1,0 +1,233 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-22T08:58:50.182Z",
+  "id": "wXwL2dKG7KHuVwWh",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "ai business advisor",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "3ebbf019-fb12-4951-b3b5-d8d3c859c60b",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        120,
+        0
+      ],
+      "id": "ce877b01-ca03-4c6d-bfcb-aa2555d850e0",
+      "name": "Webhook",
+      "webhookId": "3ebbf019-fb12-4951-b3b5-d8d3c859c60b"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "ai_chatbot_test",
+          "mode": "list",
+          "cachedResultName": "ai_chatbot_test"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ $json.body.email }}",
+            "business_description": "={{ $json.body.businessDescription }}",
+            "prompt": "={{ $json.body.prompt }}",
+            "ip": "={{ $json.body.ip }}",
+            "id": "={{ Math.floor(Math.random() * 100 * Math.random() * 100) }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ip",
+              "displayName": "ip",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "business_description",
+              "displayName": "business_description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "output",
+              "displayName": "output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        620,
+        0
+      ],
+      "id": "048e396f-5935-4ace-bd87-252a5a8e20e5",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini-search-preview",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI-SEARCH-PREVIEW"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{ $json.prompt }}"
+            },
+            {
+              "content": "=Jesteś moim osobistym trenerem i ekspertem w dziedzinie wdrażania AI w biznesie.\nTwoim głównym zadaniem jest pomoc użytkownikowi w identyfikacji konkretnych, praktycznych zastosowań narzędzi AI w jego firmie, a następnie przeprowadzenie go przez proces budowania i wdrażania tych rozwiązań.\n\n**Kluczowe zasady i cele:**\n-   Koncentruj się na działaniu i praktyce, a nie tylko na teorii. Celem jest nauka przez budowanie.\n-   Proponowane zastosowania AI muszą przynosić realną wartość, taką jak optymalizacja procesów, zwiększenie sprzedaży, poprawa obsługi klienta, czy generowanie treści.\n-   Zawsze zidentyfikuj dokładnie 10 możliwości wykorzystania AI, chyba że użytkownik wyraźnie poprosi o inną liczbę.\n\n**Format odpowiedzi:**\nDla każdej zidentyfikowanej możliwości zastosowania AI:\n1.  Rozpocznij od jej nazwy/tytułu.\n2.  Podaj krótkie uzasadnienie, dlaczego jest to wartościowe dla biznesu użytkownika.\n3.  Zaproponuj konkretny, praktyczny plan nauki i implementacji, składający się z 3-5 jasnych, wykonalnych kroków.\n4.  Upewnij się, że każdy krok jest na tyle szczegółowy, aby można było go od razu zrealizować.\n5.  Użyj list numerowanych (1., 2., 3., itd.) dla kroków implementacji.\n6. Sformatuj odpowiedź tak, aby uwględnić nagłówki oraz nowe linie po każdym punkcie do zwiększenia czytelności.\n7. Uwzględnij w odpowiedziach równie potencjalne rozwiązania z użyciem n8n.\n8. Każdą odpowiedź zakończ tym sformułowaniem z linkami w markdown: potrzebujesz pomocy z implementacją AI w Twoim biznesie? Skontaktuj się e mną kacper@aiadaptiv.com, lub umów spotkanie: https://smart-schedule.app/book/54ae7e4a-1747-462b-bdcd-4af6c94dc77d\n10. Zawsze uwzględnij 10 pkt. nigdy mniej i więcej.\n\nUżytkownik dostarczy kontekst swojego biznesu i szczegółowe oczekiwania w dalszej części promptu.",
+              "role": "system"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        840,
+        0
+      ],
+      "id": "8ac878c6-47c3-4655-b09c-6275aeb24d0b",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1240,
+        0
+      ],
+      "id": "6cf4be95-55f5-4c84-8873-249b03a1c64a",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-07-22T08:58:48.539Z",
+      "updatedAt": "2025-07-22T08:58:48.539Z",
+      "id": "xyNGpSmBc1qVnQRC",
+      "name": "Simple test"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-07-22T19:55:40.000Z",
+  "versionId": "1e46e444-fa18-4a38-9629-c9220fad6aec"
+}
