@@ -1,5 +1,5 @@
 {
-  "active": true,
+  "active": false,
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -181,7 +181,7 @@
       "main": [
         [
           {
-            "node": "Check Idea published",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -216,17 +216,6 @@
           {
             "node": "OpenAI",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Postgres": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -272,6 +261,187 @@
             "node": "AI Agent",
             "type": "ai_tool",
             "index": 0
+          }
+        ]
+      ]
+    },
+    "inspirations": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Check Idea published",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Generate Thumbnail for IG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Thumbnail for IG": {
+      "main": [
+        [
+          {
+            "node": "create a media to instagram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Post LinkedIn without image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create a media to instagram": {
+      "main": [
+        [
+          {
+            "node": "post to instagram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Beehiiv Send Newsletter": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "LinkedIn asset": {
+      "main": [
+        [
+          {
+            "node": "Post LinkedIn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn asset",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Thumbnail IG": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord": {
+      "main": [
+        []
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Slack",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "post to instagram": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post LinkedIn": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "X": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Beehiiv Send Newsletter1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
           }
         ]
       ]
@@ -400,7 +570,7 @@
         "nodeCredentialType": "strapiTokenApi",
         "sendQuery": true,
         "specifyQuery": "json",
-        "jsonQuery": "{\n  \"fields\": \"title,description\",\n  \"pagination[pageSize]\":\"25\",\n  \"pagination[page]\":\"1\"\n}",
+        "jsonQuery": "{\n  \"fields\": \"title,description\",\n  \"sort\": \"createdAt:desc\",\n  \"pagination[pageSize]\":\"25\",\n  \"pagination[page]\":\"1\"\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -457,7 +627,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Use the GetInternalKnowledge tool to ask for questions about aiAdaptiv in relation of the topic.\n\nWhen you have all the knowledge you need (if any), summarize it and let that be your final output.\n\n\n\nTitle:{{ $('Prepare topic').item.json.message.content.title }}\nDescription:{{ $('Prepare topic').item.json.message.content.content_description }}",
+        "text": "=Use the GetInternalKnowledge tool to ask for questions about aiAdaptiv in relation of the topic.\n\nUse inspirations tool to get articles writing style from my articles and some gurus of well performing published articles.\n\nWhen you have all the knowledge you need (if any), summarize it and let that be your final output.\n\n\n\nTitle:{{ $('Prepare topic').item.json.message.content.title }}\nDescription:{{ $('Prepare topic').item.json.message.content.content_description }}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -824,7 +994,7 @@
       "type": "n8n-nodes-base.twitter",
       "typeVersion": 2,
       "position": [
-        3140,
+        3020,
         1740
       ],
       "id": "0e7a311d-02a9-4c00-8438-0d441b1ae497",
@@ -848,8 +1018,8 @@
       "type": "n8n-nodes-base.discord",
       "typeVersion": 2,
       "position": [
-        3140,
-        1920
+        4560,
+        1400
       ],
       "id": "cbf1c1d9-b6ad-4251-a893-6e10adfc92f0",
       "name": "Discord",
@@ -863,8 +1033,8 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        3140,
-        1580
+        4560,
+        1180
       ],
       "id": "c7f2142b-1e3c-43e0-95b5-0fc4d087856a",
       "name": "Slack",
@@ -878,57 +1048,18 @@
     },
     {
       "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        3140,
-        1420
-      ],
-      "id": "c01e3240-e83d-4996-ae39-0f4a94b4ecb7",
-      "name": "HTTP Request2"
-    },
-    {
-      "parameters": {
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.linkedIn",
-      "typeVersion": 1,
-      "position": [
-        3140,
-        2100
-      ],
-      "id": "11a23104-6ef4-4eea-90c4-02f9f8df5a2e",
-      "name": "LinkedIn"
-    },
-    {
-      "parameters": {
-        "content": "## Post content",
-        "height": 1440,
-        "width": 300
+        "content": "# Post content\n## Instgam\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n## LinedIn\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n## Newsletter\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n## X\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n## Threads",
+        "height": 1240,
+        "width": 940
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        3060,
-        1200
+        2900,
+        960
       ],
       "id": "ea26a096-1edf-4937-9073-86d55e86560f",
       "name": "Sticky Note5"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        3140,
-        2300
-      ],
-      "id": "64ad5d6e-4826-4d37-8281-5419e6af2e96",
-      "name": "HTTP Request3"
     },
     {
       "parameters": {
@@ -944,8 +1075,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        3140,
-        1260
+        3020,
+        1520
       ],
       "id": "86ae3a43-2935-45da-a97a-06c1f15e154a",
       "name": "Beehiiv Send Newsletter",
@@ -1091,8 +1222,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 2.2,
       "position": [
-        4180,
-        460
+        4200,
+        440
       ],
       "id": "42a331e2-6701-45ec-8840-10637dfc13d1",
       "name": "Check Idea published",
@@ -1129,7 +1260,7 @@
         "messages": {
           "values": [
             {
-              "content": "=Look at the published article and transform it into an Instagram and LinkedIn post. \n\nTake the essentials and make a short eight-paragraph essay. Each paragraph should be max 18 words.\n\nContent should be engaging and make the user want to explore more.\n\nReaders are often non technical peaople, buisness owners who does not know anything about ai other than using chat gpt. Write slides which can help them understand and leverage mentioned technology. Use terminology thay can understand. Do not hesitate to paste 2-3 emojis.\n\nIn the end, always attach th aiAdaptiv link for more info, etc. Link: https://aiadaptiv.com\n\nArticle content to transform:\n {{ $('Write post').item.json.message.content }}\n\nOutput the result in JSON:\n{\n \"outline\": [\n    \"<slide-1>\",\n    \"<slide-2>\".\n      ...\n  ]\n}"
+              "content": "=Look at the published article and transform it into an Instagram and LinkedIn post. \n\nTake the title of the article and make it short for instagram post, max 6 words:{{ $('Prepare topic').item.json.message.content.title }}\n\nTake the essentials and make a short eight-paragraph essay. Each paragraph should be max 18 words.\n\nContent should be engaging and make the user want to explore more.\n\nReaders are often non technical peaople, buisness owners who does not know anything about ai other than using chat gpt. Write slides which can help them understand and leverage mentioned technology. Use terminology thay can understand. Do not hesitate to paste 2-3 emojis.\n\nIn the end, always attach th aiAdaptiv link for more info, etc. Link: https://aiadaptiv.com\n\nAttach also 20 relevant hashtags in the output which wil perform cool in instagram.\n\nArticle content to transform:\n {{ $('Write post').item.json.message.content }}\n\nOutput the result in JSON:\n{\n \"title\":\"<modified-title>\"\n \"outline\": [\n    \"<slide-1>\",\n    \"<slide-2>\".\n      ...\n  ],\n \"hashtags\":\"<hashtag-1> <hashtag-2>... <hashtag-n>\"\n}"
             }
           ]
         },
@@ -1155,49 +1286,6 @@
       "parameters": {
         "options": {}
       },
-      "type": "n8n-nodes-base.facebookGraphApi",
-      "typeVersion": 1,
-      "position": [
-        3140,
-        2480
-      ],
-      "id": "e49772d4-f87b-4178-a980-1329a65923da",
-      "name": "Facebook Graph API"
-    },
-    {
-      "parameters": {
-        "operation": "select",
-        "schema": {
-          "__rl": true,
-          "value": "public",
-          "mode": "list",
-          "cachedResultName": "public"
-        },
-        "table": {
-          "__rl": true,
-          "mode": "list",
-          "value": ""
-        }
-      },
-      "type": "n8n-nodes-base.postgresTool",
-      "typeVersion": 2.6,
-      "position": [
-        1220,
-        960
-      ],
-      "id": "06008e61-d5a9-4cee-97b9-0cda06a93254",
-      "name": "Postgres",
-      "credentials": {
-        "postgres": {
-          "id": "HN8MS4EGX4BmUQrw",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
       "id": "e6cdd406-a657-4c4b-9cf3-628fc37b47a6",
       "name": "Embeddings OpenAI",
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
@@ -1215,7 +1303,7 @@
     },
     {
       "parameters": {
-        "tableName": "n8n_vectors_aiadaptiv_landing_page_support",
+        "tableName": "n8n_resources",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
@@ -1265,6 +1353,370 @@
           "name": "OpenAi account"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "articles_inspirations",
+          "mode": "list",
+          "cachedResultName": "articles_inspirations"
+        },
+        "limit": 3,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        1220,
+        960
+      ],
+      "id": "06008e61-d5a9-4cee-97b9-0cda06a93254",
+      "name": "inspirations",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "562b02ba-39c1-4365-8b15-0edae9433dfa",
+              "leftValue": "={{ $('Prepare topic').item.json.message.content.own_idea_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "392a6a42-b67d-45fb-983b-664541a8f250",
+              "leftValue": "={{ $('Aggregate').item.json.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3940,
+        460
+      ],
+      "id": "a61dd45a-049b-47b8-8701-15657b8f9054",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.aiadaptiv.com/template/generate-square-thumbnail",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"title\": \"{{ $json.message.content.title }}\",\n  \"subtitle\": \"AI in your business\",\n  \"replicateResponse\": [\n    {\n      \"output\": \"{{ $('Flux Image').item.json.urls.stream }}\"\n    }\n  ]\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2380,
+        1300
+      ],
+      "id": "25aed35c-48a3-4777-950b-f8b3a85df230",
+      "name": "Generate Thumbnail for IG",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "VR2HADCVzHyCEv4F",
+          "name": "aiAdaptiv"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Content for social media post",
+        "height": 300,
+        "width": 740
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1880,
+        1220
+      ],
+      "typeVersion": 1,
+      "id": "cad392dc-f47d-4e1b-85fa-ced402baf56e",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.instagram.com/17841472265823620/media_publish",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"creation_id\": \"{{ $json.id }}\",\n  \"access_token\": \"IGAAUCHoL9oIpBZAE16UUpGcndZAMEVZARXpRTlhYM1ZAZAUHhfckRqNjY4VklCWllEYkpfSTBSc20wY0ZAjV2dOQ25oZAjZAPSjA1VWZAlSlVZAQVBUQzNuTEhpOUtHU1AzZAWptd3FyQzVzSkNLM3hTRjNremFLTktXRTM1ZAXUySmVpTnRKdwZDZD\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3200,
+        1100
+      ],
+      "id": "1407b1ca-f893-47aa-8900-e8ecc38c2f5d",
+      "name": "post to instagram",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "6kH8d3y6zlxKqapU",
+          "name": "Facebook Graph account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.instagram.com/17841472265823620/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"image_url\": \"{{ $json.data.url }}\",\n  \"caption\": \"{{ $('OpenAI').item.json.message.content.title }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[0] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[1] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[2] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[3] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[4] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[5] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[6] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[7] }}\\n\\n{{ $('OpenAI').item.json.message.content.hashtags }}\",\n  \"access_token\": \"IGAAUCHoL9oIpBZAE16UUpGcndZAMEVZARXpRTlhYM1ZAZAUHhfckRqNjY4VklCWllEYkpfSTBSc20wY0ZAjV2dOQ25oZAjZAPSjA1VWZAlSlVZAQVBUQzNuTEhpOUtHU1AzZAWptd3FyQzVzSkNLM3hTRjNremFLTktXRTM1ZAXUySmVpTnRKdwZDZD\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3020,
+        1100
+      ],
+      "id": "da45d640-59b4-4a45-9019-046ad94c1607",
+      "name": "create a media to instagram",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "EgvHV4zlfjoycrHi",
+          "name": "Twitter API"
+        },
+        "facebookGraphApi": {
+          "id": "6kH8d3y6zlxKqapU",
+          "name": "Facebook Graph account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.linkedin.com/v2/ugcPosts",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"author\": \"urn:li:organization:106606939\",\n    \"lifecycleState\": \"PUBLISHED\",\n    \"specificContent\": {\n        \"com.linkedin.ugc.ShareContent\": {\n            \"shareCommentary\": {\n                \"text\": \"{{ $('OpenAI').item.json.message.content.title }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[0] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[1] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[2] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[3] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[4] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[5] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[6] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[7] }}\\n\\n{{ $('OpenAI').item.json.message.content.hashtags }}\"\n            },\n            \"shareMediaCategory\": \"IMAGE\",\n            \"media\": [\n                {\n                    \"status\": \"READY\",\n                    \"description\": {\n                        \"text\": \"{{ $('OpenAI').item.json.message.content.title }}\"\n                    },\n                    \"media\": \"{{ $json.data.url }}\",\n                    \"title\": {\n                        \"text\": \"{{ $('OpenAI').item.json.message.content.title }}\"\n                    }\n                }\n            ]\n        }\n    },\n    \"visibility\": {\n        \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4120,
+        780
+      ],
+      "id": "35cff28e-3d42-420a-979d-4fc271ab2d11",
+      "name": "Post LinkedIn",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "w8ZptHdLLQCccWCn",
+          "name": "Linkedin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "POST https://api.linkedin.com/v2/assets?action=registerUpload",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"registerUploadRequest\": {\n        \"recipes\": [\n            \"urn:li:digitalmediaRecipe:feedshare-image\"\n        ],\n        \"owner\": \"urn:li:person:8675309\",\n        \"serviceRelationships\": [\n            {\n                \"relationshipType\": \"OWNER\",\n                \"identifier\": \"urn:li:userGeneratedContent\"\n            }\n        ]\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3900,
+        780
+      ],
+      "id": "76507cfd-81a8-4ebf-94c9-b9d53bbbb04a",
+      "name": "LinkedIn asset",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "w8ZptHdLLQCccWCn",
+          "name": "Linkedin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.linkedin.com/rest/assets?action=registerUpload",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Restli-Protocol-Version",
+              "value": "2.0.0"
+            },
+            {
+              "name": "LinkedIn-Version",
+              "value": "202405"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \"registerUploadRequest\": {\n        \"recipes\": [\n            \"urn:li:digitalmediaRecipe:feedshare-image\"\n        ],\n        \"owner\": \"urn:li:organization:106606939\",\n        \"serviceRelationships\": [\n            {\n                \"relationshipType\": \"OWNER\",\n                \"identifier\": \"urn:li:userGeneratedContent\"\n            }\n        ]\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3700,
+        780
+      ],
+      "id": "d0ed8ec1-7749-40ff-b59b-6720dbcdee02",
+      "name": "HTTP Request1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "w8ZptHdLLQCccWCn",
+          "name": "Linkedin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3520,
+        780
+      ],
+      "id": "a6cf1056-523b-4d77-aa37-66ae17616461",
+      "name": "Download Thumbnail IG"
+    },
+    {
+      "parameters": {
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4560,
+        1620
+      ],
+      "id": "1728fd4d-15a5-4864-83dd-5c6385938400",
+      "name": "Telegram",
+      "webhookId": "958a00c7-1ead-406b-b1ef-fdd93edec9a8",
+      "credentials": {
+        "telegramApi": {
+          "id": "DRL5Q2T6lZMLfs47",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        4160,
+        1360
+      ],
+      "id": "d274e372-e4ac-4dac-8a46-6b2989210a7d",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.beehiiv.com/v2/publications/pub_a8440fb5-2914-4cae-b241-6978a4daaf22/emails",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"subject\": \"Your Newsletter Subject\",\n  \"content\": {\n    \"html\": \"<h1>Hello!</h1><p>This is your newsletter content.</p>\",\n    \"text\": \"Hello! This is your newsletter content.\"\n  },\n  \"recipient_group\": \"hernackikacper@gmail.com\",\n  \"from_name\": \"Your Newsletter Name\",\n  \"from_email\": \"your@email.com\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3020,
+        2000
+      ],
+      "id": "77d92418-735f-4c40-8ade-2c1a23094724",
+      "name": "Beehiiv Send Newsletter1",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "VLPhz1Pm1UNh5kB1",
+          "name": "Beehiiv"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.linkedin.com/v2/ugcPosts",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"author\": \"urn:li:person:6lQIX0KrI7\",\n    \"lifecycleState\": \"PUBLISHED\",\n    \"specificContent\": {\n        \"com.linkedin.ugc.ShareContent\": {\n            \"shareCommentary\": {\n                \"text\": \"{{ $('OpenAI').item.json.message.content.title }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[0] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[1] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[2] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[3] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[4] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[5] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[6] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[7] }}\\n\\n{{ $('OpenAI').item.json.message.content.hashtags }}\"\n            },\n            \"shareMediaCategory\": \"ARTICLE\",\n            \"media\": [\n                {\n                    \"status\": \"READY\",\n                    \"originalUrl\": \"https://aiadaptiv.com/blog/{{ $('Post Article').item.json.data.slug }}\"\n                }\n            ]\n        }\n    },\n    \"visibility\": {\n        \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3020,
+        1300
+      ],
+      "id": "99756f0f-c9ed-4cb3-838e-0f9286eea92c",
+      "name": "Post LinkedIn without image",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "w8ZptHdLLQCccWCn",
+          "name": "Linkedin"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -1285,6 +1737,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-07-16T17:17:02.000Z",
-  "versionId": "475bdd1c-dbab-4fba-87a6-76adf38976eb"
+  "updatedAt": "2025-07-30T19:11:37.000Z",
+  "versionId": "7cf30e22-d760-4208-a22d-4c42e69cb3b2"
 }
