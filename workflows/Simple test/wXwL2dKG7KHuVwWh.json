@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Postgres",
+            "node": "check ip and email",
             "type": "main",
             "index": 0
           }
@@ -28,6 +28,35 @@
         [
           {
             "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check ip and email": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "used up",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Postgres",
             "type": "main",
             "index": 0
           }
@@ -56,8 +85,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        120,
-        0
+        20,
+        -80
       ],
       "id": "ce877b01-ca03-4c6d-bfcb-aa2555d850e0",
       "name": "Webhook",
@@ -86,10 +115,10 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "email": "={{ $json.body.email }}",
-            "business_description": "={{ $json.body.businessDescription }}",
-            "prompt": "={{ $json.body.prompt }}",
-            "ip": "={{ $json.body.ip }}",
+            "email": "={{ $('Webhook').item.json.body.email }}",
+            "business_description": "={{ $('Webhook').item.json.body.businessDescription }}",
+            "prompt": "={{ $('Webhook').item.json.body.prompt }}",
+            "ip": "={{ $('Webhook').item.json.body.ip }}",
             "id": "={{ Math.floor(Math.random() * 100 * Math.random() * 100) }}"
           },
           "matchingColumns": [
@@ -182,10 +211,10 @@
         "messages": {
           "values": [
             {
-              "content": "={{ $json.prompt }}"
+              "content": "={{ $('Webhook').item.json.body.prompt }}"
             },
             {
-              "content": "=Jesteś moim osobistym trenerem i ekspertem w dziedzinie wdrażania AI w biznesie.\nTwoim głównym zadaniem jest pomoc użytkownikowi w identyfikacji konkretnych, praktycznych zastosowań narzędzi AI w jego firmie, a następnie przeprowadzenie go przez proces budowania i wdrażania tych rozwiązań.\n\n**Kluczowe zasady i cele:**\n-   Koncentruj się na działaniu i praktyce, a nie tylko na teorii. Celem jest nauka przez budowanie.\n-   Proponowane zastosowania AI muszą przynosić realną wartość, taką jak optymalizacja procesów, zwiększenie sprzedaży, poprawa obsługi klienta, czy generowanie treści.\n-   Zawsze zidentyfikuj dokładnie 5 możliwości wykorzystania AI, chyba że użytkownik wyraźnie poprosi o inną liczbę.\n-   Dodaktowo dodaj linki do materiałów tak jak w formacie markdown, to samo z filmami youtube, które będzie można embeddować.\n\n**Format odpowiedzi:**\nDla każdej zidentyfikowanej możliwości zastosowania AI:\n1.  Rozpocznij od jej nazwy/tytułu.\n2.  Podaj krótkie uzasadnienie, dlaczego jest to wartościowe dla biznesu użytkownika.\n3.  Zaproponuj konkretny, praktyczny plan nauki i implementacji, składający się z 3-5 jasnych, wykonalnych kroków.\n4.  Upewnij się, że każdy krok jest na tyle szczegółowy, aby można było go od razu zrealizować. Podaj prykładowe narzędzia AI takie jak Perplexity, n8n, Gemini Deep research, itp.\n5.  Użyj list numerowanych (1., 2., 3., itd.) dla kroków implementacji.\n6. Sformatuj odpowiedź tak, aby uwględnić nagłówki oraz nowe linie po każdym punkcie do zwiększenia czytelności.\n7. Uwzględnij w odpowiedziach również przynajmniej jedno potencjalne rozwiązanie z użyciem n8n.\n8. Zawrzyj linki i źródła swoich wypowiedzi, aby użytkownik mógł je sprawdzić.\n9. Każdy pkt. traktuj jako header w markdown, czyli sformatuj z ## itp.\n10. Dodaj dłuższą przerwę po każdym punkcie, np. 2 linijki.\n\nPrzykładowy output markdown tekstu:\n\"# 1. Personalizacja doświadczenia klienta\\n\\n**Krótka uzasadnienie:** Dostosowanie oferty do indywidualnych preferencji klientów zwiększa ich satysfakcję i lojalność, co prowadzi do wzrostu liczby powracających gości.\\n\\n**Plan implementacji:**\\n\\n- **Krok 1:** Zbieranie danych o klientach poprzez systemy POS i programy lojalnościowe.\\n- **Krok 2:** Analiza zebranych danych w celu identyfikacji wzorców preferencji kulinarnych.\\n- **Krok 3:** Wdrożenie systemu rekomendacji opartych na AI, który będzie sugerować dania zgodne z preferencjami klientów.\\n\\n# 2. Następny główny punkt\\n\\n**Krótka uzasadnienie:** Opis drugiego punktu...\\n\\n**Plan implementacji:**\\n\\n- **Krok 1:** Pierwszy krok drugiego punktu.\\n- **Krok 2:** Drugi krok drugiego punktu.\"\n\n\nUżytkownik dostarczy kontekst swojego biznesu i szczegółowe oczekiwania w dalszej części promptu.",
+              "content": "=# Poprawiony System Prompt dla n8n\n\nJesteś moim osobistym trenerem i ekspertem w dziedzinie wdrażania AI w biznesie.\n\n**NAJWAŻNIEJSZE: Na początku każdej odpowiedzi przeanalizuj dokładnie branżę/typ biznesu użytkownika na podstawie jego inputu i dostosuj wszystkie rekomendacje specyficznie do tej branży.**\n\nTwoim głównym zadaniem jest pomoc użytkownikowi w identyfikacji konkretnych, praktycznych zastosowań narzędzi AI w jego firmie, a następnie przeprowadzenie go przez proces budowania i wdrażania tych rozwiązań.\n\n## Analiza kontekstu biznesowego:\nPrzed podaniem rekomendacji AI:\n1. Zidentyfikuj dokładny typ biznesu na podstawie opisu użytkownika\n2. Określ główne wyzwania tej branży\n3. Wskaż typowe procesy biznesowe w tej dziedzinie\n4. Zdefiniuj potencjalnych klientów i ich potrzeby\n\n## Kluczowe zasady i cele:\n- Koncentruj się na działaniu i praktyce, a nie tylko na teorii. Celem jest nauka przez budowanie.\n- Proponowane zastosowania AI muszą przynosić realną wartość, taką jak optymalizacja procesów, zwiększenie sprzedaży, poprawa obsługi klienta, czy generowanie treści.\n- Zawsze zidentyfikuj dokładnie 5 możliwości wykorzystania AI, chyba że użytkownik wyraźnie poprosi o inną liczbę.\n- **KAŻDE zastosowanie musi być dostosowane do specyfiki branży użytkownika**\n- Dodaj linki do materiałów w formacie markdown oraz filmy YouTube, które można embeddować.\n\n## Format odpowiedzi:\n\n**Rozpocznij od:** \"Na podstawie Twojego opisu biznesu [nazwa branży], oto 5 spersonalizowanych zastosowań AI:\"\n\nDla każdej zidentyfikowanej możliwości zastosowania AI:\n\n### ## [Numer]. [Nazwa zastosowania specyficzna dla branży]\n\n**Dlaczego to ważne dla [nazwa branży]:** [Konkretne uzasadnienie związane z wyzwaniami tej branży]\n\n**Plan implementacji:**\n\n1. **Krok 1:** [Szczegółowy, wykonalny krok z konkretnymi narzędziami]\n2. **Krok 2:** [Kolejny krok z przykładami specyficznymi dla branży]  \n3. **Krok 3:** [Krok implementacyjny z narzędziami AI jak Perplexity, n8n, Gemini Deep Research]\n4. **Krok 4:** [Krok testowania i optymalizacji]\n5. **Krok 5:** [Krok skalowania rozwiązania]\n\n**Narzędzia do wykorzystania:** [Lista konkretnych narzędzi AI]\n\n**Przydatne zasoby:**\n- [Link do materiału 1](URL)\n- [Link do filmu YouTube](URL)\n\n**Rozwiązanie n8n:** [Konkretny workflow n8n dla tej branży]\n\n\n## Dodatkowe wymagania:\n- Każdy punkt traktuj jako header w markdown (##)\n- Dodaj 2 linijki przerwy po każdym głównym punkcie\n- Uwzględnij w odpowiedziach przynajmniej jedno rozwiązanie z użyciem n8n\n- Zawrzyj linki i źródła swoich wypowiedzi\n- **Używaj konkretnych przykładów z branży użytkownika w każdym kroku**\n\n## Przykład branży-specyficznej odpowiedzi:\nDla \"sprzedawca jajek\" - mów o jakości jajek, świeżości, dostawach do sklepów, relacjach z hodowcami, sezonowości, certyfikatach bio, itp.\n\nDla \"restauracja\" - mów o menu, rezerwacjach, dostawach, inwentarzu żywności, itp.\n\n**PAMIĘTAJ: Każda odpowiedź musi być w 100% dostosowana do konkretnej branży użytkownika!**",
               "role": "system"
             }
           ]
@@ -219,9 +248,124 @@
       ],
       "id": "6cf4be95-55f5-4c84-8873-249b03a1c64a",
       "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(*) > 0 AS record_exists\nFROM ai_chatbot_test\nWHERE ip = $1 OR email = $2;",
+        "options": {
+          "queryReplacement": "={{ $json.body.ip }},{{ $json.body.email }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        200,
+        -80
+      ],
+      "id": "d76fed20-ec20-4629-ba3e-112ff3803353",
+      "name": "check ip and email",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ea47d6b3-7095-4467-89f6-46e0622404c1",
+              "leftValue": "={{ $json.record_exists }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        -80
+      ],
+      "id": "408cbd8e-cf9f-474b-8381-4247d51fb465",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"User used up the limit\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        620,
+        -200
+      ],
+      "id": "1c7181bb-fde7-45d1-9157-1c25c149313b",
+      "name": "used up"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiadaptiv.com",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+            "content-length": "1865",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9",
+            "business-funnel": "business-funnelnjkdfhoieuwfh8932yr983fuy9348fy493fgh943ubfi934fb43i9",
+            "content-type": "application/json",
+            "dnt": "1",
+            "origin": "http://localhost:8081",
+            "priority": "u=1, i",
+            "referer": "http://localhost:8081/",
+            "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"macOS\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "via": "2.0 Caddy",
+            "x-forwarded-for": "31.182.250.132",
+            "x-forwarded-host": "n8n.aiadaptiv.com",
+            "x-forwarded-proto": "https"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "email": "t@t.pl",
+            "ip": "31.182.250.132",
+            "businessDescription": "test",
+            "expectations": "test",
+            "prompt": "You are my personal trainer in the field of implementing AI in business. Your task is to help me find specific, practical applications of AI tools, and then guide me through the process of building and implementing them in my company.\n\nBusiness context:\ntest\n\nUser expectations: test\n\nYour task:\n1. Identify EXACTLY 5 specific opportunities to use AI tools in the context of my business that can bring real value (e.g., process optimization, sales increase, customer service improvement, content generation).\n2. For each of the 5 opportunities:\n   * Provide a brief justification for why it is valuable.\n   * Propose a specific, practical learning and implementation plan consisting of 3-5 clear, actionable steps. Each step should be detailed enough to be implemented immediately.\n3. Make sure your answers are focused on action and practice, not just theory. The goal is learning through building.\n4. IMPORTANT: You must provide EXACTLY 5 opportunities, no more, no less.\n\nResponse format:\nPlease provide a clear, bulleted format for each opportunity, starting with the opportunity name. For implementation steps, use bullet points with dashes (-) instead of numbered lists (1., 2., 3.). Format should be:\n\n**Opportunity Name**\nBrief justification...\n\n**Implementation Plan:**\n- Step 1 description\n- Step 2 description\n- Step 3 description\n\n\n\nPlease respond in Polish.\n\nIMPORTANT: At the end of your response, always include this call-to-action message:\n\n---\n\nPotrzebujesz pomocy z implementacją AI w Twoim biznesie? Skontaktuj się ze mną pod adresem [kacper@aiadaptiv.com](mailto:kacper@aiadaptiv.com) lub [umów konsultację](https://smart-schedule.app/book/54ae7e4a-1747-462b-bdcd-4af6c94dc77d)",
+            "timestamp": 1753874056082
+          },
+          "webhookUrl": "https://n8n.aiadaptiv.com/webhook/3ebbf019-fb12-4951-b3b5-d8d3c859c60b",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1"
   },
@@ -235,6 +379,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-07-23T18:07:51.000Z",
-  "versionId": "b12b9eea-bd9a-4ccc-93ef-030c2ccda4fb"
+  "updatedAt": "2025-07-30T12:21:54.000Z",
+  "versionId": "f15ee0ce-8593-4566-8b48-26f2eb05a5aa"
 }
