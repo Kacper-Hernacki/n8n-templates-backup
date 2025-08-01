@@ -314,7 +314,7 @@
             "index": 0
           },
           {
-            "node": "Post LinkedIn without image",
+            "node": "Post LinkedIn without image1",
             "type": "main",
             "index": 0
           }
@@ -1425,7 +1425,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        3940,
+        4000,
         460
       ],
       "id": "a61dd45a-049b-47b8-8701-15657b8f9054",
@@ -1700,7 +1700,29 @@
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n    \"author\": \"urn:li:person:6lQIX0KrI7\",\n    \"lifecycleState\": \"PUBLISHED\",\n    \"specificContent\": {\n        \"com.linkedin.ugc.ShareContent\": {\n            \"shareCommentary\": {\n                \"text\": \"{{ $('OpenAI').item.json.message.content.title }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[0] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[1] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[2] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[3] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[4] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[5] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[6] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[7] }}\\n\\n{{ $('OpenAI').item.json.message.content.hashtags }}\"\n            },\n            \"shareMediaCategory\": \"ARTICLE\",\n            \"media\": [\n                {\n                    \"status\": \"READY\",\n                    \"originalUrl\": \"https://aiadaptiv.com/blog/{{ $('Post Article').item.json.data.slug }}\"\n                }\n            ]\n        }\n    },\n    \"visibility\": {\n        \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n    }\n}",
+        "jsonBody": "={\n    \"author\": \"urn:li:company:106606939\",\n    \"lifecycleState\": \"PUBLISHED\",\n    \"specificContent\": {\n        \"com.linkedin.ugc.ShareContent\": {\n            \"shareCommentary\": {\n                \"text\": \"{{ $('OpenAI').item.json.message.content.title }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[0] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[1] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[2] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[3] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[4] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[5] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[6] }}\\n\\n{{ $('OpenAI').item.json.message.content.outline[7] }}\\n\\n{{ $('OpenAI').item.json.message.content.hashtags }}\"\n            },\n            \"shareMediaCategory\": \"ARTICLE\",\n            \"media\": [\n                {\n                    \"status\": \"READY\",\n                    \"originalUrl\": \"https://aiadaptiv.com/blog/{{ $('Post Article').item.json.data.slug }}\"\n                }\n            ]\n        }\n    },\n    \"visibility\": {\n        \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3180,
+        1300
+      ],
+      "id": "99756f0f-c9ed-4cb3-838e-0f9286eea92c",
+      "name": "Post LinkedIn without image",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "w8ZptHdLLQCccWCn",
+          "name": "Linkedin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.linkedin.com/v2/organizationalEntityAcls?q=roleAssignee",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -1709,8 +1731,8 @@
         3020,
         1300
       ],
-      "id": "99756f0f-c9ed-4cb3-838e-0f9286eea92c",
-      "name": "Post LinkedIn without image",
+      "id": "6f5ae99c-3982-48ba-ba35-443eb1d6e9dc",
+      "name": "Post LinkedIn without image1",
       "credentials": {
         "httpHeaderAuth": {
           "id": "w8ZptHdLLQCccWCn",
@@ -1737,6 +1759,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-07-30T19:11:37.000Z",
-  "versionId": "7cf30e22-d760-4208-a22d-4c42e69cb3b2"
+  "updatedAt": "2025-07-31T15:00:57.000Z",
+  "versionId": "159dbcb3-1c5e-41f6-8091-4823e5b58257"
 }
