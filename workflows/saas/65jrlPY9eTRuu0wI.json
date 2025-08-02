@@ -1,0 +1,87 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-01T14:47:03.300Z",
+  "id": "65jrlPY9eTRuu0wI",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "inform about new user",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "egergergerg-ergewrgreg458tu34985ghhegerg",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9dda7c2d-1de8-4967-9e9c-5650c6fafaa9",
+      "name": "Webhook",
+      "webhookId": "62a0fc65-18c6-4206-b127-8920d372f834",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "jF1Dx6rxXJ1Ipi4j",
+          "name": "new user webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "hernackikacper@gmail.com",
+        "subject": "🎊 New User onboarded!",
+        "message": "=new user on smart schedule!\nuser: {{ $json.body.user }}\nemail: {{ $json.body.email }}\nsigned at: {{ $json.body.signedAt.toDateTime().format('yyyy-MM-dd') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "14db590c-483c-4789-ae0c-27606b30d870",
+      "name": "Gmail",
+      "webhookId": "61828e55-aa6b-4127-b36a-7ebefc218799",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "uqUtpPPSNgFxT7AD",
+          "name": "Gmail account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-08-01T14:47:07.298Z",
+      "updatedAt": "2025-08-01T14:47:07.298Z",
+      "id": "Q0DMJLoQKoFDQRWe",
+      "name": "saas"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-08-01T21:53:48.000Z",
+  "versionId": "65aaba23-85c3-4af2-bd8d-3ba8f7f8e8cd"
+}
