@@ -1,0 +1,365 @@
+{
+  "active": false,
+  "connections": {
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert YT to Vector Database",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert YT to Vector Database",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Prepare Data for Save",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Data for Save": {
+      "main": [
+        [
+          {
+            "node": "Insert YT to Vector Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert YT to Vector Database": {
+      "main": [
+        [
+          {
+            "node": "Create a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-18T15:39:23.295Z",
+  "id": "edb8K2M5Jfxy5Q71",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "YouTube Transcripts",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.aiadaptiv.com/youtube/transcript",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "=https://youtu.be/0qkVRLjDCiI?si=Wasm_Jfnd7iLAgZT"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -48,
+        -96
+      ],
+      "id": "fdd0464b-78f2-45b7-a651-9be8ae61c637",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "VR2HADCVzHyCEv4F",
+          "name": "aiAdaptiv"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chunkSize": 2000,
+        "options": {}
+      },
+      "id": "11f85322-e766-4419-aac1-8acf3a045794",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "position": [
+        512,
+        288
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "ef52e752-4e9a-4fb1-9cbc-a679b694261f",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        352,
+        112
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "label",
+                "value": "=YouTube Video"
+              },
+              {
+                "name": "id",
+                "value": "={{ $('HTTP Request').item.json.response.id }}"
+              },
+              {
+                "name": "author",
+                "value": "={{ $ifEmpty($('When Executed by Another Workflow').item.json.author, $('HTTP Request').item.json.response.author)}}\n"
+              },
+              {
+                "name": "title",
+                "value": "={{ $ifEmpty($('When Executed by Another Workflow').item.json.title,$('HTTP Request').item.json.response.title ) }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "5fcabd68-a38d-4eb2-b17c-33ad7585c4a7",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "position": [
+        512,
+        112
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ed88bf32-1c52-4a23-ac42-7d47fb011a3d",
+              "name": "transcript",
+              "value": "={{ $json.response.transcript }}",
+              "type": "string"
+            },
+            {
+              "id": "2c7bee31-03d7-44d2-b33e-040f96f6d5bc",
+              "name": "author",
+              "value": "={{ $('When Executed by Another Workflow').item.json.author }}",
+              "type": "string"
+            },
+            {
+              "id": "ab4c631b-890c-47f4-9132-0632cd942793",
+              "name": "title",
+              "value": "={{ $('When Executed by Another Workflow').item.json.title }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        -96
+      ],
+      "id": "47425195-5f18-4691-a839-fd2efe286624",
+      "name": "Prepare Data for Save",
+      "alwaysOutputData": true,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "url"
+            },
+            {
+              "name": "author"
+            },
+            {
+              "name": "title"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -256,
+        -96
+      ],
+      "id": "b6250990-d8db-4ab8-b47c-2e34378f17f7",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "n8n_vectors_youtube",
+        "options": {}
+      },
+      "id": "82a90633-25ed-469b-afde-cc78132664ad",
+      "name": "Insert YT to Vector Database",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "position": [
+        400,
+        -96
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## YouTube Transcript\npass url in the conversation and optional title and author - somehow langchain in a production is not handling metadata correctly",
+        "height": 420,
+        "width": 220
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -320,
+        -256
+      ],
+      "typeVersion": 1,
+      "id": "fc250f34-af98-4945-a37b-307b007338b6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "23b218e7-b693-801f-a6de-d8ec4b2cf913",
+          "mode": "list",
+          "cachedResultName": "resources_solopreneur",
+          "cachedResultUrl": "https://www.notion.so/23b218e7b693801fa6ded8ec4b2cf913"
+        },
+        "title": "={{ $json.metadata.author }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "URL|url",
+              "urlValue": "={{ $('HTTP Request').item.json.response.url }}"
+            },
+            {
+              "key": "source|select",
+              "selectValue": "YouTube"
+            }
+          ]
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "richText": true,
+              "text": {
+                "text": [
+                  {
+                    "text": "={{ $json.pageContent }}",
+                    "annotationUi": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        768,
+        -96
+      ],
+      "id": "8e1d273d-4e5e-482a-b6d1-c3568c5b89e1",
+      "name": "Create a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "DFu4pheXYNBPA1mA",
+          "name": "Notion account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-08-01T14:47:07.298Z",
+      "updatedAt": "2025-08-01T14:47:07.298Z",
+      "id": "Q0DMJLoQKoFDQRWe",
+      "name": "saas"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-08-18T16:08:12.000Z",
+  "versionId": "8a22337f-ab0e-409f-b3b7-02621e2d3222"
+}
