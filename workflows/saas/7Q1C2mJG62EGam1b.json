@@ -179,6 +179,17 @@
           }
         ]
       ]
+    },
+    "post a resource": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Resource Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-08-18T15:00:48.713Z",
@@ -382,8 +393,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        320,
-        -608
+        480,
+        -656
       ],
       "webhookId": "2a0058e9-d587-4d92-a7b3-bbd791431c8c",
       "credentials": {
@@ -404,8 +415,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.6,
       "position": [
-        512,
-        -608
+        672,
+        -656
       ],
       "credentials": {
         "openAiApi": {
@@ -433,7 +444,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        496,
+        560,
         -432
       ]
     },
@@ -445,7 +456,7 @@
       "typeVersion": 2,
       "position": [
         480,
-        -288
+        -240
       ],
       "id": "6a48ed64-f885-466c-afd5-78addcd04055",
       "name": "Code"
@@ -470,7 +481,7 @@
       "typeVersion": 3.4,
       "position": [
         816,
-        -288
+        -240
       ]
     },
     {
@@ -512,7 +523,7 @@
       "typeVersion": 1.2,
       "position": [
         320,
-        -288
+        -240
       ],
       "id": "7dbedfd3-3d83-409a-8fec-389081b611b9",
       "name": "get a file",
@@ -553,7 +564,7 @@
       "typeVersion": 4.2,
       "position": [
         640,
-        -288
+        -240
       ],
       "id": "722516d3-ec99-421a-8b07-79dce465743e",
       "name": "analyze image",
@@ -600,7 +611,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        2224,
+        1888,
         48
       ],
       "id": "c11fa6f6-6fac-4cb3-a2ac-5015ae5773ca",
@@ -659,7 +670,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        2064,
+        1760,
         48
       ],
       "id": "0e705087-eb2f-4e01-94ba-99f110dc3121",
@@ -681,6 +692,74 @@
       ],
       "id": "64b2867d-f277-4cc4-9100-e486c5159769",
       "name": "AI Resource Assistant"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "PFFT1YSRE0SDYvFw",
+          "mode": "list",
+          "cachedResultName": "POST resource"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('title', ``, 'string') }}",
+            "data": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('data', ``, 'string') }}",
+            "date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('date', ``, 'string') }}",
+            "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('url', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1616,
+        48
+      ],
+      "id": "d4ba8e38-fb65-46ea-91af-f952a0cba214",
+      "name": "post a resource"
     }
   ],
   "pinData": {},
@@ -697,6 +776,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-18T16:13:32.000Z",
-  "versionId": "c7e475b7-573c-44f1-9e80-2c73be9855ab"
+  "updatedAt": "2025-08-19T15:12:04.000Z",
+  "versionId": "4ddcfe1b-5042-4c52-8c3d-5c9368e9f797"
 }
