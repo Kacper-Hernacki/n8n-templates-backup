@@ -190,6 +190,61 @@
           }
         ]
       ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Feedback Message": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram": {
+      "main": [
+        [
+          {
+            "node": "Send Feedback Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-08-18T15:00:48.713Z",
@@ -210,7 +265,7 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.1,
       "position": [
-        -80,
+        -512,
         -432
       ],
       "id": "51973079-ea74-4950-ac81-2f224d45b455",
@@ -277,7 +332,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1808,
+        1984,
         -432
       ],
       "id": "470027aa-c857-4315-a6d1-20f37f4eaab9",
@@ -378,7 +433,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        144,
+        48,
         -448
       ]
     },
@@ -394,7 +449,7 @@
       "typeVersion": 1.2,
       "position": [
         480,
-        -656
+        -880
       ],
       "webhookId": "2a0058e9-d587-4d92-a7b3-bbd791431c8c",
       "credentials": {
@@ -415,8 +470,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.6,
       "position": [
-        672,
-        -656
+        656,
+        -880
       ],
       "credentials": {
         "openAiApi": {
@@ -456,7 +511,7 @@
       "typeVersion": 2,
       "position": [
         480,
-        -240
+        128
       ],
       "id": "6a48ed64-f885-466c-afd5-78addcd04055",
       "name": "Code"
@@ -481,7 +536,7 @@
       "typeVersion": 3.4,
       "position": [
         816,
-        -240
+        128
       ]
     },
     {
@@ -523,7 +578,7 @@
       "typeVersion": 1.2,
       "position": [
         320,
-        -240
+        128
       ],
       "id": "7dbedfd3-3d83-409a-8fec-389081b611b9",
       "name": "get a file",
@@ -564,7 +619,7 @@
       "typeVersion": 4.2,
       "position": [
         640,
-        -240
+        128
       ],
       "id": "722516d3-ec99-421a-8b07-79dce465743e",
       "name": "analyze image",
@@ -681,13 +736,13 @@
         "promptType": "define",
         "text": "={{ $json.input }} . Remember that today is {{ $now }}",
         "options": {
-          "systemMessage": "You are a helpful Kacper's research assistant."
+          "systemMessage": "You are a helpful Kacper's research assistant.\nUse below tools to:\n- Tweets Scraper: Call this tool to have X tweet scraped,\n- YouTube Transcription: Call this tool to get YouTube video transcript,\n- Post a Resource: Call this tool to post a resource to a knowledge base."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        1328,
+        1504,
         -432
       ],
       "id": "64b2867d-f277-4cc4-9100-e486c5159769",
@@ -695,6 +750,7 @@
     },
     {
       "parameters": {
+        "description": "Call this tool to post a resource to a knowledgebase",
         "workflowId": {
           "__rl": true,
           "value": "PFFT1YSRE0SDYvFw",
@@ -760,6 +816,311 @@
       ],
       "id": "d4ba8e38-fb65-46ea-91af-f952a0cba214",
       "name": "post a resource"
+    },
+    {
+      "parameters": {
+        "content": "## Validate input type\n\n- text,\n- file,\n- voice",
+        "height": 320,
+        "width": 368
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -80,
+        -544
+      ],
+      "typeVersion": 1,
+      "id": "ce0f3f8f-90c0-43aa-ab17-41750105b11c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=please add rating of this conversation to the database using a tool {{ $json.data['how do you rate the response'] }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2704,
+        -432
+      ],
+      "id": "69bbbe69-a41c-457d-b57b-cedcc2d866c0",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2512,
+        -208
+      ],
+      "id": "43622cd9-75ee-48e2-b7ff-860d5ddc9719",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "response_ratings",
+          "mode": "list",
+          "cachedResultName": "response_ratings"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ Math.abs(($('Send Feedback Option').item.json.result.chat.id.toString() + $('Send Feedback Option').item.json.result.message_id.toString()).split('').reduce((a,b) => {a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)) }}\n",
+            "conversation_id": "={{ $('Send Feedback Option').item.json.result.chat.id }}",
+            "message_id": "={{ $('Send Feedback Option').item.json.result.message_id }}",
+            "user_prompt": "={{ $('Telegram Trigger').item.json.message.text }}",
+            "ai_response": "={{ $('AI Agent').item.json.output }}",
+            "rating": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('rating', ``, 'number') }}",
+            "feedback": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('feedback', ``, 'string') }}",
+            "timestamp": "={{ $fromAI('timestamp', ``, 'string') }}",
+            "user_id": "1"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "user_prompt",
+              "displayName": "user_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ai_response",
+              "displayName": "ai_response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "rating",
+              "displayName": "rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "feedback",
+              "displayName": "feedback",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        2848,
+        -208
+      ],
+      "id": "7727030b-b3e2-42ce-83cf-5cbab28d445e",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Feedback message",
+        "height": 496,
+        "width": 1008
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2256,
+        -528
+      ],
+      "typeVersion": 1,
+      "id": "f851c8e0-9c76-4af4-a138-20814c379f82",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "message": "How do you rate an answer?",
+        "responseType": "customForm",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "how do you rate the response"
+            }
+          ]
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeAmount": 45,
+              "resumeUnit": "minutes"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2432,
+        -432
+      ],
+      "id": "ba1b9d98-522c-431b-a81f-32e317ccadb5",
+      "name": "Send Feedback Message",
+      "webhookId": "b5255f30-b2d0-4dc5-9d1d-c91be8fbe2ae",
+      "credentials": {
+        "telegramApi": {
+          "id": "PApR3bLRVOObg2L8",
+          "name": "aiResearcher"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Send Feedback Option').item.json.result.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2688,
+        -208
+      ],
+      "id": "be1c3372-0861-4226-b1d0-5a1818fffac2",
+      "name": "Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Process Voice message",
+        "height": 272,
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        384,
+        -960
+      ],
+      "typeVersion": 1,
+      "id": "2b9e78b1-d317-4d6d-9878-b5b9d55e7e21",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "get a knowledge vector database\nget a knowledge graph\ndeep research in my notes?",
+        "height": 288,
+        "width": 384
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2784,
+        160
+      ],
+      "typeVersion": 1,
+      "id": "3830b02d-a4a8-4024-aadf-64bd35a01037",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Analyze an image",
+        "height": 336,
+        "width": 656
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        288,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "cd60cbe6-db98-4f7b-8235-7f7374cfc6eb",
+      "name": "Sticky Note4"
     }
   ],
   "pinData": {},
@@ -776,6 +1137,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-19T15:12:04.000Z",
-  "versionId": "4ddcfe1b-5042-4c52-8c3d-5c9368e9f797"
+  "updatedAt": "2025-08-20T15:50:56.000Z",
+  "versionId": "abcef154-5fd7-4c73-b957-1d8212e71e38"
 }
