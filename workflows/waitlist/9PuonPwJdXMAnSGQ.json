@@ -1,0 +1,239 @@
+{
+  "active": true,
+  "connections": {
+    "Resend Confirmation mail": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook - Email Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Set Crypto Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Crypto Token": {
+      "main": [
+        [
+          {
+            "node": "Webhook URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook URL": {
+      "main": [
+        [
+          {
+            "node": "Email Template",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Template": {
+      "main": [
+        [
+          {
+            "node": "Resend Confirmation mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-21T15:17:49.664Z",
+  "id": "9PuonPwJdXMAnSGQ",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Waitlist Backend",
+  "nodes": [
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"message\": \"Confirmation email sent! Please check your inbox and click the confirmation link.\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        832,
+        608
+      ],
+      "id": "ab63e35e-5a5a-4219-b3bf-ac355e98f906",
+      "name": "Respond to Webhook - Email Sent"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.resend.com/emails",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "from",
+              "value": "waitlist@aiadaptiv.com"
+            },
+            {
+              "name": "to",
+              "value": "={{ $('Email Template').item.json.email }}"
+            },
+            {
+              "name": "subject",
+              "value": "={{ $('Email Template').item.json.subject }}"
+            },
+            {
+              "name": "html",
+              "value": "={{ $('Email Template').item.json.emailHtml }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        544,
+        608
+      ],
+      "id": "6e24bd38-3cab-4832-b0a3-326df41fc9ca",
+      "name": "Resend Confirmation mail",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "wEk04RaREwWNLCpF",
+          "name": "resend_aiadaptiv"
+        },
+        "httpBearerAuth": {
+          "id": "VxGEPf2mdCB77K7P",
+          "name": "Resend"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "a5fca94e-b74b-4a0f-847e-13b944c4bdf6",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -384,
+        608
+      ],
+      "id": "9f00d287-e854-49af-ab20-bf907df19385",
+      "name": "Webhook",
+      "webhookId": "a5fca94e-b74b-4a0f-847e-13b944c4bdf6"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"email\": \"{{ $json.body.email }}\",\n  \"token\": \"{{ 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) { var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8); return v.toString(16); }) }}\"\n}",
+        "includeOtherFields": "={{ false }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -112,
+        608
+      ],
+      "id": "e8462fe6-33e3-4fd3-8742-047bc2fb5cc8",
+      "name": "Set Crypto Token"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "73bdfc3f-cace-451e-9bde-b4beec8d0ee5",
+              "name": "webhookUrl",
+              "value": "https://n8n.aiadaptiv.com/webhook/d726c836-d0d3-4034-8514-582bed1dadfe",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        48,
+        608
+      ],
+      "id": "4bc3c755-0629-417a-8fb7-c2dd08079ab1",
+      "name": "Webhook URL"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c8e63fbc-1c93-4408-9e22-6cca66fbeebc",
+              "name": "email",
+              "value": "={{ $('Set Crypto Token').item.json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "ac47a7cf-c300-4668-965f-95fefaad7d1d",
+              "name": "subject",
+              "value": "Confirm your spot on the AI Adaptiv waitlist",
+              "type": "string"
+            },
+            {
+              "id": "f22c5c22-4604-48e4-80bb-912a512e397d",
+              "name": "emailHtml",
+              "value": "=<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;\">\n  <div style=\"text-align: center; margin-bottom: 30px;\">\n    <h1 style=\"color: #333333; font-size: 28px; margin-bottom: 10px;\">Welcome to AI Adaptiv!</h1>\n    <p style=\"color: #666666; font-size: 16px; margin: 0;\">Thanks for joining our waitlist</p>\n  </div>\n  \n  <div style=\"background-color: #f8f9fa; padding: 30px; border-radius: 8px; margin-bottom: 30px;\">\n    <h2 style=\"color: #333333; font-size: 22px; margin-bottom: 15px;\">Confirm Your Email Address</h2>\n    <p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin-bottom: 25px;\">\n      We're excited to have you on board! Please click the button below to confirm your email address and secure your spot on our waitlist.\n    </p>\n    \n    <div style=\"text-align: center;\">\n      <a href=\"{{ $('Webhook URL').item.json.webhookUrl }}?email={{ $('Set Crypto Token').item.json.email }}\" \n         style=\"display: inline-block; background-color: #007cba; color: white; padding: 14px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;\">\n        Confirm Email Address\n      </a>\n    </div>\n  </div>\n  \n  <div style=\"border-top: 1px solid #e9ecef; padding-top: 20px;\">\n    <p style=\"color: #888888; font-size: 14px; line-height: 1.5; margin-bottom: 10px;\">\n      <strong>Having trouble with the button?</strong> Copy and paste this link into your browser:\n    </p>\n    <p style=\"word-break: break-all; color: #007cba; font-size: 12px; background-color: #f8f9fa; padding: 10px; border-radius: 4px;\">\n      {{ $('Webhook URL').item.json.webhookUrl }}?email={{ $('Set Crypto Token').item.json.email }}\n    </p>\n  </div>\n  \n  <div style=\"margin-top: 30px; text-align: center; border-top: 1px solid #e9ecef; padding-top: 20px;\">\n    <p style=\"color: #888888; font-size: 12px; margin: 0;\">\n      This email was sent to {{ $('Set Crypto Token').item.json.email }}. If you didn't request this, you can safely ignore this email.\n    </p>\n  </div>\n</div>",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        608
+      ],
+      "id": "0798c994-e44f-467c-ad31-4694903ae7c7",
+      "name": "Email Template"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-08-21T16:01:39.296Z",
+      "updatedAt": "2025-08-21T16:01:39.296Z",
+      "id": "hGeLVvdOm4K4c3mG",
+      "name": "waitlist"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-08-21T18:34:05.000Z",
+  "versionId": "40711483-7e34-4d7a-b7d6-ab7c3f347403"
+}
