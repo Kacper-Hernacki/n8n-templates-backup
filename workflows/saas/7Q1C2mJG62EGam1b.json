@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Telegram Trigger": {
       "main": [
@@ -241,6 +241,17 @@
           {
             "node": "Send Feedback Message",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Knowledgebase  Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Resource Assistant",
+            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -1121,6 +1132,55 @@
       "typeVersion": 1,
       "id": "cd60cbe6-db98-4f7b-8235-7f7374cfc6eb",
       "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to get a knowledge base data",
+        "workflowId": {
+          "__rl": true,
+          "value": "UZrulkJW8Zdg7T50",
+          "mode": "list",
+          "cachedResultName": "RAG"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}",
+            "sessionId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('sessionId', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "sessionId",
+              "displayName": "sessionId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1664,
+        -224
+      ],
+      "id": "b03a792c-ff47-4aeb-be12-fa8cb7a759d4",
+      "name": "Get Knowledgebase  Data"
     }
   ],
   "pinData": {},
@@ -1137,6 +1197,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-20T15:50:56.000Z",
-  "versionId": "abcef154-5fd7-4c73-b957-1d8212e71e38"
+  "updatedAt": "2025-08-21T18:28:43.000Z",
+  "versionId": "3d9961fc-d493-4009-a32e-bc9d218462a0"
 }
