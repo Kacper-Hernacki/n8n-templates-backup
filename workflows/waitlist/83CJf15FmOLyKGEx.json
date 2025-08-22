@@ -1,0 +1,155 @@
+{
+  "active": true,
+  "connections": {
+    "Add a new user": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook - Email Confirmed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Add a new user",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-21T17:27:06.593Z",
+  "id": "83CJf15FmOLyKGEx",
+  "isArchived": false,
+  "meta": null,
+  "name": "Waitlist Confirmation Logic",
+  "nodes": [
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"message\": \"Email confirmed successfully! You've been added to our waitlist.\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        496,
+        192
+      ],
+      "id": "e6b7ab06-627a-4f99-af93-661c3df9cbdc",
+      "name": "Respond to Webhook - Email Confirmed"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Oo0N663CpJZquV4O42UqM5PgEBN8mmoAaHDaQ1TJshU",
+          "mode": "list",
+          "cachedResultName": "Waitlist 🎊",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Oo0N663CpJZquV4O42UqM5PgEBN8mmoAaHDaQ1TJshU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Arkusz1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Oo0N663CpJZquV4O42UqM5PgEBN8mmoAaHDaQ1TJshU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $json.query.email }}",
+            "Product": "AI Adaptiv",
+            "Created At": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Product",
+              "displayName": "Product",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created At",
+              "displayName": "Created At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        288,
+        192
+      ],
+      "id": "4568278b-2e0e-4470-a185-7e8c74d6cce1",
+      "name": "Add a new user",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ykD1Omsc2XmXUP2v",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "d726c836-d0d3-4034-8514-582bed1dadfe",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        48,
+        192
+      ],
+      "id": "1d4c6bbf-b923-4d8f-90a8-5ae79313a9cd",
+      "name": "Webhook",
+      "webhookId": "d726c836-d0d3-4034-8514-582bed1dadfe"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-08-21T16:01:39.296Z",
+      "updatedAt": "2025-08-21T16:01:39.296Z",
+      "id": "hGeLVvdOm4K4c3mG",
+      "name": "waitlist"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-08-21T18:22:18.000Z",
+  "versionId": "bf1156df-1616-4506-990d-bc33a06d7708"
+}
