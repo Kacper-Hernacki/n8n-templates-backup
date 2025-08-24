@@ -16,7 +16,7 @@
       "main": [
         [
           {
-            "node": "Set Crypto Token",
+            "node": "Set email and product",
             "type": "main",
             "index": 0
           }
@@ -50,6 +50,39 @@
         [
           {
             "node": "Resend Confirmation mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add a new user": {
+      "main": [
+        [
+          {
+            "node": "Set Crypto Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set email and product": {
+      "main": [
+        [
+          {
+            "node": "Add a new user",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook - Email Sent": {
+      "main": [
+        [
+          {
+            "node": "Send mail to me about a new user",
             "type": "main",
             "index": 0
           }
@@ -138,7 +171,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -384,
+        -816,
         608
       ],
       "id": "9f00d287-e854-49af-ab20-bf907df19385",
@@ -148,7 +181,7 @@
     {
       "parameters": {
         "mode": "raw",
-        "jsonOutput": "={\n  \"email\": \"{{ $json.body.email }}\",\n  \"token\": \"{{ 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) { var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8); return v.toString(16); }) }}\"\n}",
+        "jsonOutput": "={\n  \"email\": \"{{ $('Set email and product').item.json.email }}\",\n  \"token\": \"{{ 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) { var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8); return v.toString(16); }) }}\"\n}",
         "includeOtherFields": "={{ false }}",
         "options": {}
       },
@@ -218,6 +251,196 @@
       ],
       "id": "0798c994-e44f-467c-ad31-4694903ae7c7",
       "name": "Email Template"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Oo0N663CpJZquV4O42UqM5PgEBN8mmoAaHDaQ1TJshU",
+          "mode": "list",
+          "cachedResultName": "Waitlist 🎊",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Oo0N663CpJZquV4O42UqM5PgEBN8mmoAaHDaQ1TJshU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Arkusz1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Oo0N663CpJZquV4O42UqM5PgEBN8mmoAaHDaQ1TJshU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $('Set email and product').item.json.email }}",
+            "Product": "={{ $('Set email and product').item.json.product }}",
+            "Created At": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}",
+            "isConfirmed": "false",
+            "isAgreedToRecieveMails": "={{ $('Set email and product').item.json.isAgreedToReceiveMails }}",
+            "Updated At": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Product",
+              "displayName": "Product",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created At",
+              "displayName": "Created At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "isConfirmed",
+              "displayName": "isConfirmed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Updated At",
+              "displayName": "Updated At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "isAgreedToRecieveMails",
+              "displayName": "isAgreedToRecieveMails",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -320,
+        608
+      ],
+      "id": "78c71cf1-1811-46c4-b4d6-dba7fe6446e8",
+      "name": "Add a new user",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ykD1Omsc2XmXUP2v",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "52918e33-23fd-4559-bd30-c124aa43e691",
+              "name": "email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "9a7cae85-5cae-44f4-87e5-0e0a17b56901",
+              "name": "product",
+              "value": "={{ $json.body.product }}",
+              "type": "string"
+            },
+            {
+              "id": "f884a359-8267-41e4-a0bb-c85cf3f5cd69",
+              "name": "isAgreedToReceiveMails",
+              "value": "={{ $json.body.isAgreedToReceiveMails }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -528,
+        608
+      ],
+      "id": "d5137183-0125-4132-a060-1f5408f0eedd",
+      "name": "Set email and product"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.resend.com/emails",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "from",
+              "value": "waitlist@aiadaptiv.com"
+            },
+            {
+              "name": "to",
+              "value": "=hernackikacper@gmail.com"
+            },
+            {
+              "name": "subject",
+              "value": "=New user 🎊 {{ $('Email Template').item.json.email }}"
+            },
+            {
+              "name": "html",
+              "value": "=<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;\">\n  <div style=\"text-align: center; margin-bottom: 30px;\">\n    <h1 style=\"color: #333333; font-size: 28px; margin-bottom: 10px;\">New user in  a waitlist</h1>\n    <p style=\"color: #666666; font-size: 16px; margin: 0;\">New user joined a waitlist {{ $('Email Template').item.json.email }} </p>\n  </div>\n</div>"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1056,
+        608
+      ],
+      "id": "a4914a9f-8f06-4638-ab17-75a72cdfd65a",
+      "name": "Send mail to me about a new user",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "wEk04RaREwWNLCpF",
+          "name": "resend_aiadaptiv"
+        },
+        "httpBearerAuth": {
+          "id": "VxGEPf2mdCB77K7P",
+          "name": "Resend"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -234,6 +457,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-22T16:01:43.000Z",
-  "versionId": "5ab0640e-9727-4c45-aa92-7e49131ff84c"
+  "updatedAt": "2025-08-23T13:06:05.000Z",
+  "versionId": "12befddf-0dec-40c5-bf5a-fdfd23dce44a"
 }
