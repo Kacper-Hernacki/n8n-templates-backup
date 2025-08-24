@@ -39,7 +39,7 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.4,
       "position": [
-        496,
+        512,
         192
       ],
       "id": "e6b7ab06-627a-4f99-af93-661c3df9cbdc",
@@ -47,7 +47,7 @@
     },
     {
       "parameters": {
-        "operation": "append",
+        "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
           "value": "1Oo0N663CpJZquV4O42UqM5PgEBN8mmoAaHDaQ1TJshU",
@@ -66,10 +66,12 @@
           "mappingMode": "defineBelow",
           "value": {
             "Email": "={{ $json.query.email }}",
-            "Product": "AI Adaptiv",
-            "Created At": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}"
+            "isConfirmed": "true",
+            "Updated At": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}"
           },
-          "matchingColumns": [],
+          "matchingColumns": [
+            "Email"
+          ],
           "schema": [
             {
               "id": "Email",
@@ -78,7 +80,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "Product",
@@ -87,7 +90,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Created At",
@@ -96,7 +100,38 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "isConfirmed",
+              "displayName": "isConfirmed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Updated At",
+              "displayName": "Updated At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "isAgreedToRecieveMails",
+              "displayName": "isAgreedToRecieveMails",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -150,6 +185,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-21T18:22:18.000Z",
-  "versionId": "bf1156df-1616-4506-990d-bc33a06d7708"
+  "updatedAt": "2025-08-23T12:23:42.000Z",
+  "versionId": "a8b772a1-0fab-47c5-9a61-a564239d981f"
 }
