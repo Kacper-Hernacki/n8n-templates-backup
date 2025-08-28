@@ -1,5 +1,5 @@
 {
-  "active": true,
+  "active": false,
   "connections": {
     "Telegram Trigger": {
       "main": [
@@ -173,6 +173,11 @@
       "main": [
         [
           {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          },
+          {
             "node": "Telegram",
             "type": "main",
             "index": 0
@@ -256,6 +261,22 @@
           }
         ]
       ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
     }
   },
   "createdAt": "2025-08-18T15:00:48.713Z",
@@ -276,8 +297,8 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.1,
       "position": [
-        -512,
-        -432
+        -464,
+        -528
       ],
       "id": "51973079-ea74-4950-ac81-2f224d45b455",
       "name": "Telegram Trigger",
@@ -301,8 +322,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        1072,
-        -144
+        1248,
+        -224
       ],
       "id": "652e879e-f6bf-4eeb-8741-4e9eff183cfa",
       "name": "OpenAI Chat Model",
@@ -322,8 +343,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        1216,
-        -144
+        1408,
+        -224
       ],
       "id": "c3be0828-3d5d-4541-8e47-b030e770b320",
       "name": "Postgres Chat Memory",
@@ -343,7 +364,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1984,
+        2064,
         -432
       ],
       "id": "470027aa-c857-4315-a6d1-20f37f4eaab9",
@@ -460,7 +481,7 @@
       "typeVersion": 1.2,
       "position": [
         480,
-        -880
+        -784
       ],
       "webhookId": "2a0058e9-d587-4d92-a7b3-bbd791431c8c",
       "credentials": {
@@ -482,7 +503,7 @@
       "typeVersion": 1.6,
       "position": [
         656,
-        -880
+        -784
       ],
       "credentials": {
         "openAiApi": {
@@ -521,8 +542,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        480,
-        128
+        464,
+        -32
       ],
       "id": "6a48ed64-f885-466c-afd5-78addcd04055",
       "name": "Code"
@@ -546,8 +567,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        816,
-        128
+        800,
+        -32
       ]
     },
     {
@@ -588,8 +609,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        320,
-        128
+        304,
+        -32
       ],
       "id": "7dbedfd3-3d83-409a-8fec-389081b611b9",
       "name": "get a file",
@@ -629,8 +650,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        640,
-        128
+        624,
+        -32
       ],
       "id": "722516d3-ec99-421a-8b07-79dce465743e",
       "name": "analyze image",
@@ -677,8 +698,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1888,
-        48
+        2064,
+        96
       ],
       "id": "c11fa6f6-6fac-4cb3-a2ac-5015ae5773ca",
       "name": "Tweets Scraper"
@@ -736,8 +757,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1760,
-        48
+        1888,
+        96
       ],
       "id": "0e705087-eb2f-4e01-94ba-99f110dc3121",
       "name": "YouTube Transcripts"
@@ -822,8 +843,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1616,
-        48
+        1728,
+        96
       ],
       "id": "d4ba8e38-fb65-46ea-91af-f952a0cba214",
       "name": "post a resource"
@@ -852,7 +873,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        2704,
+        2912,
         -432
       ],
       "id": "69bbbe69-a41c-457d-b57b-cedcc2d866c0",
@@ -870,7 +891,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        2512,
+        2720,
         -208
       ],
       "id": "43622cd9-75ee-48e2-b7ff-860d5ddc9719",
@@ -1003,7 +1024,7 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.5,
       "position": [
-        2848,
+        3056,
         -208
       ],
       "id": "7727030b-b3e2-42ce-83cf-5cbab28d445e",
@@ -1019,12 +1040,12 @@
       "parameters": {
         "content": "# Feedback message",
         "height": 496,
-        "width": 1008
+        "width": 960
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2256,
-        -528
+        2448,
+        -544
       ],
       "typeVersion": 1,
       "id": "f851c8e0-9c76-4af4-a138-20814c379f82",
@@ -1055,7 +1076,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2432,
+        2640,
         -432
       ],
       "id": "ba1b9d98-522c-431b-a81f-32e317ccadb5",
@@ -1076,7 +1097,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        2688,
+        2896,
         -208
       ],
       "id": "be1c3372-0861-4226-b1d0-5a1818fffac2",
@@ -1097,7 +1118,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         384,
-        -960
+        -864
       ],
       "typeVersion": 1,
       "id": "2b9e78b1-d317-4d6d-9878-b5b9d55e7e21",
@@ -1107,12 +1128,13 @@
       "parameters": {
         "content": "get a knowledge vector database\nget a knowledge graph\ndeep research in my notes?",
         "height": 288,
-        "width": 384
+        "width": 224,
+        "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2784,
-        160
+        -752,
+        -512
       ],
       "typeVersion": 1,
       "id": "3830b02d-a4a8-4024-aadf-64bd35a01037",
@@ -1126,8 +1148,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        288,
-        16
+        272,
+        -144
       ],
       "typeVersion": 1,
       "id": "cd60cbe6-db98-4f7b-8235-7f7374cfc6eb",
@@ -1176,11 +1198,69 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1664,
-        -224
+        1376,
+        80
       ],
       "id": "b03a792c-ff47-4aeb-be12-fa8cb7a759d4",
       "name": "Get Knowledgebase  Data"
+    },
+    {
+      "parameters": {
+        "path": "2d7f7243-f071-4de6-b4de-c5dee97e9195",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -464,
+        -320
+      ],
+      "id": "f5a61bb4-fd94-495f-bf49-aebdfd46c0c3",
+      "name": "Webhook",
+      "webhookId": "2d7f7243-f071-4de6-b4de-c5dee97e9195"
+    },
+    {
+      "parameters": {
+        "content": "## Post data",
+        "height": 256,
+        "width": 528
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1648,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "8bed1bc2-ddcf-4c4e-8696-3086de2b563b",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Get Data",
+        "height": 256,
+        "width": 416
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1184,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "43446b90-a35a-43ca-992f-d3085da09b60",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        2064,
+        -832
+      ],
+      "id": "4b2a9185-bc1a-45de-9630-e458131fd4bd",
+      "name": "Respond to Webhook"
     }
   ],
   "pinData": {},
@@ -1196,7 +1276,7 @@
       "name": "saas"
     }
   ],
-  "triggerCount": 1,
-  "updatedAt": "2025-08-21T18:28:43.000Z",
-  "versionId": "3d9961fc-d493-4009-a32e-bc9d218462a0"
+  "triggerCount": 2,
+  "updatedAt": "2025-08-27T19:51:52.000Z",
+  "versionId": "165aa0f0-52eb-4c00-ab8d-29d700ced388"
 }
