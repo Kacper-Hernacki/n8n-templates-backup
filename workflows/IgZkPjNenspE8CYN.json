@@ -1,0 +1,131 @@
+{
+  "active": false,
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-27T20:00:33.650Z",
+  "id": "IgZkPjNenspE8CYN",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "03f5a4c7-2130-4e04-b77a-14efc7c89c6e",
+      "name": "Telegram Trigger",
+      "webhookId": "ab30f835-9b9b-4b9e-9c56-218551891ec8",
+      "credentials": {
+        "telegramApi": {
+          "id": "PvqFONqwlIfEuwof",
+          "name": "Budget"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.photo[0].file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        0
+      ],
+      "id": "1b99c313-0da6-4db8-be62-a1d83b0f3c3f",
+      "name": "get a file",
+      "webhookId": "0131c4d9-3b60-4163-99aa-dc820681cf81",
+      "credentials": {
+        "telegramApi": {
+          "id": "PApR3bLRVOObg2L8",
+          "name": "aiResearcher"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Retrieve data from a photo"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        464,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "cadf1aaf-f937-4e13-be77-0a79e1130105",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Notion MCP"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        816,
+        -144
+      ],
+      "typeVersion": 1,
+      "id": "48d29e29-8285-4cc8-9559-c45ac624cf61",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Google Sheets"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        816,
+        64
+      ],
+      "typeVersion": 1,
+      "id": "3b36ca77-8c9c-4724-957d-bc662649783b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "Respond"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1136,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "8cc3f9f3-7199-4318-b505-3f133ebe9b7c",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-08-27T20:00:33.650Z",
+  "versionId": "2f63bfdd-7aab-4fc8-ad35-81134694884a"
+}
