@@ -11,6 +11,17 @@
           }
         ]
       ]
+    },
+    "get a file": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-08-27T20:00:33.650Z",
@@ -68,12 +79,14 @@
     },
     {
       "parameters": {
-        "content": "Retrieve data from a photo"
+        "content": "Retrieve data from a photo",
+        "height": 208,
+        "width": 288
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        464,
-        -16
+        448,
+        -32
       ],
       "typeVersion": 1,
       "id": "cadf1aaf-f937-4e13-be77-0a79e1130105",
@@ -117,6 +130,35 @@
       "typeVersion": 1,
       "id": "8cc3f9f3-7199-4318-b505-3f133ebe9b7c",
       "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "text": "Retrieve text messages from a receipt and return the data on what was bought and at what price. Also, retrieve a date. ",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        528,
+        0
+      ],
+      "id": "51c0e650-5d4a-498b-84a7-035d7130b96a",
+      "name": "Analyze image",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -126,6 +168,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-08-27T20:00:33.650Z",
-  "versionId": "2f63bfdd-7aab-4fc8-ad35-81134694884a"
+  "updatedAt": "2025-08-30T07:52:21.000Z",
+  "versionId": "6916a44e-82ed-412d-9019-ea9497ef4ac0"
 }
