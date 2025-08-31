@@ -149,8 +149,8 @@
       "name": "Add a new user",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "ykD1Omsc2XmXUP2v",
-          "name": "Google Sheets account 3"
+          "id": "CdoyqdEgIFafr4XW",
+          "name": "Google Sheets account 4"
         }
       }
     },
@@ -185,6 +185,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-23T12:23:42.000Z",
-  "versionId": "a8b772a1-0fab-47c5-9a61-a564239d981f"
+  "updatedAt": "2025-08-30T10:17:55.000Z",
+  "versionId": "ea2fbe61-bed2-4c2b-8037-53dbec6c8c67"
 }
