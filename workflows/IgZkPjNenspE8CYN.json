@@ -16,8 +16,41 @@
       "main": [
         [
           {
-            "node": "Analyze image",
+            "node": "HTTP Request",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
             "index": 0
           }
         ]
@@ -30,7 +63,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "My workflow",
+  "name": "Budget Assistant",
   "nodes": [
     {
       "parameters": {
@@ -58,7 +91,7 @@
     {
       "parameters": {
         "resource": "file",
-        "fileId": "={{ $json.message.photo[0].file_id }}",
+        "fileId": "={{ $json.message.document.thumbnail.file_id }}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.telegram",
@@ -72,8 +105,8 @@
       "webhookId": "0131c4d9-3b60-4163-99aa-dc820681cf81",
       "credentials": {
         "telegramApi": {
-          "id": "PApR3bLRVOObg2L8",
-          "name": "aiResearcher"
+          "id": "PvqFONqwlIfEuwof",
+          "name": "Budget"
         }
       }
     },
@@ -86,7 +119,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         448,
-        -32
+        -48
       ],
       "typeVersion": 1,
       "id": "cadf1aaf-f937-4e13-be77-0a79e1130105",
@@ -98,8 +131,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        816,
-        -144
+        1376,
+        -112
       ],
       "typeVersion": 1,
       "id": "48d29e29-8285-4cc8-9559-c45ac624cf61",
@@ -111,8 +144,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        816,
-        64
+        1376,
+        160
       ],
       "typeVersion": 1,
       "id": "3b36ca77-8c9c-4724-957d-bc662649783b",
@@ -124,8 +157,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1136,
-        -16
+        1760,
+        16
       ],
       "typeVersion": 1,
       "id": "8cc3f9f3-7199-4318-b505-3f133ebe9b7c",
@@ -133,32 +166,96 @@
     },
     {
       "parameters": {
-        "resource": "image",
-        "operation": "analyze",
-        "modelId": {
-          "__rl": true,
-          "value": "chatgpt-4o-latest",
-          "mode": "list",
-          "cachedResultName": "CHATGPT-4O-LATEST"
+        "method": "POST",
+        "url": "https://api.aiadaptiv.com/image/extract-text",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
         },
-        "text": "Retrieve text messages from a receipt and return the data on what was bought and at what price. Also, retrieve a date. ",
-        "inputType": "base64",
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1.8,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
         528,
         0
       ],
-      "id": "51c0e650-5d4a-498b-84a7-035d7130b96a",
-      "name": "Analyze image",
+      "id": "35b7d7b3-09b3-44de-9658-96e8fc6ac809",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "VxGEPf2mdCB77K7P",
+          "name": "Resend"
+        },
+        "httpHeaderAuth": {
+          "id": "VR2HADCVzHyCEv4F",
+          "name": "aiAdaptiv"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=below is extracted text from an invoice:\n{{ $json.data.extraction.extractedText }}",
+        "options": {
+          "systemMessage": "=You are a helpful personal budget AI assistant of User -  {{ $('Telegram Trigger').item.json.message.chat.username }}\n\nYour main job is to upload expenses to conected sources.\n\nBasing on extracted text from a photo of a shop receipt or an invoice, return a json of spendings, like this:\n[\n{\"name\": \"fuel\", \"category\": \"fuel\", \"price\": 13.53, \"currency\": \"PLN\", \"shop\": \"BP\"},\n{other spending},\n...\n]\n\nEtracted text can be very low quality so you have to extract correctly proce of an item and total sum of every spending. You should also check a currency, what shop is it and what category of spending it is.\n\nRemember that a receipt contain a lot of obsolete data."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        864,
+        0
+      ],
+      "id": "6de5a118-4884-439d-9ccc-3c384e026b67",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        288
+      ],
+      "id": "6d63727f-fece-4070-84fa-d07c63123581",
+      "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
           "id": "zwCoTxavt4ELUwZx",
           "name": "OpenAi account"
         }
       }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        864,
+        288
+      ],
+      "id": "80939c28-c750-46a7-ab76-601d6969cecc",
+      "name": "Simple Memory"
     }
   ],
   "pinData": {},
@@ -168,6 +265,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-08-30T07:52:21.000Z",
-  "versionId": "6916a44e-82ed-412d-9019-ea9497ef4ac0"
+  "updatedAt": "2025-09-01T18:59:39.000Z",
+  "versionId": "8cd97dce-2e32-4b58-be4d-a527b781b366"
 }
