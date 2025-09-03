@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Telegram Trigger": {
       "main": [
@@ -16,18 +16,7 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
+            "node": "Call my API to extract text",
             "type": "main",
             "index": 0
           }
@@ -38,7 +27,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "AI Agent",
+            "node": "Proceed Expenses",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -49,8 +38,63 @@
       "ai_memory": [
         [
           {
-            "node": "AI Agent",
+            "node": "Proceed Expenses",
             "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Spending to Notion": {
+      "ai_tool": [
+        [
+          {
+            "node": "Proceed Expenses",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Categories to set in Notion": {
+      "ai_tool": [
+        [
+          {
+            "node": "Proceed Expenses",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Proceed Expenses": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Spending to Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "Proceed Expenses",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call my API to extract text": {
+      "main": [
+        [
+          {
+            "node": "Proceed Expenses",
+            "type": "main",
             "index": 0
           }
         ]
@@ -75,7 +119,7 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        0,
+        96,
         0
       ],
       "id": "03f5a4c7-2130-4e04-b77a-14efc7c89c6e",
@@ -91,13 +135,13 @@
     {
       "parameters": {
         "resource": "file",
-        "fileId": "={{ $json.message.document.thumbnail.file_id }}",
+        "fileId": "={{ $json.message.photo[3].file_id || $json.message.photo[2].file_id || $json.message.photo[1].file_id || $json.message.photo[0].file_id || $json.message.document.thumbnail.file_id }}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        240,
+        304,
         0
       ],
       "id": "1b99c313-0da6-4db8-be62-a1d83b0f3c3f",
@@ -114,11 +158,11 @@
       "parameters": {
         "content": "Retrieve data from a photo",
         "height": 208,
-        "width": 288
+        "width": 224
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        448,
+        464,
         -48
       ],
       "typeVersion": 1,
@@ -127,12 +171,14 @@
     },
     {
       "parameters": {
-        "content": "Notion MCP"
+        "content": "Notion ",
+        "height": 208,
+        "width": 352
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1376,
-        -112
+        768,
+        320
       ],
       "typeVersion": 1,
       "id": "48d29e29-8285-4cc8-9559-c45ac624cf61",
@@ -140,12 +186,14 @@
     },
     {
       "parameters": {
-        "content": "Google Sheets"
+        "content": "Google Sheets",
+        "height": 240,
+        "width": 368
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1376,
-        160
+        1216,
+        304
       ],
       "typeVersion": 1,
       "id": "3b36ca77-8c9c-4724-957d-bc662649783b",
@@ -153,16 +201,288 @@
     },
     {
       "parameters": {
-        "content": "Respond"
+        "content": "Respond",
+        "height": 192,
+        "width": 256
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1760,
-        16
+        1104,
+        -48
       ],
       "typeVersion": 1,
       "id": "8cc3f9f3-7199-4318-b505-3f133ebe9b7c",
       "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        304
+      ],
+      "id": "6d63727f-fece-4070-84fa-d07c63123581",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        608,
+        304
+      ],
+      "id": "80939c28-c750-46a7-ab76-601d6969cecc",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=I have added:\n{{ $json.output }}\nto the database",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1184,
+        0
+      ],
+      "id": "40965e3d-00ac-4b24-a834-b30b7f325cd9",
+      "name": "Send a text message",
+      "webhookId": "d0bd2cde-d6a9-4820-be10-fa6524acdc63",
+      "credentials": {
+        "telegramApi": {
+          "id": "PvqFONqwlIfEuwof",
+          "name": "Budget"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "95d5cf24-fcf2-41d5-9b90-bd0adf591062",
+          "mode": "list",
+          "cachedResultName": "Expenses",
+          "cachedResultUrl": "https://www.notion.so/95d5cf24fcf241d59b90bd0adf591062"
+        },
+        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', ``, 'string') }}",
+        "simple": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify', ``, 'boolean') }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Budget items|relation",
+              "relationValue": [
+                "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues0_relationValue0_Relation_IDs', ``, 'string') }}"
+              ]
+            },
+            {
+              "key": "Date|date",
+              "date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues1_Date', ``, 'string') }}"
+            },
+            {
+              "key": "Amount|number",
+              "numberValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues2_Number', ``, 'number') }}"
+            },
+            {
+              "key": "Name|title",
+              "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues3_Title', ``, 'string') }}"
+            },
+            {
+              "key": "shop|rich_text",
+              "textContent": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues4_Text', ``, 'string') }}"
+            },
+            {
+              "key": "payment|rich_text",
+              "textContent": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues5_Text', ``, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        992,
+        368
+      ],
+      "id": "faaddf43-17e8-4b53-8814-dd96c5a2b2e8",
+      "name": "Upload Spending to Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "DFu4pheXYNBPA1mA",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "eeba9a59-92ee-426d-9137-82940178e25c",
+          "mode": "list",
+          "cachedResultName": "Budget items",
+          "cachedResultUrl": "https://www.notion.so/eeba9a5992ee426d913782940178e25c"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        368
+      ],
+      "id": "a7ebfd7e-5d87-401b-bc73-a48798a2eabf",
+      "name": "Get Categories to set in Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "DFu4pheXYNBPA1mA",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Process this receipt and add all expenses to Notion and Google Sheets:\n\nExtracted receipt text: {{ $json.data.extraction.extractedText }}\n\nExtract each individual item and use the tools to add them to both databases.",
+        "options": {
+          "systemMessage": "=You are a personal budget assistant that processes receipt text and adds expenses to databases.\n\nTASK: Extract expenses from receipt text and add each item to both Notion and Google Sheets using the available tools.\n\nEXTRACTION RULES:\n- For RECEIPTS: Extract ALL individual products/items with prices\n- For BILLS/INVOICES: Create ONE entry with the total amount\n- Fix obvious abbreviations (e.g., \"Mlecz Kanapka\" → \"mleczna kanapka\", \"Jog Skur Natu\" → \"jogurt skyr naturalny\")\n\nDATE LOGIC:\n- If receipt has transaction date: use that date\n- If bill/invoice with only due date (no payment date): use TODAY's date (2025-09-02)\n- Format: YYYY-MM-DD\n\nBILL/INVOICE DETECTION:\n- Text contains \"rachunek\", \"invoice\", \"bill\", \"faktura\", or due dates without payment dates\n- For Plus invoices: shop = \"Plus\", category = \"utilities\" (cell phone bill)\n- For other service providers: use company name as shop\n\nPAYMENT METHOD:\n- Bills/invoices: \"card\" (default for automatic payments)\n- Receipts: \"card\" or \"cash\" based on context\n\nCATEGORIES: Use these categories and match to appropriate Notion budget item ID:\n- utilities (for phone, internet, electricity bills)\n- food, groceries, transport, entertainment, health, shopping, others\n\nPROCESS:\n1. First, get budget categories using \"Get Categories to set in Notion\" tool\n2. Determine if this is a receipt (multiple items) or bill (single payment)\n3. For each expense item extracted, use BOTH tools:\n   - \"Upload Spending to Notion\" with proper budget item ID\n   - \"Add Spending to Google Sheets\"\n4. After processing all items, return a summary of what was added\n\nIMPORTANT: \n- For bills with due dates only: use today's date as payment date\n- Plus invoices = cell phone bills = utilities category\n- Process each item separately using the tools\n- Always use both Notion and Sheets tools for each item\n- Return a final summary of all items processed"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        800,
+        0
+      ],
+      "id": "28e52e60-3ed2-46eb-af93-475b83ad56b3",
+      "name": "Proceed Expenses"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1v2d61O6t0f_mQ1Rgb5ZvT9wbaBtc6nOcbKGuCvt1BUc",
+          "mode": "list",
+          "cachedResultName": "Expenses tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v2d61O6t0f_mQ1Rgb5ZvT9wbaBtc6nOcbKGuCvt1BUc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "august",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v2d61O6t0f_mQ1Rgb5ZvT9wbaBtc6nOcbKGuCvt1BUc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Name', ``, 'string') }}",
+            "Category": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Category', ``, 'string') }}",
+            "Price": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Price', ``, 'string') }}",
+            "shop": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('shop', ``, 'string') }}",
+            "payment method": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('payment_method', ``, 'string') }}",
+            "date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('date', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Price",
+              "displayName": "Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "shop",
+              "displayName": "shop",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "payment method",
+              "displayName": "payment method",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        1360,
+        368
+      ],
+      "id": "9217e60c-d1f4-41e7-b6ef-5d0b1fd46050",
+      "name": "Add Spending to Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CdoyqdEgIFafr4XW",
+          "name": "Google Sheets account 4"
+        }
+      }
     },
     {
       "parameters": {
@@ -190,7 +510,7 @@
         0
       ],
       "id": "35b7d7b3-09b3-44de-9658-96e8fc6ac809",
-      "name": "HTTP Request",
+      "name": "Call my API to extract text",
       "credentials": {
         "httpBearerAuth": {
           "id": "VxGEPf2mdCB77K7P",
@@ -201,61 +521,6 @@
           "name": "aiAdaptiv"
         }
       }
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=below is extracted text from an invoice:\n{{ $json.data.extraction.extractedText }}",
-        "options": {
-          "systemMessage": "=You are a helpful personal budget AI assistant of User -  {{ $('Telegram Trigger').item.json.message.chat.username }}\n\nYour main job is to upload expenses to conected sources.\n\nBasing on extracted text from a photo of a shop receipt or an invoice, return a json of spendings, like this:\n[\n{\"name\": \"fuel\", \"category\": \"fuel\", \"price\": 13.53, \"currency\": \"PLN\", \"shop\": \"BP\"},\n{other spending},\n...\n]\n\nEtracted text can be very low quality so you have to extract correctly proce of an item and total sum of every spending. You should also check a currency, what shop is it and what category of spending it is.\n\nRemember that a receipt contain a lot of obsolete data."
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        864,
-        0
-      ],
-      "id": "6de5a118-4884-439d-9ccc-3c384e026b67",
-      "name": "AI Agent"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "gpt-4.1-mini"
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [
-        720,
-        288
-      ],
-      "id": "6d63727f-fece-4070-84fa-d07c63123581",
-      "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "zwCoTxavt4ELUwZx",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [
-        864,
-        288
-      ],
-      "id": "80939c28-c750-46a7-ab76-601d6969cecc",
-      "name": "Simple Memory"
     }
   ],
   "pinData": {},
@@ -264,7 +529,7 @@
   },
   "staticData": null,
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-09-01T18:59:39.000Z",
-  "versionId": "8cd97dce-2e32-4b58-be4d-a527b781b366"
+  "triggerCount": 1,
+  "updatedAt": "2025-09-02T17:30:05.000Z",
+  "versionId": "426bf4b6-dc59-43c3-bb25-2b09f6013618"
 }
