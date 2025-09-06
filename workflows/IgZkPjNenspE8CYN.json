@@ -99,6 +99,11 @@
           }
         ]
       ]
+    },
+    "Send a text message": {
+      "main": [
+        []
+      ]
     }
   },
   "createdAt": "2025-08-27T20:00:33.650Z",
@@ -135,7 +140,7 @@
     {
       "parameters": {
         "resource": "file",
-        "fileId": "={{ $json.message.photo[3].file_id || $json.message.photo[2].file_id || $json.message.photo[1].file_id || $json.message.photo[0].file_id || $json.message.document.thumbnail.file_id }}",
+        "fileId": "={{ $json.message.document.file_id || $json.message.photo[3].file_id || $json.message.photo[2].file_id || $json.message.photo[1].file_id || $json.message.photo[0].file_id || $json.message.document.thumbnail.file_id }}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.telegram",
@@ -171,14 +176,14 @@
     },
     {
       "parameters": {
-        "content": "Notion ",
+        "content": "Notion upload spending",
         "height": 208,
         "width": 352
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        768,
-        320
+        1168,
+        352
       ],
       "typeVersion": 1,
       "id": "48d29e29-8285-4cc8-9559-c45ac624cf61",
@@ -192,8 +197,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1216,
-        304
+        1616,
+        336
       ],
       "typeVersion": 1,
       "id": "3b36ca77-8c9c-4724-957d-bc662649783b",
@@ -321,8 +326,8 @@
       "type": "n8n-nodes-base.notionTool",
       "typeVersion": 2.2,
       "position": [
-        992,
-        368
+        1392,
+        400
       ],
       "id": "faaddf43-17e8-4b53-8814-dd96c5a2b2e8",
       "name": "Upload Spending to Notion",
@@ -350,8 +355,8 @@
       "type": "n8n-nodes-base.notionTool",
       "typeVersion": 2.2,
       "position": [
-        832,
-        368
+        1232,
+        400
       ],
       "id": "a7ebfd7e-5d87-401b-bc73-a48798a2eabf",
       "name": "Get Categories to set in Notion",
@@ -367,7 +372,7 @@
         "promptType": "define",
         "text": "=Process this receipt and add all expenses to Notion and Google Sheets:\n\nExtracted receipt text: {{ $json.data.extraction.extractedText }}\n\nExtract each individual item and use the tools to add them to both databases.",
         "options": {
-          "systemMessage": "=You are a personal budget assistant that processes receipt text and adds expenses to databases.\n\nTASK: Extract expenses from receipt text and add each item to both Notion and Google Sheets using the available tools.\n\nEXTRACTION RULES:\n- For RECEIPTS: Extract ALL individual products/items with prices\n- For BILLS/INVOICES: Create ONE entry with the total amount\n- Fix obvious abbreviations (e.g., \"Mlecz Kanapka\" → \"mleczna kanapka\", \"Jog Skur Natu\" → \"jogurt skyr naturalny\")\n\nDATE LOGIC:\n- If receipt has transaction date: use that date\n- If bill/invoice with only due date (no payment date): use TODAY's date (2025-09-02)\n- Format: YYYY-MM-DD\n\nBILL/INVOICE DETECTION:\n- Text contains \"rachunek\", \"invoice\", \"bill\", \"faktura\", or due dates without payment dates\n- For Plus invoices: shop = \"Plus\", category = \"utilities\" (cell phone bill)\n- For other service providers: use company name as shop\n\nPAYMENT METHOD:\n- Bills/invoices: \"card\" (default for automatic payments)\n- Receipts: \"card\" or \"cash\" based on context\n\nCATEGORIES: Use these categories and match to appropriate Notion budget item ID:\n- utilities (for phone, internet, electricity bills)\n- food, groceries, transport, entertainment, health, shopping, others\n\nPROCESS:\n1. First, get budget categories using \"Get Categories to set in Notion\" tool\n2. Determine if this is a receipt (multiple items) or bill (single payment)\n3. For each expense item extracted, use BOTH tools:\n   - \"Upload Spending to Notion\" with proper budget item ID\n   - \"Add Spending to Google Sheets\"\n4. After processing all items, return a summary of what was added\n\nIMPORTANT: \n- For bills with due dates only: use today's date as payment date\n- Plus invoices = cell phone bills = utilities category\n- Process each item separately using the tools\n- Always use both Notion and Sheets tools for each item\n- Return a final summary of all items processed"
+          "systemMessage": "=You are a personal budget assistant that processes receipt text and adds expenses to databases.\n\nTASK: Extract expenses from receipt text and add each item to both Notion and Google Sheets using the available tools.\n\nEXTRACTION RULES:\n- For RECEIPTS: Extract ALL individual products/items with prices\n- For BILLS/INVOICES: Create ONE entry with the total amount\n- Fix obvious abbreviations (e.g., \"Mlecz Kanapka\" → \"mleczna kanapka\", \"Jog Skur Natu\" → \"jogurt skyr naturalny\")\n\nFIELD MAPPING - CRITICAL:\nWhen adding to Notion and Google Sheets:\n- **Name/Title field**: ALWAYS use the PRODUCT NAME (e.g., \"Banana Luz 0.37kg\", \"Jogurt Pitny OśTrusFruv 400g\")\n- **Shop field**: ALWAYS use the STORE/VENDOR NAME (e.g., \"Biedronka\", \"MOL Polska Sp. z o.o.\")\n- **Amount**: Product price in PLN\n- **Category**: Appropriate category (food, fuel, utilities, etc.)\n\nDATE LOGIC:\n- If receipt has transaction date: use that date\n- If bill/invoice with only due date (no payment date): use TODAY's date (2025-09-02)\n- Format: YYYY-MM-DD\n\nBILL/INVOICE DETECTION:\n- Text contains \"rachunek\", \"invoice\", \"bill\", \"faktura\", or due dates without payment dates\n- For Plus invoices: shop = \"Plus\", category = \"utilities\" (cell phone bill)\n- For other service providers: use company name as shop\n\nPAYMENT METHOD:\n- Bills/invoices: \"card\" (default for automatic payments)\n- Receipts: \"card\" or \"cash\" based on context\n\nCATEGORIES: Use these categories and match to appropriate Notion budget item ID:\n- utilities (for phone, internet, electricity bills)\n- food, groceries, transport, entertainment, health, shopping, others\n\nPROCESS:\n1. First, get budget categories using \"Get Categories to set in Notion\" tool\n2. Determine if this is a receipt (multiple items) or bill (single payment)\n3. For each expense item extracted, use BOTH tools:\n   - \"Upload Spending to Notion\" with proper budget item ID\n   - \"Add Spending to Google Sheets\"\n4. After processing all items, return a summary of what was added\n\nFIELD EXAMPLE:\nFor \"Banana Luz 0.37kg\" from \"Biedronka\" costing \"PLN 2.59\":\n- Name/Title: \"Banana Luz 0.37kg\"\n- Shop: \"Biedronka\"\n- Amount: 2.59\n- Category: \"food\"\n\nIMPORTANT: \n- NEVER put shop name in the Name/Title field\n- NEVER put product name in the Shop field\n- For bills with due dates only: use today's date as payment date\n- Plus invoices = cell phone bills = utilities category\n- Process each item separately using the tools\n- Always use both Notion and Sheets tools for each item\n- Return a final summary of all items processed"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -472,8 +477,8 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        1360,
-        368
+        1760,
+        400
       ],
       "id": "9217e60c-d1f4-41e7-b6ef-5d0b1fd46050",
       "name": "Add Spending to Google Sheets",
@@ -523,13 +528,61 @@
       }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 97182072,
+          "message": {
+            "message_id": 70,
+            "from": {
+              "id": 1569501310,
+              "is_bot": false,
+              "first_name": "Cesar",
+              "last_name": "Hernández",
+              "username": "KacperHernacki",
+              "language_code": "en"
+            },
+            "chat": {
+              "id": 1569501310,
+              "first_name": "Cesar",
+              "last_name": "Hernández",
+              "username": "KacperHernacki",
+              "type": "private"
+            },
+            "date": 1757063939,
+            "document": {
+              "file_name": "camphoto_579758561.jpeg",
+              "mime_type": "image/jpeg",
+              "thumbnail": {
+                "file_id": "AAMCBAADGQEAA0ZouqsCQEeN7rmjDR00UoiGZIg_XAAC-xwAAvM60VHNDCAWCD7K1QEAB20AAzYE",
+                "file_unique_id": "AQAD-xwAAvM60VFy",
+                "file_size": 23280,
+                "width": 240,
+                "height": 320
+              },
+              "thumb": {
+                "file_id": "AAMCBAADGQEAA0ZouqsCQEeN7rmjDR00UoiGZIg_XAAC-xwAAvM60VHNDCAWCD7K1QEAB20AAzYE",
+                "file_unique_id": "AQAD-xwAAvM60VFy",
+                "file_size": 23280,
+                "width": 240,
+                "height": 320
+              },
+              "file_id": "BQACAgQAAxkBAANGaLqrAkBHje65ow0dNFKIhmSIP1wAAvscAALzOtFRzQwgFgg-ytU2BA",
+              "file_unique_id": "AgAD-xwAAvM60VE",
+              "file_size": 3351631
+            }
+          }
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1"
   },
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-02T17:30:05.000Z",
-  "versionId": "426bf4b6-dc59-43c3-bb25-2b09f6013618"
+  "updatedAt": "2025-09-05T17:32:53.000Z",
+  "versionId": "7454ab48-678a-42fa-ba93-78cdcd5540c0"
 }
