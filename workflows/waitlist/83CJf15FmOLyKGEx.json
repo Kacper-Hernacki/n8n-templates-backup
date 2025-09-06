@@ -16,6 +16,28 @@
       "main": [
         [
           {
+            "node": "Select rows from a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select rows from a table": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert or update rows in a table": {
+      "main": [
+        [
+          {
             "node": "Add a new user",
             "type": "main",
             "index": 0
@@ -27,7 +49,9 @@
   "createdAt": "2025-08-21T17:27:06.593Z",
   "id": "83CJf15FmOLyKGEx",
   "isArchived": false,
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "name": "Waitlist Confirmation Logic",
   "nodes": [
     {
@@ -39,7 +63,7 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.4,
       "position": [
-        512,
+        848,
         192
       ],
       "id": "e6b7ab06-627a-4f99-af93-661c3df9cbdc",
@@ -142,7 +166,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        288,
+        656,
         192
       ],
       "id": "4568278b-2e0e-4470-a185-7e8c74d6cce1",
@@ -169,9 +193,204 @@
       "id": "1d4c6bbf-b923-4d8f-90a8-5ae79313a9cd",
       "name": "Webhook",
       "webhookId": "d726c836-d0d3-4034-8514-582bed1dadfe"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "waitlist",
+          "mode": "list",
+          "cachedResultName": "waitlist"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "email",
+              "value": "={{ $json.query.email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        256,
+        192
+      ],
+      "id": "c2b7e20d-5c84-45f8-a9ff-36364a562e72",
+      "name": "Select rows from a table",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "waitlist",
+          "mode": "list",
+          "cachedResultName": "waitlist"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "isconfirmed": true,
+            "id": "={{ $json.id }}",
+            "updated_at": "2025-09-05T14:15:38",
+            "email": "={{ $json.email }}",
+            "product": "={{ $json.product }}",
+            "isagreedtoreceivemails": true,
+            "created_at": "={{ $json.created_at }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "product",
+              "displayName": "product",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "isconfirmed",
+              "displayName": "isconfirmed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "isagreedtoreceivemails",
+              "displayName": "isagreedtoreceivemails",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        464,
+        192
+      ],
+      "id": "04445faa-1570-42b7-92da-8da5dc3e5dce",
+      "name": "Insert or update rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiadaptiv.com",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9",
+            "cookie": "_tccl_visitor=5506b66f-7b0a-40bd-8f5d-987cf7be1f08; rl_page_init_referrer=RudderEncrypt%3AU2FsdGVkX19antCnYUF1Mda1V7UNrPsL2IvKFK2J3wo%3D; rl_page_init_referring_domain=RudderEncrypt%3AU2FsdGVkX18ztoHCSG03o8CfbkJr1RB6fmXamfqUIJY%3D; rl_anonymous_id=RudderEncrypt%3AU2FsdGVkX188eFOTcIp6CiIiGzFSxCCWWGdsH4fWh%2FPs%2Fdc90rwyFdAPbDcTkzDYnAS059VKzjHIpeFe31MdhA%3D%3D; rl_user_id=RudderEncrypt%3AU2FsdGVkX1%2B%2B8k6eaX%2BMqmZrCjDEyNJOoD5Jajl6XHLzBHjbXFPyv7KkO%2BJk7NHEPr%2BFIGIDZzWQWTMVLjNgG40icGtm%2FC9zAZWN9%2BlkZSHfit13pNiR5ROqTiq%2Bnbs1wfoqC4YnKKJJemXPfhxfS5YJv4pic6LfG%2BppEpU3X7A%3D; rl_trait=RudderEncrypt%3AU2FsdGVkX1%2BYk%2FFK0I6f03Wwjr7Z4yxcTUTGy0m6km2sBgCGKb1oDbd0KcfLFpg1haX29nt7Ocd3SptK67WoAed8suLxuygxh2OWhHKCDmX2Ajc09mPy4%2F5N2Oc9azSiDtL%2B49CaglcmZdrU%2BUkxoA%3D%3D; ph_phc_4URIAm1uYfJO7j8kWSe0J8lc8IqnstRLS7Jx8NcakHo_posthog=%7B%22distinct_id%22%3A%22f9a4116f2caa30cbc57ffb9fc5203c330b537e2af207be4a48cc60754ed0b5a6%237dc45afd-7294-47f4-91a2-00336260279d%22%2C%22%24sesid%22%3A%5B1757074462555%2C%22019919c5-3b1e-7683-bbcc-0a1a106f0bfc%22%2C1757073980190%5D%2C%22%24epp%22%3Atrue%2C%22%24initial_person_info%22%3A%7B%22r%22%3A%22%24direct%22%2C%22u%22%3A%22https%3A%2F%2Fn8n.aiadaptiv.com%2Fsetup%22%7D%7D; rl_session=RudderEncrypt%3AU2FsdGVkX1%2FRXO%2BsX2viKlsdVlSL7dVPdhMmib%2FkSg8ic07gJ4WX02glGI%2BWc6GlanUSzKNufFaNuy5%2Feca9tzsDnaM6HdLBz8V1SuuKrxs8sCyR0PTqUfh6NzVn3IjcYyNpjbv9C2foVxgow8lXEw%3D%3D",
+            "dnt": "1",
+            "if-none-match": "W/\"5d-hv0OMDdyTpV3BAPMoFo0vNvYbAQ\"",
+            "priority": "u=0, i",
+            "sec-ch-ua": "\"Chromium\";v=\"139\", \"Not;A=Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"macOS\"",
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-user": "?1",
+            "upgrade-insecure-requests": "1",
+            "via": "2.0 Caddy",
+            "x-client-data": "CITdygE=",
+            "x-forwarded-for": "31.182.243.45",
+            "x-forwarded-host": "n8n.aiadaptiv.com",
+            "x-forwarded-proto": "https"
+          },
+          "params": {},
+          "query": {
+            "email": "hernackikacper@gmail.com"
+          },
+          "body": {},
+          "webhookUrl": "https://n8n.aiadaptiv.com/webhook/d726c836-d0d3-4034-8514-582bed1dadfe",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1"
   },
@@ -185,6 +404,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-30T10:17:55.000Z",
-  "versionId": "ea2fbe61-bed2-4c2b-8037-53dbec6c8c67"
+  "updatedAt": "2025-09-05T12:16:44.000Z",
+  "versionId": "db66bbb7-e07d-43bf-afda-11f9f2e1b5a9"
 }
