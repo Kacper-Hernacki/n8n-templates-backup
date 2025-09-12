@@ -1,17 +1,6 @@
 {
   "active": true,
   "connections": {
-    "Add a new user": {
-      "main": [
-        [
-          {
-            "node": "Respond to Webhook - Email Confirmed",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Webhook": {
       "main": [
         [
@@ -38,7 +27,7 @@
       "main": [
         [
           {
-            "node": "Add a new user",
+            "node": "Respond to Webhook - Email Confirmed",
             "type": "main",
             "index": 0
           }
@@ -68,115 +57,6 @@
       ],
       "id": "e6b7ab06-627a-4f99-af93-661c3df9cbdc",
       "name": "Respond to Webhook - Email Confirmed"
-    },
-    {
-      "parameters": {
-        "operation": "appendOrUpdate",
-        "documentId": {
-          "__rl": true,
-          "value": "1Oo0N663CpJZquV4O42UqM5PgEBN8mmoAaHDaQ1TJshU",
-          "mode": "list",
-          "cachedResultName": "Waitlist 🎊",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Oo0N663CpJZquV4O42UqM5PgEBN8mmoAaHDaQ1TJshU/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "Arkusz1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Oo0N663CpJZquV4O42UqM5PgEBN8mmoAaHDaQ1TJshU/edit#gid=0"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Email": "={{ $json.query.email }}",
-            "isConfirmed": "true",
-            "Updated At": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}"
-          },
-          "matchingColumns": [
-            "Email"
-          ],
-          "schema": [
-            {
-              "id": "Email",
-              "displayName": "Email",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Product",
-              "displayName": "Product",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "Created At",
-              "displayName": "Created At",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "isConfirmed",
-              "displayName": "isConfirmed",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Updated At",
-              "displayName": "Updated At",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "isAgreedToRecieveMails",
-              "displayName": "isAgreedToRecieveMails",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        656,
-        192
-      ],
-      "id": "4568278b-2e0e-4470-a185-7e8c74d6cce1",
-      "name": "Add a new user",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "CdoyqdEgIFafr4XW",
-          "name": "Google Sheets account 4"
-        }
-      }
     },
     {
       "parameters": {
@@ -404,6 +284,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-05T12:16:44.000Z",
-  "versionId": "db66bbb7-e07d-43bf-afda-11f9f2e1b5a9"
+  "updatedAt": "2025-09-11T15:05:40.000Z",
+  "versionId": "255d1f3e-c187-409a-981f-d71dd7cc82ee"
 }
