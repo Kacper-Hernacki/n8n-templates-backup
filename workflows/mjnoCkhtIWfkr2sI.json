@@ -1,0 +1,400 @@
+{
+  "active": true,
+  "connections": {
+    "Base64 to Binary File": {
+      "main": [
+        [
+          {
+            "node": "Send Processed Photo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Image Data URL": {
+      "main": [
+        [
+          {
+            "node": "Loop over clothings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse AI Response Data": {
+      "main": [
+        [
+          {
+            "node": "Base64 to Binary File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Photo Message Receiver": {
+      "main": [
+        [
+          {
+            "node": "Loop over clothings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert Photo to Base64": {
+      "main": [
+        [
+          {
+            "node": "Format Image Data URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Telegram Photo": {
+      "main": [
+        [
+          {
+            "node": "Convert Photo to Base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nano Banana Image Processor": {
+      "main": [
+        [
+          {
+            "node": "Parse AI Response Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Convert Model Photo to Base",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert Model Photo to Base": {
+      "main": [
+        [
+          {
+            "node": "format model images",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "format model images": {
+      "main": [
+        [
+          {
+            "node": "Nano Banana Image Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop over clothings": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Download Telegram Photo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-13T14:10:59.950Z",
+  "id": "mjnoCkhtIWfkr2sI",
+  "isArchived": false,
+  "meta": {
+    "templateId": "8082",
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Nano Banana AI Fashion Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "af619acc-c00b-4340-994c-73bbee581fa5",
+      "name": "Photo Message Receiver",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "position": [
+        -80,
+        608
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "cd4833e2-df6f-4a03-ae99-7c01c6fd0b5a",
+      "credentials": {
+        "telegramApi": {
+          "id": "ESAivsOMsAdylsu3",
+          "name": "fashion bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Photo Message Receiver').item.json.message.photo[0].file_id }}",
+        "additionalFields": {}
+      },
+      "id": "cf6fb661-0117-483d-bd3c-02b8b21c4c50",
+      "name": "Download Telegram Photo",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        480,
+        640
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "481abadc-182e-487a-9c32-dac072ef7e01",
+      "credentials": {
+        "telegramApi": {
+          "id": "ESAivsOMsAdylsu3",
+          "name": "fashion bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "id": "e27499c8-1a2f-422d-a9fb-bd1267971f17",
+      "name": "Convert Photo to Base64",
+      "type": "n8n-nodes-base.extractFromFile",
+      "position": [
+        688,
+        640
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst updatedItems = items.map((item) => {\n  const base64Url = item?.json?.data;\n  const url = `data:image/png;base64,${base64Url}`;\n  return { url };\n});\nreturn updatedItems;\n"
+      },
+      "id": "c778448a-6eab-4665-a419-4c39ac39e658",
+      "name": "Format Image Data URL",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        880,
+        640
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3782b286-b6fd-4943-8530-ff922944b803",
+              "name": "base",
+              "type": "string",
+              "value": "={{ $json.choices[0].message.images[0].image_url.url.split(',')[1] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "91afd164-8301-48c7-a9b5-1744d2a706f5",
+      "name": "Parse AI Response Data",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1888,
+        640
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base",
+        "options": {}
+      },
+      "id": "a59c5d99-807c-4fc5-a00f-f61673c6664c",
+      "name": "Base64 to Binary File",
+      "type": "n8n-nodes-base.convertToFile",
+      "position": [
+        2112,
+        640
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $('Photo Message Receiver').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "id": "49f0d6db-55a9-4d2a-baf5-ec7c210d96b2",
+      "name": "Send Processed Photo",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        2336,
+        640
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "63521e6f-740e-4634-80ba-1ddc77b889ea",
+      "credentials": {
+        "telegramApi": {
+          "id": "ESAivsOMsAdylsu3",
+          "name": "fashion bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# 🤖 Nano Banana AI Image Editor \n\n## 📋 Workflow Overview\n**Purpose:** Receives photos via Telegram, processes them with AI vision, and sends back analyzed images\n\n## 🔄 Process Flow\n\n1. **📱 Photo Message Receiver**\n   - Listens for incoming Telegram messages with photos\n\n2. **⬇️ Download Telegram Photo**\n   - Fetches the photo file from Telegram servers\n\n3. **🔄 Convert Photo to Base64**\n   - Extracts binary data and converts to Base64 format\n\n4. **🔗 Format Image Data URL**\n   - Creates proper data URL format for AI processing\n\n5. **🧠 Nano Banana Image Processor**\n   - Sends image + caption to Gemini 2.5 Flash via OpenRouter\n   - AI analyzes the image and generates response\n\n6. **📊 Parse AI Response Data**\n   - Extracts image URL and metadata from AI response\n\n7. **💾 Base64 to Binary File**\n   - Converts processed image back to binary format\n\n8. **📤 Send Processed Photo**\n   - Returns the AI-processed image to Telegram chat\n\n## ⚙️ Technical Details\n- **AI Model:** Nano Banana(Gemini 2.5 Flash Image Preview)\n- **API Provider:** OpenRouter (Free tier)\n- **Target Chat ID:** Your chat id\n- **Image Format:** PNG\n\n",
+        "height": 928,
+        "width": 2240
+      },
+      "id": "d9b68263-2c65-4767-a609-04242cf788e8",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        288,
+        1840
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer $OPENROUTER_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"google/gemini-2.5-flash-image-preview\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": [\n        {\n          \"type\": \"text\",\n          \"text\": \"Generate an image of the uploaded model wearing the uploaded clothing. Combine the provided images (one of the model and the rest of the clothings) to create a single output where the model is dressed in the clothing.\"\n        },\n        {\n          \"type\": \"image_url\",\n          \"image_url\": {\n            \"url\": \"{{ $json.url }}\"\n          }\n        },\n        {\n          \"type\": \"image_url\",\n          \"image_url\": {\n            \"url\": \"{{ $('Format Image Data URL').item.json.url }}\"\n          }\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "1c5c9be3-81b7-42d7-8cbf-cb66cd27c737",
+      "name": "Nano Banana Image Processor",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1680,
+        640
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "openRouterApi": {
+          "id": "fCKqlHEJpiQreN6l",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1yN9UrUW1Wj8CsUdzmQAFKN5F4EFu3D6A",
+          "mode": "list",
+          "cachedResultName": "me.png",
+          "cachedResultUrl": "https://drive.google.com/file/d/1yN9UrUW1Wj8CsUdzmQAFKN5F4EFu3D6A/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1008,
+        352
+      ],
+      "id": "0e760811-17e8-44a3-acb7-77c7f49ff09f",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "7B1YYjZUzgCThgB3",
+          "name": "drive v2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "id": "8546c322-da26-4e32-9215-7834e593e6a2",
+      "name": "Convert Model Photo to Base",
+      "type": "n8n-nodes-base.extractFromFile",
+      "position": [
+        1216,
+        352
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst updatedItems = items.map((item) => {\n  const base64Url = item?.json?.data;\n  const url = `data:image/png;base64,${base64Url}`;\n  return { url };\n});\nreturn updatedItems;\n"
+      },
+      "id": "614eee5c-74d6-4923-a0a3-c385c2748831",
+      "name": "format model images",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1408,
+        352
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "7f695898-6c88-48f4-a9d1-92836f0c4edc",
+      "name": "Loop over clothings",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        192,
+        608
+      ],
+      "typeVersion": 3
+    }
+  ],
+  "pinData": {},
+  "settings": {},
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-13T15:24:35.000Z",
+  "versionId": "fc3a8383-e20b-46fd-806e-686671eeb246"
+}
