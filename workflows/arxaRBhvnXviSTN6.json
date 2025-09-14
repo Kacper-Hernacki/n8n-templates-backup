@@ -1,0 +1,316 @@
+{
+  "active": false,
+  "connections": {
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Nano 🍌",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nano 🍌": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-13T13:52:01.764Z",
+  "id": "arxaRBhvnXviSTN6",
+  "isArchived": false,
+  "meta": {
+    "templateId": "8193"
+  },
+  "name": "Generate Fashion Model Product Ads with Gemini AI via OpenRouter",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Advertise Image Generator",
+        "formDescription": "Convert Simple Product Images to High Quality Advertise Images",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Product Image",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "acceptFileTypes": ".jpg, .png",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Character Model",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Male"
+                  },
+                  {
+                    "option": "Female"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false,
+          "buttonLabel": "Generate ✨"
+        }
+      },
+      "id": "42aa6ec4-6cfb-418f-a31a-844ef6870c31",
+      "name": "On form submission",
+      "type": "n8n-nodes-base.formTrigger",
+      "position": [
+        432,
+        1024
+      ],
+      "webhookId": "3b255328-041e-4e2e-bca8-176e9846ac7e",
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6355ac9e-1f4c-42a3-8167-8bb8298cd369",
+              "name": "data",
+              "type": "string",
+              "value": "={{ $json.choices[0].message.images[0].image_url.url }}"
+            },
+            {
+              "id": "dc98bc1c-4048-4fcb-80c5-73dc99b78ddd",
+              "name": "base",
+              "type": "string",
+              "value": "={{ $json.choices[0].message.images[0].image_url.url.split(',')[1] }}"
+            },
+            {
+              "id": "8033a47e-f50c-43ae-b404-99d0fb5cf4eb",
+              "name": "mime",
+              "type": "string",
+              "value": "={{ $json.choices[0].message.images[0].image_url.url.split(';')[0].split(':')[1] }}"
+            },
+            {
+              "id": "0e516163-02cc-4242-ba70-ac2bce94d2dd",
+              "name": "fileName",
+              "type": "string",
+              "value": ".png"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e0f74ffe-df13-47bc-a7a9-ef9e1b53f661",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1088,
+        1024
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base",
+        "options": {}
+      },
+      "id": "9adba7f4-44db-4598-b248-e84cf60840b8",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "position": [
+        1264,
+        1024
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "binaryPropertyName": "Product_Image",
+        "options": {}
+      },
+      "id": "b69deac9-3191-4a1f-9df7-6a1812fb689f",
+      "name": "Extract from File",
+      "type": "n8n-nodes-base.extractFromFile",
+      "position": [
+        608,
+        1024
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst updatedItems = items.map((item) => {\n  const base64Url = item?.json?.data;\n  const url = `data:image/png;base64,${base64Url}`;\n  return { url };\n});\nreturn updatedItems;\n"
+      },
+      "id": "13e6ff65-5bbd-4724-a6e4-0f1d52dca7ab",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        768,
+        1024
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "respondWith": "returnBinary",
+        "completionTitle": "Image Generation Completed",
+        "completionMessage": "Generated Image Will be Automatically Downloaded in Your Device",
+        "options": {}
+      },
+      "id": "cf9b77d0-3172-4bdf-b7a9-7c35144a6aa6",
+      "name": "Form",
+      "type": "n8n-nodes-base.form",
+      "position": [
+        1424,
+        1024
+      ],
+      "webhookId": "60191061-42cf-4116-ba6a-a93931099c53",
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer $OPENROUTER_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"google/gemini-2.5-flash-image-preview\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": [\n        {\n          \"type\": \"text\",\n          \"text\": \"This image is a picture of a product. Generate a new, photorealistic image of a {{ $('On form submission').item.json['Character Model'] }} fashion model actively using this exact product in a natural setting. The {{ $('On form submission').item.json['Character Model'] }} model should look happy and engaged with the product. Pay close attention to the product's design, colors, and details from the reference image.\"\n        },\n        {\n          \"type\": \"image_url\",\n          \"image_url\": {\n            \"url\": \"{{ $json.url }}\"\n          }\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "b627e7a3-f07b-4f9b-aadb-a7b8ee2a6379",
+      "name": "Nano 🍌",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        928,
+        1024
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "openRouterApi": {
+          "id": "fCKqlHEJpiQreN6l",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Nano 🍌",
+        "height": 368,
+        "width": 1280,
+        "color": 7
+      },
+      "id": "288fd023-d62c-4bb4-a82f-a49dc39f55b6",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        368,
+        896
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "---\n\n# 🛠 Setup Guide\n\nFollow these steps to get started:\n\n1. **Set up the Image Upload Form**\n   Customize the form fields (Product Image, Character Model) in the **Form Trigger** node. This is how users will submit their product images and model preferences.\n\n2. **Configure your [OpenRouter](https://openrouter.ai/) API credentials**\n   Add your OpenRouter API key in the **HTTP Request** node credentials. This connects to Google's Gemini model for image generation.\n\n3. **Verify image processing settings**\n   The workflow automatically handles base64 conversion and file processing through the **Code** and **Convert to File** nodes. No additional configuration needed here.\n\n4. **Customize the output form**\n   Adjust the completion message and download settings in the **Form** node to match your branding.\n\n5. **Test with sample product images**\n   Once configured, upload product images to generate high-quality advertisements featuring models using your products.\n\nOnce all connections are set, your workflow will **accept product images, generate professional advertisements with models, and deliver downloadable results** 🚀",
+        "height": 608,
+        "width": 608
+      },
+      "id": "8ee789d2-81dc-4d25-a792-e46448f0c812",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        368,
+        240
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Start here: Step-by Step Youtube Tutorial :star:\n[![Googles Nano Banana with n8n](https://img.youtube.com/vi/UGf01FYaAzY/sddefault.jpg)](https://youtu.be/UGf01FYaAzY?si=xaO5N1xeXotZ0tYN)",
+        "height": 448,
+        "width": 480
+      },
+      "id": "d2a21307-97b9-49e8-bebe-36d4be8405f7",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1024,
+        400
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-13T13:54:06.000Z",
+  "versionId": "127b3d8b-cea0-48f8-a83d-7b944a79b3c7"
+}
