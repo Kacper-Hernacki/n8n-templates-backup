@@ -1,0 +1,554 @@
+{
+  "active": false,
+  "connections": {
+    "Photo Message Receiver": {
+      "main": [
+        [
+          {
+            "node": "Is Media Group?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Media Group?": {
+      "main": [
+        [
+          {
+            "node": "Collect Media Group Photos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Media Group": {
+      "main": [
+        [
+          {
+            "node": "Process Complete Media Group",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect Media Group Photos": {
+      "main": [
+        [
+          {
+            "node": "Wait for Media Group",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Complete Media Group": {
+      "main": [
+        [
+          {
+            "node": "Download All Clothing Photos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download All Clothing Photos": {
+      "main": [
+        [
+          {
+            "node": "Convert Clothing to Base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert Clothing to Base64": {
+      "main": [
+        [
+          {
+            "node": "Format Clothing URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Clothing URLs": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Model Photo": {
+      "main": [
+        [
+          {
+            "node": "Convert Model to Base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert Model to Base64": {
+      "main": [
+        [
+          {
+            "node": "Build AI Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build AI Message": {
+      "main": [
+        [
+          {
+            "node": "AI Image Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Image Processor": {
+      "main": [
+        [
+          {
+            "node": "Parse AI Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse AI Response": {
+      "main": [
+        [
+          {
+            "node": "Base64 to Binary File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Base64 to Binary File": {
+      "main": [
+        [
+          {
+            "node": "Send Result Photo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Result Photo": {
+      "main": [
+        []
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        []
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-14T12:42:29.605Z",
+  "id": "829S0vU8NHEb8IqV",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "f83bb116-3fc0-4c12-9c2c-2518cf6ab06a",
+      "name": "Photo Message Receiver",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "position": [
+        -800,
+        320
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "cd4833e2-df6f-4a03-ae99-7c01c6fd0b5a",
+      "credentials": {
+        "telegramApi": {
+          "id": "ESAivsOMsAdylsu3",
+          "name": "fashion bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "c8cb471d-7af0-4d7f-9cf4-187e0c3e7c5a",
+              "leftValue": "={{ $json.message.media_group_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "393d3857-57e7-474a-bea1-661839cbc492",
+      "name": "Is Media Group?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -592,
+        320
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "id": "9a24c02f-8468-4afd-86aa-6534dc1fbe2f",
+      "name": "Wait for Media Group",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        -208,
+        64
+      ],
+      "typeVersion": 1.1,
+      "webhookId": "31cb1a55-758e-4e23-b992-8ce55ed76e33"
+    },
+    {
+      "parameters": {
+        "jsCode": "// This node collects all photos from a media group\n// It will be triggered once for each photo, but we need to collect them all\n\nconst mediaGroupId = $json.message.media_group_id;\nconst chatId = $json.message.chat.id;\nconst messageId = $json.message.message_id;\n\n// Store this photo data\nconst photoData = {\n  media_group_id: mediaGroupId,\n  chat_id: chatId,\n  message_id: messageId,\n  file_id: $json.message.photo ? $json.message.photo[$json.message.photo.length-1].file_id : $json.message.document.file_id,\n  timestamp: Date.now()\n};\n\n// Use global storage to collect all photos in this media group\nconst storageKey = `media_group_${mediaGroupId}`;\nlet storedData = $getWorkflowStaticData('global')[storageKey] || { photos: [], processed: false };\n\n// Add this photo to the collection\nstoredData.photos.push(photoData);\nstoredData.lastUpdate = Date.now();\n\n// Save back to storage\n$getWorkflowStaticData('global')[storageKey] = storedData;\n\n// Return info about collection status\nreturn [{\n  json: {\n    media_group_id: mediaGroupId,\n    current_count: storedData.photos.length,\n    photos: storedData.photos,\n    chat_id: chatId,\n    should_process: true // We'll process after the wait\n  }\n}];"
+      },
+      "id": "8c755387-2f95-419b-b644-72a22933b843",
+      "name": "Collect Media Group Photos",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -400,
+        64
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "// After waiting, get all photos from this media group and process them\nconst mediaGroupId = $json.media_group_id;\nconst storageKey = `media_group_${mediaGroupId}`;\nconst storedData = $getWorkflowStaticData('global')[storageKey];\n\nif (!storedData || storedData.processed) {\n  return []; // Skip if already processed\n}\n\n// Mark as processed to prevent duplicate processing\nstoredData.processed = true;\n$getWorkflowStaticData('global')[storageKey] = storedData;\n\n// Return all photos for processing - each item must be wrapped in {json: ...}\nconst items = storedData.photos.map((photo, index) => ({\n  json: {\n    file_id: photo.file_id,\n    index: index,\n    media_group_id: mediaGroupId,\n    chat_id: photo.chat_id,\n    total_photos: storedData.photos.length\n  }\n}));\n\nreturn items;"
+      },
+      "id": "da7bb5dd-40ca-4f00-af98-7366a37a40b6",
+      "name": "Process Complete Media Group",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        16,
+        64
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.file_id }}",
+        "additionalFields": {}
+      },
+      "id": "e81a13fe-08b2-4872-bc78-ef7f36dd59cb",
+      "name": "Download All Clothing Photos",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        224,
+        64
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "575c45e4-5ebe-4f28-8c35-5415a427bb0c",
+      "credentials": {
+        "telegramApi": {
+          "id": "ESAivsOMsAdylsu3",
+          "name": "fashion bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "id": "9aff2754-d92a-4d76-8300-c63fb8305dad",
+      "name": "Convert Clothing to Base64",
+      "type": "n8n-nodes-base.extractFromFile",
+      "position": [
+        432,
+        64
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst updatedItems = items.map((item, index) => {\n  const base64Url = item?.json?.data;\n  const url = `data:image/png;base64,${base64Url}`;\n  return {\n    json: {  // ✅ Wrap everything in a json object\n      url,\n      index: index,\n      media_group_id: item.json.media_group_id,\n      chat_id: item.json.chat_id\n    }\n  };\n});\nreturn updatedItems;"
+      },
+      "id": "56ea8588-808b-40a5-8852-0aff3047db60",
+      "name": "Format Clothing URLs",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        384,
+        384
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1yN9UrUW1Wj8CsUdzmQAFKN5F4EFu3D6A",
+          "mode": "list",
+          "cachedResultName": "me.png",
+          "cachedResultUrl": "https://drive.google.com/file/d/1yN9UrUW1Wj8CsUdzmQAFKN5F4EFu3D6A/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        848,
+        64
+      ],
+      "id": "83665a0f-bbb8-474e-8adc-00a1bb288fa2",
+      "name": "Download Model Photo",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "7B1YYjZUzgCThgB3",
+          "name": "drive v2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "id": "f627e6a4-4a58-4d07-a3b6-a009687f3ec8",
+      "name": "Convert Model to Base64",
+      "type": "n8n-nodes-base.extractFromFile",
+      "position": [
+        1056,
+        64
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get all clothing URLs\nconst clothingItems = $('Format Clothing URLs').all();\nconst clothingUrls = clothingItems.map(item => item.json.url);\n\n// Get model image data\nconst modelData = $('Convert Model to Base64').first();\nconst modelUrl = `data:image/png;base64,${modelData.json.data}`;\n\n// Get chat_id from the first clothing item\nconst chatId = clothingItems[0]?.json?.chat_id;\n\n// Create the message content array\nconst messageContent = [\n  {\n    \"type\": \"text\",\n    \"text\": `Generate a single image of the model wearing ALL ${clothingUrls.length} clothing items provided. Combine all the clothing pieces (shirts, pants, shoes, accessories, etc.) onto the model in one cohesive, stylish outfit. The model should be wearing everything shown in the clothing images simultaneously.`\n  },\n  {\n    \"type\": \"image_url\",\n    \"image_url\": {\n      \"url\": modelUrl\n    }\n  }\n];\n\n// Add all clothing images to the message\nclothingUrls.forEach(url => {\n  messageContent.push({\n    \"type\": \"image_url\",\n    \"image_url\": {\n      \"url\": url\n    }\n  });\n});\n\nreturn [{ \n  json: {\n    messageContent: messageContent,\n    clothingCount: clothingUrls.length,\n    chatId: chatId\n  }\n}];"
+      },
+      "id": "c1787685-b2ee-4b52-b98a-f4b6f4e0f04e",
+      "name": "Build AI Message",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1264,
+        64
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer $OPENROUTER_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"google/gemini-2.5-flash-image-preview\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": {{ $json.messageContent }}\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "19740e6a-5407-4b42-a4a1-55448b4cbf3c",
+      "name": "AI Image Processor",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1488,
+        64
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "openRouterApi": {
+          "id": "fCKqlHEJpiQreN6l",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3782b286-b6fd-4943-8530-ff922944b803",
+              "name": "base",
+              "type": "string",
+              "value": "={{ $json.choices[0].message.images[0].image_url.url.split(',')[1] }}"
+            },
+            {
+              "id": "chat-id-assignment",
+              "name": "chat_id",
+              "type": "string",
+              "value": "={{ $('Build AI Message').item.json.chatId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a10a6354-8e91-4e51-a4db-4e23d4c0b926",
+      "name": "Parse AI Response",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1904,
+        64
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base",
+        "options": {}
+      },
+      "id": "1a1d6b19-8563-4137-818f-4766d3095359",
+      "name": "Base64 to Binary File",
+      "type": "n8n-nodes-base.convertToFile",
+      "position": [
+        2112,
+        64
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $json.chat_id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "id": "9ef00967-7ab1-4af0-a6ce-8a60bb45ec4d",
+      "name": "Send Result Photo",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        2320,
+        64
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "9266d3dd-e308-4bee-8b79-f02a1d3746dd",
+      "credentials": {
+        "telegramApi": {
+          "id": "ESAivsOMsAdylsu3",
+          "name": "fashion bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {
+          "includeBinaries": false
+        }
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        944,
+        384
+      ],
+      "id": "28b887f9-6a49-4d91-bb6f-4e9a1b040899",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        592,
+        384
+      ],
+      "id": "390bed58-8a4a-42ac-80cd-18a0adcb443e",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        960,
+        688
+      ],
+      "id": "91f889a1-5db6-4d85-a0f9-e1f963ebe508"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-14T13:03:17.000Z",
+  "versionId": "70d41b1c-33cd-4f61-9bcb-8c7bc27d5b33"
+}
