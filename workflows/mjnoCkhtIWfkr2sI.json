@@ -1,5 +1,5 @@
 {
-  "active": true,
+  "active": false,
   "connections": {
     "Base64 to Binary File": {
       "main": [
@@ -38,7 +38,7 @@
       "main": [
         [
           {
-            "node": "Loop over clothings",
+            "node": "Split Out",
             "type": "main",
             "index": 0
           }
@@ -115,7 +115,7 @@
       "main": [
         [
           {
-            "node": "Download file",
+            "node": "Aggregate",
             "type": "main",
             "index": 0
           }
@@ -123,6 +123,17 @@
         [
           {
             "node": "Download Telegram Photo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop over clothings",
             "type": "main",
             "index": 0
           }
@@ -150,7 +161,7 @@
       "name": "Photo Message Receiver",
       "type": "n8n-nodes-base.telegramTrigger",
       "position": [
-        -80,
+        -192,
         608
       ],
       "typeVersion": 1.2,
@@ -172,8 +183,8 @@
       "name": "Download Telegram Photo",
       "type": "n8n-nodes-base.telegram",
       "position": [
-        480,
-        640
+        528,
+        624
       ],
       "typeVersion": 1.2,
       "webhookId": "481abadc-182e-487a-9c32-dac072ef7e01",
@@ -193,8 +204,8 @@
       "name": "Convert Photo to Base64",
       "type": "n8n-nodes-base.extractFromFile",
       "position": [
-        688,
-        640
+        752,
+        624
       ],
       "typeVersion": 1
     },
@@ -206,8 +217,8 @@
       "name": "Format Image Data URL",
       "type": "n8n-nodes-base.code",
       "position": [
-        880,
-        640
+        976,
+        624
       ],
       "typeVersion": 2
     },
@@ -271,21 +282,6 @@
           "name": "fashion bot"
         }
       }
-    },
-    {
-      "parameters": {
-        "content": "# 🤖 Nano Banana AI Image Editor \n\n## 📋 Workflow Overview\n**Purpose:** Receives photos via Telegram, processes them with AI vision, and sends back analyzed images\n\n## 🔄 Process Flow\n\n1. **📱 Photo Message Receiver**\n   - Listens for incoming Telegram messages with photos\n\n2. **⬇️ Download Telegram Photo**\n   - Fetches the photo file from Telegram servers\n\n3. **🔄 Convert Photo to Base64**\n   - Extracts binary data and converts to Base64 format\n\n4. **🔗 Format Image Data URL**\n   - Creates proper data URL format for AI processing\n\n5. **🧠 Nano Banana Image Processor**\n   - Sends image + caption to Gemini 2.5 Flash via OpenRouter\n   - AI analyzes the image and generates response\n\n6. **📊 Parse AI Response Data**\n   - Extracts image URL and metadata from AI response\n\n7. **💾 Base64 to Binary File**\n   - Converts processed image back to binary format\n\n8. **📤 Send Processed Photo**\n   - Returns the AI-processed image to Telegram chat\n\n## ⚙️ Technical Details\n- **AI Model:** Nano Banana(Gemini 2.5 Flash Image Preview)\n- **API Provider:** OpenRouter (Free tier)\n- **Target Chat ID:** Your chat id\n- **Image Format:** PNG\n\n",
-        "height": 928,
-        "width": 2240
-      },
-      "id": "d9b68263-2c65-4767-a609-04242cf788e8",
-      "name": "Sticky Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        288,
-        1840
-      ],
-      "typeVersion": 1
     },
     {
       "parameters": {
@@ -384,10 +380,43 @@
       "name": "Loop over clothings",
       "type": "n8n-nodes-base.splitInBatches",
       "position": [
-        192,
+        272,
         608
       ],
       "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "url"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        464,
+        400
+      ],
+      "id": "37799b8f-283f-43f0-aee1-afc2db7114b5",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        16,
+        608
+      ],
+      "id": "382e1ff2-13b2-4244-809f-a27a17631d50",
+      "name": "Split Out"
     }
   ],
   "pinData": {},
@@ -395,6 +424,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-13T15:24:35.000Z",
-  "versionId": "fc3a8383-e20b-46fd-806e-686671eeb246"
+  "updatedAt": "2025-09-14T13:19:58.000Z",
+  "versionId": "e15a9876-a147-4a62-8467-2468eee2877e"
 }
