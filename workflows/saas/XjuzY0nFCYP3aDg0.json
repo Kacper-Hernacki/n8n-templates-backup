@@ -1,0 +1,359 @@
+{
+  "active": false,
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Insert YT to Vector Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert YT to Vector Database",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert YT to Vector Database",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert YT to Vector Database": {
+      "main": [
+        []
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-09-16T15:00:39.874Z",
+  "id": "XjuzY0nFCYP3aDg0",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "YouTube video summarizer",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        96,
+        -672
+      ],
+      "id": "36ec200b-3706-4636-a177-0c7c049b87ae",
+      "name": "Telegram Trigger",
+      "webhookId": "63e19c3b-1f02-43ee-8a1c-df3d1b4a1104",
+      "credentials": {
+        "telegramApi": {
+          "id": "PApR3bLRVOObg2L8",
+          "name": "aiResearcher"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "16d8bd3a-f5eb-437b-b00f-f68dc6abf47c",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        96,
+        -480
+      ],
+      "id": "2a31bf03-7a4c-4185-acf6-361b5b2ac1a8",
+      "name": "Webhook",
+      "webhookId": "16d8bd3a-f5eb-437b-b00f-f68dc6abf47c"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1648,
+        -416
+      ],
+      "id": "c55d10a5-d32d-4ea7-aa08-da2cda569a2c",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.aiadaptiv.com/youtube/transcript",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.message.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        560,
+        -592
+      ],
+      "id": "e470e6b0-b6fd-4713-8b9f-65831a861362",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "VR2HADCVzHyCEv4F",
+          "name": "aiAdaptiv"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chunkSize": 2000,
+        "options": {}
+      },
+      "id": "fd7a1ac0-ad20-4fcf-b7ef-0e787c983927",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "position": [
+        1024,
+        -256
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "dd5ae01b-6631-4102-8c77-257d5211ccd9",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        880,
+        -416
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "label",
+                "value": "=YouTube Video"
+              },
+              {
+                "name": "id",
+                "value": "={{ $('HTTP Request').item.json.response.id }}"
+              },
+              {
+                "name": "author",
+                "value": "=\n"
+              },
+              {
+                "name": "title",
+                "value": "="
+              }
+            ]
+          }
+        }
+      },
+      "id": "ec331b03-68c7-4417-b782-8c6426655b54",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "position": [
+        1024,
+        -416
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "n8n_vectors_youtube_video_summarizer",
+        "options": {}
+      },
+      "id": "2949a22f-d18b-4e8c-bb9c-5473271f1ff9",
+      "name": "Insert YT to Vector Database",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "position": [
+        880,
+        -592
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $('HTTP Request').item.json.response.transcript }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1648,
+        -688
+      ],
+      "id": "7a9d77b2-569d-4fbf-bc70-15668f630264",
+      "name": "Send a text message",
+      "webhookId": "f8612763-c9fd-4ba2-851f-f570ddb8a1ad",
+      "credentials": {
+        "telegramApi": {
+          "id": "PApR3bLRVOObg2L8",
+          "name": "aiResearcher"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "23b218e7-b693-801f-a6de-d8ec4b2cf913",
+          "mode": "list",
+          "cachedResultName": "resources_solopreneur",
+          "cachedResultUrl": "https://www.notion.so/23b218e7b693801fa6ded8ec4b2cf913"
+        },
+        "title": "={{ $json.metadata.author }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "URL|url",
+              "urlValue": "={{ $('HTTP Request').item.json.response.url }}"
+            },
+            {
+              "key": "source|select",
+              "selectValue": "YouTube"
+            }
+          ]
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "richText": true,
+              "text": {
+                "text": [
+                  {
+                    "text": "={{ $json.pageContent }}",
+                    "annotationUi": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        1392,
+        -576
+      ],
+      "id": "26275fee-b025-4ae7-9734-ed0ca037951c",
+      "name": "Create a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "DFu4pheXYNBPA1mA",
+          "name": "Notion account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-08-01T14:47:07.298Z",
+      "updatedAt": "2025-08-01T14:47:07.298Z",
+      "id": "Q0DMJLoQKoFDQRWe",
+      "name": "saas"
+    }
+  ],
+  "triggerCount": 2,
+  "updatedAt": "2025-09-16T15:32:00.000Z",
+  "versionId": "b7db2213-5136-4ab9-854a-c63aaa1ae8b1"
+}
