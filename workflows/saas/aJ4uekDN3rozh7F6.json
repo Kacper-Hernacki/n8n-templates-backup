@@ -1,0 +1,267 @@
+{
+  "active": false,
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Prepare Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Summarize Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Metadata": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize Content": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Replace Me1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-17T17:29:30.338Z",
+  "id": "aJ4uekDN3rozh7F6",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "YouTube video summarizer copy",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        64,
+        -592
+      ],
+      "id": "033603e2-f409-4211-98eb-ee63b590ad78",
+      "name": "Telegram Trigger",
+      "webhookId": "b9af7ddf-27c1-4e35-823d-cab223c384c2",
+      "credentials": {
+        "telegramApi": {
+          "id": "PApR3bLRVOObg2L8",
+          "name": "aiResearcher"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.aiadaptiv.com/youtube/transcript",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.message.content.youtube_url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        768,
+        -592
+      ],
+      "id": "285145ba-39d9-46eb-81c4-ef34cf595b01",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "VR2HADCVzHyCEv4F",
+          "name": "aiAdaptiv"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Basing on telegram message sent by a user, get provided url of youtube video, what is the topic of a video and who is an author. Response should be as json described in an example below.\n\n<Message>\n{{ $json.message.text }}\n</Message>\n\nExample output:\n{\n  \"youtube_url\": \"https://www.youtube.com/watch?v=videoId\",\n  \"author\": \"XYZ\",\n  \"title\": \"XYZ\"\n}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        352,
+        -592
+      ],
+      "id": "ba84cdf3-c354-4b16-899a-0cacadf40e9d",
+      "name": "Prepare Metadata",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Summarize YouTube video transcript to leave the most essential parts. Do not start summary with phrases similar to Here’s a concise summary of, etc. Pure content, very accurate and valuable. If there is a lot of valuable stuff, include it. Returned content should be chunked into multiple parts. Return it as a json:\n{\n  \"content\":[\n    {\"text\": \"chunked text...\"},\n    ...\n  ]\n}\nTranscript:\n {{ $('HTTP Request').item.json.response.transcript }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        992,
+        -816
+      ],
+      "id": "0c88a01f-9e75-4994-a179-b31098bdbf85",
+      "name": "Summarize Content",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "=message.content",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        -1200
+      ],
+      "id": "e8e742e4-e246-4d61-9c0f-bbf7da4fb6f6",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1648,
+        -1296
+      ],
+      "id": "10268d86-4ef8-4fc1-a1b7-2212614376f0",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me1",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        -1232
+      ],
+      "id": "1bb11c51-fe19-4e3f-992e-2ae3a7ac9fbd"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-08-01T14:47:07.298Z",
+      "updatedAt": "2025-08-01T14:47:07.298Z",
+      "id": "Q0DMJLoQKoFDQRWe",
+      "name": "saas"
+    }
+  ],
+  "triggerCount": 2,
+  "updatedAt": "2025-09-17T17:29:47.000Z",
+  "versionId": "fc35fcd9-819e-440c-8d0e-373cf1b1e35f"
+}
