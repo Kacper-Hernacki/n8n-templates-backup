@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Prepare Metadata",
+            "node": "Get a message type",
             "type": "main",
             "index": 0
           }
@@ -47,12 +47,24 @@
     },
     "Insert YT to Vector Database": {
       "main": [
-        []
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Send a text message": {
       "main": [
-        []
+        [
+          {
+            "node": "Append transcription blocks",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Create a database page": {
@@ -138,6 +150,201 @@
           }
         ]
       ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Send confirmation of embedded data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append a transcription block",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append a transcription block": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a message type": {
+      "main": [
+        [
+          {
+            "node": "type of message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "type of message": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Answer the question",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres PGVector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model for vector db": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI for Vector DB": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send confirmation of embedded data": {
+      "main": [
+        []
+      ]
+    },
+    "Append transcription blocks": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Update a database page with description and category",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a database page with description and category": {
+      "main": [
+        [
+          {
+            "node": "Insert YT to Vector Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many database pages of youtube transcripts in Notion": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-09-16T15:00:39.874Z",
@@ -146,7 +353,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "YouTube video summarizer",
+  "name": "YouTube video summarizer RAG",
   "nodes": [
     {
       "parameters": {
@@ -158,8 +365,8 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.1,
       "position": [
-        64,
-        -592
+        784,
+        -992
       ],
       "id": "36ec200b-3706-4636-a177-0c7c049b87ae",
       "name": "Telegram Trigger",
@@ -191,8 +398,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        672,
-        -592
+        2048,
+        -976
       ],
       "id": "e470e6b0-b6fd-4713-8b9f-65831a861362",
       "name": "HTTP Request",
@@ -212,8 +419,8 @@
       "name": "Recursive Character Text Splitter",
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "position": [
-        1936,
-        256
+        3072,
+        -368
       ],
       "typeVersion": 1
     },
@@ -225,8 +432,8 @@
       "name": "Embeddings OpenAI",
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "position": [
-        1760,
-        144
+        2944,
+        -544
       ],
       "typeVersion": 1.2,
       "credentials": {
@@ -246,8 +453,8 @@
       "name": "Insert YT to Vector Database",
       "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
       "position": [
-        1760,
-        -96
+        3024,
+        -736
       ],
       "typeVersion": 1,
       "credentials": {
@@ -308,8 +515,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 2.2,
       "position": [
-        896,
-        -592
+        2272,
+        -976
       ],
       "id": "26275fee-b025-4ae7-9734-ed0ca037951c",
       "name": "Create a database page",
@@ -331,7 +538,7 @@
         "messages": {
           "values": [
             {
-              "content": "=Basing on telegram message sent by a user, get provided url of youtube video, what is the topic of a video and who is an author. Response should be as json described in an example below.\n\n<Message>\n{{ $json.message.text }}\n</Message>\n\nExample output:\n{\n  \"youtube_url\": \"https://www.youtube.com/watch?v=videoId\",\n  \"author\": \"XYZ\",\n  \"title\": \"XYZ\"\n}"
+              "content": "=Basing on telegram message sent by a user, get provided url of youtube video, what is the topic of a video and who is an author. Response should be as json described in an example below.\n\n<Message>\n{{ $('Telegram Trigger').item.json.message.text }}\n</Message>\n\nExample output:\n{\n  \"youtube_url\": \"https://www.youtube.com/watch?v=videoId\",\n  \"author\": \"XYZ\",\n  \"title\": \"XYZ\"\n}"
             }
           ]
         },
@@ -341,8 +548,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        304,
-        -592
+        1680,
+        -976
       ],
       "id": "6b7b8e73-f1b7-4bd9-af80-2549683d42b5",
       "name": "Prepare Metadata",
@@ -355,6 +562,8 @@
     },
     {
       "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $('HTTP Request').item.json.response.transcript }}",
         "options": {
           "metadata": {
             "metadataValues": [
@@ -377,6 +586,18 @@
               {
                 "name": "source",
                 "value": "youtube"
+              },
+              {
+                "name": "createdAt",
+                "value": "={{ $now }}"
+              },
+              {
+                "name": "description",
+                "value": "={{ $('Message a model').item.json.message.content.descrption }}"
+              },
+              {
+                "name": "category",
+                "value": "={{ $('Message a model').item.json.message.content.category }}"
               }
             ]
           }
@@ -386,8 +607,8 @@
       "name": "Chunk Transcription",
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "position": [
-        1936,
-        80
+        3072,
+        -528
       ],
       "typeVersion": 1
     },
@@ -402,7 +623,7 @@
         "messages": {
           "values": [
             {
-              "content": "=Summarize YouTube video transcript to leave the most essential parts. Do not start summary with phrases similar to Here’s a concise summary of, etc. Pure content, very accurate and valuable. If there is a lot of valuable stuff, include it. Returned content should be chunked into multiple parts and include type of a block ready to paste to notion.\nSelect type of a block from typical notion options:\nparagraph, numbered_list_item, bulleted_list_item, heading_1, heading_2, heading_3.\nReturn it as a json:\n{\n  \"content\":[\n    {\"text\": \"chunked text...\", \"type\": \"heading_1\"},\n    ...\n  ]\n}\nTranscript:\n {{ $('HTTP Request').item.json.response.transcript }}"
+              "content": "=Summarize YouTube video transcript to leave the most essential parts. Do not start summary with phrases similar to Here’s a concise summary of, etc. Pure content, very accurate and valuable. If there is a lot of valuable stuff, include it. Returned content should be chunked into multiple parts and include type of a block ready to paste to notion.\nSelect type of a block from typical notion options:\nparagraph, numbered_list_item, bulleted_list_item, heading_1, heading_2, heading_3.\nWhen you use a bullet list or numbered list, do not put a number or bullet in text, cause it will make it look like:\n1. 1. Test\n2. 2. Test\nor:\n- - Test,\n- - Test\nReturn it as a json:\n{\n  \"content\":[\n    {\"text\": \"chunked text...\", \"type\": \"heading_1\"},\n    ...\n  ]\n}\nTranscript:\n {{ $('HTTP Request').item.json.response.transcript }}"
             }
           ]
         },
@@ -412,8 +633,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        1136,
-        -592
+        2512,
+        -976
       ],
       "id": "5929e450-56db-4df7-8af4-e7c60c876197",
       "name": "Summarize Content",
@@ -482,9 +703,517 @@
       ],
       "id": "cf6189f5-eb85-4010-aa05-37effd4e0db2",
       "name": "Loop over a content"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "=pageContent",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        3312,
+        -736
+      ],
+      "id": "4e19c1af-4581-425c-acc6-d1be1ff93e8e",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        3520,
+        -736
+      ],
+      "id": "8d65591a-f1e5-4d89-a8a1-99c1b316f4ad",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "resource": "block",
+        "blockId": {
+          "__rl": true,
+          "value": "={{ $('Create a database page').item.json.url }}",
+          "mode": "url"
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "textContent": "={{ $json.pageContent }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        3744,
+        -720
+      ],
+      "id": "a678f885-59b8-4799-9e76-d28a5bb93d87",
+      "name": "Append a transcription block",
+      "credentials": {
+        "notionApi": {
+          "id": "DFu4pheXYNBPA1mA",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=YouTube Transcript embedded successfully.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3744,
+        -912
+      ],
+      "id": "bb1f578b-a031-4976-b08b-446919f9c156",
+      "name": "Send confirmation of embedded data",
+      "webhookId": "f8612763-c9fd-4ba2-851f-f570ddb8a1ad",
+      "executeOnce": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "PApR3bLRVOObg2L8",
+          "name": "aiResearcher"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.content.isChat }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "f2bb0f53-efdb-48c3-a8a6-d28d4d7b40b4"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c863e4bc-42e6-455f-a295-8bcec2886d11",
+                    "leftValue": "={{ $json.message.content.isChat }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "false",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1328,
+        -992
+      ],
+      "id": "c42bef4c-1a62-4281-b417-e68a3300d497",
+      "name": "type of message"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Based on the user's message, determine the type of message. Pick between chat, which will be focused on retrieving data from knowledge base and adding youtube video to the knowledgebase.Return an output as JSON:\n{\n  \"isChat\": true\n}\n\nfor chat messages, or:\n{\n  \"isChat\": false\n}\nif message is about posting an url to a knowledge base.",
+              "role": "system"
+            },
+            {
+              "content": "={{ $json.message.text }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1008,
+        -992
+      ],
+      "id": "bcc48ae6-c4df-46a7-948f-49fec1f1dcd8",
+      "name": "Get a message type",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Use the connected knowledge base to answer the question:\n {{ $('Telegram Trigger').item.json.message.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1936,
+        -1776
+      ],
+      "id": "85bd428b-6fbd-41c7-a222-92b58a3bea69",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1840,
+        -1552
+      ],
+      "id": "1cf37184-06a9-4c3b-b89e-159db3658c61",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "tableName": "n8n_chat_histories_youtube_summarizer"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1984,
+        -1552
+      ],
+      "id": "13b78753-06fe-4b5b-aaf4-1e98562f9bc4",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2336,
+        -1776
+      ],
+      "id": "823bb1af-65d8-4020-9757-5f0b7647f7b0",
+      "name": "Answer the question",
+      "webhookId": "f8612763-c9fd-4ba2-851f-f570ddb8a1ad",
+      "executeOnce": false,
+      "credentials": {
+        "telegramApi": {
+          "id": "PApR3bLRVOObg2L8",
+          "name": "aiResearcher"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "knowledgebase",
+        "description": "data from a knowledge base. Vectors have metadata indicating the date of adding, the title of a video, the author, and other information.",
+        "topK": 15
+      },
+      "id": "d41e0bdc-f44d-40e0-957c-c8f3f88150e7",
+      "name": "Answer questions with a vector store",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "position": [
+        2560,
+        -1520
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "tableName": "n8n_vectors_youtube_video_summarizer",
+        "options": {}
+      },
+      "id": "3c4c521c-fac4-4695-91fc-daa7137e8349",
+      "name": "Postgres PGVector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "position": [
+        2480,
+        -1344
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "postgres": {
+          "id": "HN8MS4EGX4BmUQrw",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b91da778-9bc9-4f24-94a3-2604f8811d8e",
+      "name": "OpenAI Chat Model for vector db",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        2768,
+        -1344
+      ],
+      "typeVersion": 1.1,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "73552f52-84dc-4461-a879-b896bb0709aa",
+      "name": "Embeddings OpenAI for Vector DB",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        2480,
+        -1200
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "block",
+        "blockId": {
+          "__rl": true,
+          "value": "={{ $('Create a database page').item.json.url }}",
+          "mode": "url"
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "type": "heading_2",
+              "textContent": "Transcription:"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        2064,
+        -736
+      ],
+      "id": "d66e507a-0646-4ff8-963d-f0dba7479b3c",
+      "name": "Append transcription blocks",
+      "credentials": {
+        "notionApi": {
+          "id": "DFu4pheXYNBPA1mA",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Create a short description of a video from the summary returned data. Description should be defined in a few sentences.\n\nAlso, return the proposed type of a video, like: Marketing, AI resources, tutorials, etc. Try to be very accurate, but not too much, to avoid having multiple categories. Let's focus for now on:\n- marketing,\n- vibe coding,\n- AI news,\n- founder playbook.\n\nAdd a few more if needed.\n\nexample returned output:\n{\n  \"category\": \"marketing\",\n  \"descrption\": \"Nick Saraev video about implementing AI with n8n. Video covers the basic strategy how to scale business from 0 to 10k usd in a month. Nick shares practical tips as lead generation and email marketing which was crucial.\"\n}",
+              "role": "system"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2272,
+        -736
+      ],
+      "id": "5babfdb2-1db2-41a7-91dc-2ea9eb73a378",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "zwCoTxavt4ELUwZx",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Create a database page').item.json.url }}",
+          "mode": "url"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Category|rich_text",
+              "textContent": "={{ $json.message.content.category }}"
+            },
+            {
+              "key": "Description|rich_text",
+              "textContent": "={{ $json.message.content.descrption }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        2720,
+        -736
+      ],
+      "id": "b5288b6f-6229-4a14-9668-10c7fade77a6",
+      "name": "Update a database page with description and category",
+      "credentials": {
+        "notionApi": {
+          "id": "DFu4pheXYNBPA1mA",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "270218e7-b693-814d-87f0-f55b6b16709c",
+          "mode": "list",
+          "cachedResultName": "youtube_transcripts",
+          "cachedResultUrl": "https://www.notion.so/270218e7b693814d87f0f55b6b16709c"
+        },
+        "limit": 3,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        2208,
+        -1360
+      ],
+      "id": "c1f48d00-6c9d-4469-8d32-d724f36cb3b0",
+      "name": "Get many database pages of youtube transcripts in Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "DFu4pheXYNBPA1mA",
+          "name": "Notion account"
+        }
+      }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 211315472,
+          "message": {
+            "message_id": 101,
+            "from": {
+              "id": 1569501310,
+              "is_bot": false,
+              "first_name": "Cesar",
+              "last_name": "Hernández",
+              "username": "KacperHernacki",
+              "language_code": "en"
+            },
+            "chat": {
+              "id": 1569501310,
+              "first_name": "Cesar",
+              "last_name": "Hernández",
+              "username": "KacperHernacki",
+              "type": "private"
+            },
+            "date": 1758222228,
+            "text": "I Tested 900 AI Offers: Here's What Actually Worked https://youtu.be/T5-RXi-Zk_g?si=Td1KQ9LRRUUrJK3U Nick Saraev",
+            "entities": [
+              {
+                "offset": 52,
+                "length": 48,
+                "type": "url"
+              }
+            ],
+            "link_preview_options": {
+              "url": "https://youtu.be/T5-RXi-Zk_g?si=Td1KQ9LRRUUrJK3U"
+            }
+          }
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1"
   },
@@ -498,6 +1227,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-17T18:37:59.000Z",
-  "versionId": "13b3346c-ebd3-471d-86ab-58812618725d"
+  "updatedAt": "2025-09-18T19:07:42.000Z",
+  "versionId": "9650b70f-44b1-46c2-a557-3732df4f0b7b"
 }
