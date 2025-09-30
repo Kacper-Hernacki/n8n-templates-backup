@@ -127,7 +127,7 @@
       "main": [
         [
           {
-            "node": "Split Out",
+            "node": "AI Image Processor",
             "type": "main",
             "index": 0
           }
@@ -161,40 +161,6 @@
         [
           {
             "node": "Send Result Photo",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Split Out": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Loop Over Items": {
-      "main": [
-        [],
-        [
-          {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
@@ -444,8 +410,8 @@
       "name": "AI Image Processor",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        656,
-        272
+        464,
+        512
       ],
       "typeVersion": 4.2,
       "credentials": {
@@ -521,48 +487,6 @@
           "name": "fashion bot"
         }
       }
-    },
-    {
-      "parameters": {
-        "fieldToSplitOut": "messageContent",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitOut",
-      "typeVersion": 1,
-      "position": [
-        160,
-        512
-      ],
-      "id": "a819729f-5238-42c7-8a37-4e1651d64544",
-      "name": "Split Out"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [
-        368,
-        512
-      ],
-      "id": "fe517220-4259-4ba8-948b-17e05dda8cb4",
-      "name": "Loop Over Items"
-    },
-    {
-      "parameters": {
-        "mode": "raw",
-        "jsonOutput": "={\n  \"model\": \"google/gemini-2.5-flash-image-preview\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": [\n        {\n          \"type\": \"{{ $json.type }}\",\n          \"text\": \"{{ $json.text }}\"\n        },\n        {\n          \"type\": \"image_url\",\n          \"image_url\": {\n            \"url\": \"{{$json.image_url1}}\" \n          }\n        },\n        {\n          \"type\": \"image_url\",\n          \"image_url\": {\n            \"url\": \"{{$json.image_url2}}\" \n          }\n        }\n      ]\n    }\n  ]\n} {{ $json.type }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        576,
-        704
-      ],
-      "id": "4a8a624c-1a42-44e0-a35d-ae43572aa22d",
-      "name": "Edit Fields"
     }
   ],
   "pinData": {},
@@ -572,6 +496,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-09-27T08:30:39.000Z",
-  "versionId": "5355c4a0-d538-4781-a8c6-d01d85ada7a5"
+  "updatedAt": "2025-09-29T09:48:14.000Z",
+  "versionId": "0b505912-e2a6-4a40-b15e-1a7f37d180d6"
 }
